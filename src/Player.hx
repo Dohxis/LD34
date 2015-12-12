@@ -3,21 +3,14 @@ import luxe.Input;
 import luxe.Sprite;
 import luxe.Vector;
 import luxe.Transform;
+import luxe.Component;
+import luxe.Entity;
 
-/*class PlayerSprite extends luxe.Component{
-}*/
-
-class Player{
+class Player extends Component{
 	var player : Sprite;
 
-	public function init(){
-		var playerSprite = Luxe.resources.texture('assets/playerSprite.png');
-			player = new Sprite({
-				pos : Luxe.screen.mid,
-				name : 'player',
-				texture : playerSprite,
-				size : new Vector(124, 124)
-			});
+	override function init(){
+		player = cast entity;
 		move_keys();
 	}
 
@@ -29,7 +22,7 @@ class Player{
 	var speedMax : Float = 300;
     var mSpeed : Float = 0;
 
-	public function update(delta:Float) {
+	override function update(delta:Float) {
         if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax) mSpeed -= 800*delta;
             player.pos.x += mSpeed * delta;

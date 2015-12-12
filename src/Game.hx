@@ -8,7 +8,8 @@ import luxe.Input;
 import luxe.Sprite;
 import luxe.Vector;
 import luxe.Transform;
-import Player;
+import luxe.Entity;
+import luxe.Component;
 
 import luxe.collision.shapes.Polygon;
 import luxe.collision.data.ShapeCollision;
@@ -30,11 +31,22 @@ class Game extends luxe.State {
         super({ name:'game' });
     }
 
-    var move : Player;
+    var playerMove : Player;
+    var player : Sprite;
 
-    override function init() {
+    override function onenter<T>(_:T) {
 
-        //move.init();
+        var playerSprite = Luxe.resources.texture('assets/playerSprite.png');
+		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
+			player = new Sprite({
+				pos : Luxe.screen.mid,
+				name : 'player',
+				texture : playerSprite,
+				size : new Vector(124, 124)
+			});
+        playerMove = new Player({name : 'player'});
+        player.add(playerMove);
+
         //create_map();
         //create_map_collision();
 
@@ -44,7 +56,6 @@ class Game extends luxe.State {
   }
 
     override function update( delta:Float ) {
-        move.update(delta);
     }
 
     override function onkeyup( e:KeyEvent ) {

@@ -38,7 +38,7 @@ class Menu extends luxe.State {
 
   }
 
-  override function init() {
+  override function onenter<T>(_:T) {
     create_background();
   }
 

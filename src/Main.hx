@@ -16,11 +16,11 @@ class Main extends luxe.Game {
 
     override function ready() {
 
-      state = new States({ name: 'state' });
+        state = new States({ name: 'state' });
 
-      state.add( new Game() );
-      state.add( new Menu() );
-      state.set('menu');
+        state.add( new Game() );
+        state.add( new Menu() );
+        state.set('game');
 
     } //ready
 
