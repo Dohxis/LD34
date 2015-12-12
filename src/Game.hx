@@ -36,6 +36,8 @@ class Game extends luxe.State {
 
     override function onenter<T>(_:T) {
 
+        //--------------------------------------------//
+                    //Player
         var playerSprite = Luxe.resources.texture('assets/playerSprite.png');
 		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
 			player = new Sprite({
@@ -46,12 +48,13 @@ class Game extends luxe.State {
 			});
         playerMove = new Player({name : 'player'});
         player.add(playerMove);
+                    //Player
+        //-------------------------------------------//
 
-        //create_map();
-        //create_map_collision();
-
-            //start the simulation
-        //sim.paused = false;
+        create_map();
+        create_map_collision();
+        sim = Luxe.physics.add_engine(Simulation);
+        sim.paused = false;
 
   }
 

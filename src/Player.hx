@@ -8,6 +8,7 @@ import luxe.Entity;
 
 class Player extends Component{
 	var player : Sprite;
+	var physics: Simulation;
 
 	override function init(){
 		player = cast entity;
