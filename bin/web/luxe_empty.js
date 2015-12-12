@@ -165,10 +165,10 @@ $hxClasses["Luxe"] = Luxe;
 Luxe.__name__ = ["Luxe"];
 Luxe.__properties__ = {set_alpha:"set_alpha",get_alpha:"get_alpha",set_cur_frame_start:"set_cur_frame_start",get_cur_frame_start:"get_cur_frame_start",set_current_time:"set_current_time",get_current_time:"get_current_time",set_last_frame_start:"set_last_frame_start",get_last_frame_start:"get_last_frame_start",set_delta_sim:"set_delta_sim",get_delta_sim:"get_delta_sim",set_dt:"set_dt",get_dt:"get_dt",set_max_frame_time:"set_max_frame_time",get_max_frame_time:"get_max_frame_time",set_update_rate:"set_update_rate",get_update_rate:"get_update_rate",set_fixed_delta:"set_fixed_delta",get_fixed_delta:"get_fixed_delta",set_timescale:"set_timescale",get_timescale:"get_timescale",get_screen:"get_screen",get_time:"get_time",get_snow:"get_snow"}
 Luxe.on = function(event,handler) {
-	Luxe.core.emitter.on(event,handler);
+	Luxe.core.emitter.on(event,handler,{ fileName : "Luxe.hx", lineNumber : 87, className : "Luxe", methodName : "on"});
 };
 Luxe.off = function(event,handler) {
-	return Luxe.core.emitter.off(event,handler);
+	return Luxe.core.emitter.off(event,handler,{ fileName : "Luxe.hx", lineNumber : 92, className : "Luxe", methodName : "off"});
 };
 Luxe.next = function(func) {
 	if(func != null) snow_Snow.next_queue.push(func);
@@ -274,7 +274,7 @@ var luxe_Emitter = function() {
 $hxClasses["luxe.Emitter"] = luxe_Emitter;
 luxe_Emitter.__name__ = ["luxe","Emitter"];
 luxe_Emitter.prototype = {
-	emit: function(event,data) {
+	emit: function(event,data,pos) {
 		this._check();
 		var list = this.bindings.h[event];
 		if(list != null && list.length > 0) {
@@ -287,20 +287,20 @@ luxe_Emitter.prototype = {
 		}
 		this._check();
 	}
-	,on: function(event,handler) {
+	,on: function(event,handler,pos) {
 		this._check();
 		if(!this.bindings.h.hasOwnProperty(event)) {
 			this.bindings.h[event] = [handler];
-			this.connected.push({ handler : handler, event : event});
+			this.connected.push({ handler : handler, event : event, pos : pos});
 		} else {
 			var list = this.bindings.h[event];
 			if(HxOverrides.indexOf(list,handler,0) == -1) {
 				list.push(handler);
-				this.connected.push({ handler : handler, event : event});
+				this.connected.push({ handler : handler, event : event, pos : pos});
 			}
 		}
 	}
-	,off: function(event,handler) {
+	,off: function(event,handler,pos) {
 		this._check();
 		var success = false;
 		if(this.bindings.h.hasOwnProperty(event)) {
@@ -444,7 +444,7 @@ Main.prototype = $extend(luxe_Game.prototype,{
 		return config;
 	}
 	,ready: function() {
-		Luxe.renderer.clear_color.rgb(16777215);
+		Luxe.renderer.clear_color.rgb(1197432);
 	}
 	,onkeyup: function(e) {
 		if(e.keycode == snow_system_input_Keycodes.escape) Luxe.shutdown();
@@ -2513,7 +2513,7 @@ luxe_Objects.prototype = $extend(luxe_Emitter.prototype,{
 	,__class__: luxe_Objects
 	,__properties__: {set_name:"set_name",get_name:"get_name",set_id:"set_id",get_id:"get_id"}
 });
-var luxe_Entity = function(_options) {
+var luxe_Entity = function(_options,_pos_info) {
 	this.component_count = 0;
 	this.active = true;
 	this.fixed_rate = 0;
@@ -2576,7 +2576,7 @@ var luxe_Entity = function(_options) {
 		this.set_scene(Luxe.scene);
 		null;
 	}
-	if(this.get_scene() != null) this.get_scene().add(this); else null;
+	if(this.get_scene() != null) this.get_scene().add(this,_pos_info); else null;
 	null;
 };
 $hxClasses["luxe.Entity"] = luxe_Entity;
@@ -2657,7 +2657,7 @@ luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 	}
 	,_init: function() {
 		this.init();
-		this.emit(2);
+		this.emit(2,null,{ fileName : "Entity.hx", lineNumber : 286, className : "luxe.Entity", methodName : "_init"});
 		if(this.component_count > 0) {
 			var _g_index = 0;
 			var _g_map = this._components.components;
@@ -2679,7 +2679,7 @@ luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 	}
 	,_reset: function(_) {
 		this.onreset();
-		this.emit(3);
+		this.emit(3,null,{ fileName : "Entity.hx", lineNumber : 317, className : "luxe.Entity", methodName : "_reset"});
 		if(this.component_count > 0) {
 			var _g_index = 0;
 			var _g_map = this._components.components;
@@ -2698,7 +2698,7 @@ luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 				null;
 			}
 		}
-		this._set_fixed_rate_timer(this.fixed_rate);
+		this._set_fixed_rate_timer(this.fixed_rate,{ fileName : "Entity.hx", lineNumber : 335, className : "luxe.Entity", methodName : "_reset"});
 		this.started = true;
 	}
 	,destroy: function(_from_parent) {
@@ -2723,7 +2723,7 @@ luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 				_component.ondestroy();
 			}
 		}
-		this.emit(8);
+		this.emit(8,null,{ fileName : "Entity.hx", lineNumber : 368, className : "luxe.Entity", methodName : "destroy"});
 		this.ondestroy();
 		if(this.get_parent() != null && !_from_parent) this.get_parent()._remove_child(this);
 		if(this.fixed_rate_timer != null) {
@@ -2766,7 +2766,7 @@ luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 	,_fixed_update: function() {
 		if(this.destroyed) return;
 		if(!this.get_active() || !this.inited || !this.started) return;
-		this.emit(7);
+		this.emit(7,null,{ fileName : "Entity.hx", lineNumber : 457, className : "luxe.Entity", methodName : "_fixed_update"});
 		this.onfixedupdate(this.fixed_rate);
 		if(this.component_count > 0) {
 			var _g_index = 0;
@@ -2808,281 +2808,281 @@ luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 	}
 	,_listen: function(_event,_handler,_self) {
 		if(_self == null) _self = false;
-		if(!_self) this.on(_event,_handler);
+		if(!_self) this.on(_event,_handler,{ fileName : "Entity.hx", lineNumber : 539, className : "luxe.Entity", methodName : "_listen"});
 		var source = this._find_emit_source(null);
 		if(source != null) switch(_event) {
 		case 13:
-			source.on(_event,$bind(this,this._keyup));
+			source.on(_event,$bind(this,this._keyup),{ fileName : "Entity.hx", lineNumber : 549, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 12:
-			source.on(_event,$bind(this,this._keydown));
+			source.on(_event,$bind(this,this._keydown),{ fileName : "Entity.hx", lineNumber : 550, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 14:
-			source.on(_event,$bind(this,this._textinput));
+			source.on(_event,$bind(this,this._textinput),{ fileName : "Entity.hx", lineNumber : 551, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 17:
-			source.on(_event,$bind(this,this._mousedown));
+			source.on(_event,$bind(this,this._mousedown),{ fileName : "Entity.hx", lineNumber : 553, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 18:
-			source.on(_event,$bind(this,this._mouseup));
+			source.on(_event,$bind(this,this._mouseup),{ fileName : "Entity.hx", lineNumber : 554, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 19:
-			source.on(_event,$bind(this,this._mousemove));
+			source.on(_event,$bind(this,this._mousemove),{ fileName : "Entity.hx", lineNumber : 555, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 20:
-			source.on(_event,$bind(this,this._mousewheel));
+			source.on(_event,$bind(this,this._mousewheel),{ fileName : "Entity.hx", lineNumber : 556, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 21:
-			source.on(_event,$bind(this,this._touchdown));
+			source.on(_event,$bind(this,this._touchdown),{ fileName : "Entity.hx", lineNumber : 558, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 22:
-			source.on(_event,$bind(this,this._touchup));
+			source.on(_event,$bind(this,this._touchup),{ fileName : "Entity.hx", lineNumber : 559, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 23:
-			source.on(_event,$bind(this,this._touchmove));
+			source.on(_event,$bind(this,this._touchmove),{ fileName : "Entity.hx", lineNumber : 560, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 16:
-			source.on(_event,$bind(this,this._inputup));
+			source.on(_event,$bind(this,this._inputup),{ fileName : "Entity.hx", lineNumber : 562, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 15:
-			source.on(_event,$bind(this,this._inputdown));
+			source.on(_event,$bind(this,this._inputdown),{ fileName : "Entity.hx", lineNumber : 563, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 25:
-			source.on(_event,$bind(this,this._gamepaddown));
+			source.on(_event,$bind(this,this._gamepaddown),{ fileName : "Entity.hx", lineNumber : 565, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 26:
-			source.on(_event,$bind(this,this._gamepadup));
+			source.on(_event,$bind(this,this._gamepadup),{ fileName : "Entity.hx", lineNumber : 566, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 24:
-			source.on(_event,$bind(this,this._gamepadaxis));
+			source.on(_event,$bind(this,this._gamepadaxis),{ fileName : "Entity.hx", lineNumber : 567, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 27:
-			source.on(_event,$bind(this,this._gamepaddevice));
+			source.on(_event,$bind(this,this._gamepaddevice),{ fileName : "Entity.hx", lineNumber : 568, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 29:
-			source.on(_event,$bind(this,this._windowmoved));
+			source.on(_event,$bind(this,this._windowmoved),{ fileName : "Entity.hx", lineNumber : 570, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 30:
-			source.on(_event,$bind(this,this._windowresized));
+			source.on(_event,$bind(this,this._windowresized),{ fileName : "Entity.hx", lineNumber : 571, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 31:
-			source.on(_event,$bind(this,this._windowsized));
+			source.on(_event,$bind(this,this._windowsized),{ fileName : "Entity.hx", lineNumber : 572, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 32:
-			source.on(_event,$bind(this,this._windowminimized));
+			source.on(_event,$bind(this,this._windowminimized),{ fileName : "Entity.hx", lineNumber : 573, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		case 33:
-			source.on(_event,$bind(this,this._windowrestored));
+			source.on(_event,$bind(this,this._windowrestored),{ fileName : "Entity.hx", lineNumber : 574, className : "luxe.Entity", methodName : "_listen"});
 			break;
 		}
 	}
 	,_unlisten: function(_event,_handler,_self) {
 		if(_self == null) _self = false;
 		var source = this._find_emit_source(true);
-		if(!_self) this.off(_event,_handler);
+		if(!_self) this.off(_event,_handler,{ fileName : "Entity.hx", lineNumber : 591, className : "luxe.Entity", methodName : "_unlisten"});
 		if(source != null) switch(_event) {
 		case 13:
-			source.off(_event,$bind(this,this._keyup));
+			source.off(_event,$bind(this,this._keyup),{ fileName : "Entity.hx", lineNumber : 597, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 12:
-			source.off(_event,$bind(this,this._keydown));
+			source.off(_event,$bind(this,this._keydown),{ fileName : "Entity.hx", lineNumber : 598, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 14:
-			source.off(_event,$bind(this,this._textinput));
+			source.off(_event,$bind(this,this._textinput),{ fileName : "Entity.hx", lineNumber : 599, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 17:
-			source.off(_event,$bind(this,this._mousedown));
+			source.off(_event,$bind(this,this._mousedown),{ fileName : "Entity.hx", lineNumber : 601, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 18:
-			source.off(_event,$bind(this,this._mouseup));
+			source.off(_event,$bind(this,this._mouseup),{ fileName : "Entity.hx", lineNumber : 602, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 19:
-			source.off(_event,$bind(this,this._mousemove));
+			source.off(_event,$bind(this,this._mousemove),{ fileName : "Entity.hx", lineNumber : 603, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 20:
-			source.off(_event,$bind(this,this._mousewheel));
+			source.off(_event,$bind(this,this._mousewheel),{ fileName : "Entity.hx", lineNumber : 604, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 21:
-			source.off(_event,$bind(this,this._touchdown));
+			source.off(_event,$bind(this,this._touchdown),{ fileName : "Entity.hx", lineNumber : 606, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 22:
-			source.off(_event,$bind(this,this._touchup));
+			source.off(_event,$bind(this,this._touchup),{ fileName : "Entity.hx", lineNumber : 607, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 23:
-			source.off(_event,$bind(this,this._touchmove));
+			source.off(_event,$bind(this,this._touchmove),{ fileName : "Entity.hx", lineNumber : 608, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 16:
-			source.off(_event,$bind(this,this._inputup));
+			source.off(_event,$bind(this,this._inputup),{ fileName : "Entity.hx", lineNumber : 610, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 15:
-			source.off(_event,$bind(this,this._inputdown));
+			source.off(_event,$bind(this,this._inputdown),{ fileName : "Entity.hx", lineNumber : 611, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 25:
-			source.off(_event,$bind(this,this._gamepaddown));
+			source.off(_event,$bind(this,this._gamepaddown),{ fileName : "Entity.hx", lineNumber : 613, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 26:
-			source.off(_event,$bind(this,this._gamepadup));
+			source.off(_event,$bind(this,this._gamepadup),{ fileName : "Entity.hx", lineNumber : 614, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 24:
-			source.off(_event,$bind(this,this._gamepadaxis));
+			source.off(_event,$bind(this,this._gamepadaxis),{ fileName : "Entity.hx", lineNumber : 615, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 27:
-			source.off(_event,$bind(this,this._gamepaddevice));
+			source.off(_event,$bind(this,this._gamepaddevice),{ fileName : "Entity.hx", lineNumber : 616, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 29:
-			source.off(_event,$bind(this,this._windowmoved));
+			source.off(_event,$bind(this,this._windowmoved),{ fileName : "Entity.hx", lineNumber : 618, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 30:
-			source.off(_event,$bind(this,this._windowresized));
+			source.off(_event,$bind(this,this._windowresized),{ fileName : "Entity.hx", lineNumber : 619, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 31:
-			source.off(_event,$bind(this,this._windowsized));
+			source.off(_event,$bind(this,this._windowsized),{ fileName : "Entity.hx", lineNumber : 620, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 32:
-			source.off(_event,$bind(this,this._windowminimized));
+			source.off(_event,$bind(this,this._windowminimized),{ fileName : "Entity.hx", lineNumber : 621, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		case 33:
-			source.off(_event,$bind(this,this._windowrestored));
+			source.off(_event,$bind(this,this._windowrestored),{ fileName : "Entity.hx", lineNumber : 622, className : "luxe.Entity", methodName : "_unlisten"});
 			break;
 		}
 	}
 	,_detach_scene: function() {
 		if(this.get_scene() != null) {
-			this.get_scene().off(3,$bind(this,this._reset));
-			this.get_scene().off(8,$bind(this,this.destroy));
-			this.get_scene().off(13,$bind(this,this._keyup));
-			this.get_scene().off(12,$bind(this,this._keydown));
-			this.get_scene().off(14,$bind(this,this._textinput));
-			this.get_scene().off(17,$bind(this,this._mousedown));
-			this.get_scene().off(18,$bind(this,this._mouseup));
-			this.get_scene().off(19,$bind(this,this._mousemove));
-			this.get_scene().off(20,$bind(this,this._mousewheel));
-			this.get_scene().off(21,$bind(this,this._touchdown));
-			this.get_scene().off(22,$bind(this,this._touchup));
-			this.get_scene().off(23,$bind(this,this._touchmove));
-			this.get_scene().off(16,$bind(this,this._inputup));
-			this.get_scene().off(15,$bind(this,this._inputdown));
-			this.get_scene().off(25,$bind(this,this._gamepaddown));
-			this.get_scene().off(26,$bind(this,this._gamepadup));
-			this.get_scene().off(24,$bind(this,this._gamepadaxis));
-			this.get_scene().off(27,$bind(this,this._gamepaddevice));
-			this.get_scene().off(29,$bind(this,this._windowmoved));
-			this.get_scene().off(30,$bind(this,this._windowresized));
-			this.get_scene().off(31,$bind(this,this._windowsized));
-			this.get_scene().off(32,$bind(this,this._windowminimized));
-			this.get_scene().off(33,$bind(this,this._windowrestored));
+			this.get_scene().off(3,$bind(this,this._reset),{ fileName : "Entity.hx", lineNumber : 636, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(8,$bind(this,this.destroy),{ fileName : "Entity.hx", lineNumber : 637, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(13,$bind(this,this._keyup),{ fileName : "Entity.hx", lineNumber : 640, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(12,$bind(this,this._keydown),{ fileName : "Entity.hx", lineNumber : 641, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(14,$bind(this,this._textinput),{ fileName : "Entity.hx", lineNumber : 642, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(17,$bind(this,this._mousedown),{ fileName : "Entity.hx", lineNumber : 643, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(18,$bind(this,this._mouseup),{ fileName : "Entity.hx", lineNumber : 644, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(19,$bind(this,this._mousemove),{ fileName : "Entity.hx", lineNumber : 645, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(20,$bind(this,this._mousewheel),{ fileName : "Entity.hx", lineNumber : 646, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(21,$bind(this,this._touchdown),{ fileName : "Entity.hx", lineNumber : 647, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(22,$bind(this,this._touchup),{ fileName : "Entity.hx", lineNumber : 648, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(23,$bind(this,this._touchmove),{ fileName : "Entity.hx", lineNumber : 649, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(16,$bind(this,this._inputup),{ fileName : "Entity.hx", lineNumber : 650, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(15,$bind(this,this._inputdown),{ fileName : "Entity.hx", lineNumber : 651, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(25,$bind(this,this._gamepaddown),{ fileName : "Entity.hx", lineNumber : 652, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(26,$bind(this,this._gamepadup),{ fileName : "Entity.hx", lineNumber : 653, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(24,$bind(this,this._gamepadaxis),{ fileName : "Entity.hx", lineNumber : 654, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(27,$bind(this,this._gamepaddevice),{ fileName : "Entity.hx", lineNumber : 655, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(29,$bind(this,this._windowmoved),{ fileName : "Entity.hx", lineNumber : 656, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(30,$bind(this,this._windowresized),{ fileName : "Entity.hx", lineNumber : 657, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(31,$bind(this,this._windowsized),{ fileName : "Entity.hx", lineNumber : 658, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(32,$bind(this,this._windowminimized),{ fileName : "Entity.hx", lineNumber : 659, className : "luxe.Entity", methodName : "_detach_scene"});
+			this.get_scene().off(33,$bind(this,this._windowrestored),{ fileName : "Entity.hx", lineNumber : 660, className : "luxe.Entity", methodName : "_detach_scene"});
 		}
 	}
 	,_attach_scene: function() {
 		if(this.get_scene() != null) {
-			this.get_scene().on(3,$bind(this,this._reset));
-			this.get_scene().on(8,$bind(this,this.destroy));
+			this.get_scene().on(3,$bind(this,this._reset),{ fileName : "Entity.hx", lineNumber : 669, className : "luxe.Entity", methodName : "_attach_scene"});
+			this.get_scene().on(8,$bind(this,this.destroy),{ fileName : "Entity.hx", lineNumber : 670, className : "luxe.Entity", methodName : "_attach_scene"});
 		}
 	}
 	,_keyup: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onkeyup(_event);
-		this.emit(13,_event);
+		this.emit(13,_event,{ fileName : "Entity.hx", lineNumber : 686, className : "luxe.Entity", methodName : "_keyup"});
 	}
 	,_keydown: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onkeydown(_event);
-		this.emit(12,_event);
+		this.emit(12,_event,{ fileName : "Entity.hx", lineNumber : 699, className : "luxe.Entity", methodName : "_keydown"});
 	}
 	,_textinput: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ontextinput(_event);
-		this.emit(14,_event);
+		this.emit(14,_event,{ fileName : "Entity.hx", lineNumber : 712, className : "luxe.Entity", methodName : "_textinput"});
 	}
 	,_mousedown: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onmousedown(_event);
-		this.emit(17,_event);
+		this.emit(17,_event,{ fileName : "Entity.hx", lineNumber : 728, className : "luxe.Entity", methodName : "_mousedown"});
 	}
 	,_mouseup: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onmouseup(_event);
-		this.emit(18,_event);
+		this.emit(18,_event,{ fileName : "Entity.hx", lineNumber : 742, className : "luxe.Entity", methodName : "_mouseup"});
 	}
 	,_mousewheel: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onmousewheel(_event);
-		this.emit(20,_event);
+		this.emit(20,_event,{ fileName : "Entity.hx", lineNumber : 755, className : "luxe.Entity", methodName : "_mousewheel"});
 	}
 	,_mousemove: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onmousemove(_event);
-		this.emit(19,_event);
+		this.emit(19,_event,{ fileName : "Entity.hx", lineNumber : 768, className : "luxe.Entity", methodName : "_mousemove"});
 	}
 	,_touchdown: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ontouchdown(_event);
-		this.emit(21,_event);
+		this.emit(21,_event,{ fileName : "Entity.hx", lineNumber : 782, className : "luxe.Entity", methodName : "_touchdown"});
 	}
 	,_touchup: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ontouchup(_event);
-		this.emit(22,_event);
+		this.emit(22,_event,{ fileName : "Entity.hx", lineNumber : 795, className : "luxe.Entity", methodName : "_touchup"});
 	}
 	,_touchmove: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ontouchmove(_event);
-		this.emit(23,_event);
+		this.emit(23,_event,{ fileName : "Entity.hx", lineNumber : 808, className : "luxe.Entity", methodName : "_touchmove"});
 	}
 	,_gamepadaxis: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ongamepadaxis(_event);
-		this.emit(24,_event);
+		this.emit(24,_event,{ fileName : "Entity.hx", lineNumber : 822, className : "luxe.Entity", methodName : "_gamepadaxis"});
 	}
 	,_gamepaddown: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ongamepaddown(_event);
-		this.emit(25,_event);
+		this.emit(25,_event,{ fileName : "Entity.hx", lineNumber : 835, className : "luxe.Entity", methodName : "_gamepaddown"});
 	}
 	,_gamepadup: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ongamepadup(_event);
-		this.emit(26,_event);
+		this.emit(26,_event,{ fileName : "Entity.hx", lineNumber : 848, className : "luxe.Entity", methodName : "_gamepadup"});
 	}
 	,_gamepaddevice: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.ongamepaddevice(_event);
-		this.emit(27,_event);
+		this.emit(27,_event,{ fileName : "Entity.hx", lineNumber : 861, className : "luxe.Entity", methodName : "_gamepaddevice"});
 	}
 	,_windowmoved: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onwindowmoved(_event);
-		this.emit(29,_event);
+		this.emit(29,_event,{ fileName : "Entity.hx", lineNumber : 876, className : "luxe.Entity", methodName : "_windowmoved"});
 	}
 	,_windowresized: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onwindowresized(_event);
-		this.emit(30,_event);
+		this.emit(30,_event,{ fileName : "Entity.hx", lineNumber : 889, className : "luxe.Entity", methodName : "_windowresized"});
 	}
 	,_windowsized: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onwindowsized(_event);
-		this.emit(31,_event);
+		this.emit(31,_event,{ fileName : "Entity.hx", lineNumber : 902, className : "luxe.Entity", methodName : "_windowsized"});
 	}
 	,_windowminimized: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onwindowminimized(_event);
-		this.emit(32,_event);
+		this.emit(32,_event,{ fileName : "Entity.hx", lineNumber : 915, className : "luxe.Entity", methodName : "_windowminimized"});
 	}
 	,_windowrestored: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.onwindowrestored(_event);
-		this.emit(33,_event);
+		this.emit(33,_event,{ fileName : "Entity.hx", lineNumber : 928, className : "luxe.Entity", methodName : "_windowrestored"});
 	}
 	,_inputdown: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.oninputdown(_event.name,_event.event);
-		this.emit(15,_event);
+		this.emit(15,_event,{ fileName : "Entity.hx", lineNumber : 943, className : "luxe.Entity", methodName : "_inputdown"});
 	}
 	,_inputup: function(_event) {
 		if(!this.get_active() || !this.inited || !this.started) return;
 		this.oninputup(_event.name,_event.event);
-		this.emit(16,_event);
+		this.emit(16,_event,{ fileName : "Entity.hx", lineNumber : 956, className : "luxe.Entity", methodName : "_inputup"});
 	}
 	,get_fixed_rate: function() {
 		return this.fixed_rate;
@@ -3107,7 +3107,7 @@ luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 			this.fixed_rate_timer = null;
 		}
 	}
-	,_set_fixed_rate_timer: function(_rate) {
+	,_set_fixed_rate_timer: function(_rate,_pos) {
 		if(this.fixed_rate_timer != null) {
 			this.fixed_rate_timer.stop();
 			this.fixed_rate_timer = null;
@@ -3269,7 +3269,7 @@ var luxe_Camera = function(options) {
 	} else options = { no_scene : false};
 	if(options.view == null) options.view = new phoenix_Camera(options);
 	this.view = options.view;
-	luxe_Entity.call(this,{ name : _name, no_scene : options.no_scene});
+	luxe_Entity.call(this,{ name : _name, no_scene : options.no_scene},{ fileName : "Camera.hx", lineNumber : 93, className : "luxe.Camera", methodName : "new"});
 	this._final_pos = this.view.get_pos();
 };
 $hxClasses["luxe.Camera"] = luxe_Camera;
@@ -3732,7 +3732,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this.shutting_down = true;
 		haxe_Log.trace("     i / luxe / " + "shutting down...",{ fileName : "Core.hx", lineNumber : 151, className : "luxe.Core", methodName : "ondestroy"});
 		this.game.ondestroy();
-		this.emitter.emit(8);
+		this.emitter.emit(8,null,{ fileName : "Core.hx", lineNumber : 157, className : "luxe.Core", methodName : "ondestroy"});
 		if(this.renderer != null) this.renderer.destroy();
 		this.physics.destroy();
 		this.input.destroy();
@@ -3790,7 +3790,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this.scene = new luxe_Scene("default scene");
 		Luxe.scene = this.scene;
 		if(!this.headless) {
-			this.scene.add(Luxe.camera);
+			this.scene.add(Luxe.camera,{ fileName : "Core.hx", lineNumber : 260, className : "luxe.Core", methodName : "init"});
 			this.debug.create_debug_console();
 		}
 		this.internal_pre_ready();
@@ -3813,7 +3813,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		}
 		this.game.ready();
 		if(!this.shutting_down) {
-			this.emitter.emit(2);
+			this.emitter.emit(2,null,{ fileName : "Core.hx", lineNumber : 331, className : "luxe.Core", methodName : "internal_ready"});
 			this.inited = true;
 			this.physics.reset();
 			if(!this.app.snow_config.has_loop) this.shutdown();
@@ -3824,20 +3824,20 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		Luxe.next(($_=this.app,$bind($_,$_.shutdown)));
 	}
 	,on: function(event,handler) {
-		this.emitter.on(event,handler);
+		this.emitter.on(event,handler,{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
 	}
 	,off: function(event,handler) {
-		return this.emitter.off(event,handler);
+		return this.emitter.off(event,handler,{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
 	}
 	,emit: function(event,data) {
-		this.emitter.emit(event,data);
+		this.emitter.emit(event,data,{ fileName : "Core.hx", lineNumber : 368, className : "luxe.Core", methodName : "emit"});
 		return;
 	}
 	,ontickstart: function() {
-		if(!this.has_shutdown) this.emitter.emit(4);
+		if(!this.has_shutdown) this.emitter.emit(4,null,{ fileName : "Core.hx", lineNumber : 372, className : "luxe.Core", methodName : "ontickstart"});
 	}
 	,ontickend: function() {
-		if(!this.has_shutdown) this.emitter.emit(5);
+		if(!this.has_shutdown) this.emitter.emit(5,null,{ fileName : "Core.hx", lineNumber : 376, className : "luxe.Core", methodName : "ontickend"});
 	}
 	,onevent: function(event) {
 		this.game.onevent(event);
@@ -3853,7 +3853,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this.events.process();
 		this.physics.process();
 		this.debug.start(luxe_Tag.updates);
-		this.emitter.emit(6,dt);
+		this.emitter.emit(6,dt,{ fileName : "Core.hx", lineNumber : 422, className : "luxe.Core", methodName : "update"});
 		this.debug.end(luxe_Tag.updates);
 		this.debug.start(luxe_Tag.game_update);
 		this.game.update(dt);
@@ -3863,31 +3863,31 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 	,window_event: function(_event) {
 		if(this.shutting_down) return;
 		if(!this.inited) return;
-		this.emitter.emit(28,_event);
+		this.emitter.emit(28,_event,{ fileName : "Core.hx", lineNumber : 442, className : "luxe.Core", methodName : "window_event"});
 		var _g = _event.type;
 		if(_g != null) switch(_g) {
 		case 5:
-			this.emitter.emit(29,_event);
+			this.emitter.emit(29,_event,{ fileName : "Core.hx", lineNumber : 447, className : "luxe.Core", methodName : "window_event"});
 			this.game.onwindowmoved(_event);
 			break;
 		case 6:
 			this.screen.internal_resized(_event.event.x,_event.event.y);
 			this.renderer.internal_resized(_event.event.x,_event.event.y);
-			this.emitter.emit(30,_event);
+			this.emitter.emit(30,_event,{ fileName : "Core.hx", lineNumber : 454, className : "luxe.Core", methodName : "window_event"});
 			this.game.onwindowresized(_event);
 			break;
 		case 7:
 			this.screen.internal_resized(_event.event.x,_event.event.y);
 			this.renderer.internal_resized(_event.event.x,_event.event.y);
-			this.emitter.emit(31,_event);
+			this.emitter.emit(31,_event,{ fileName : "Core.hx", lineNumber : 461, className : "luxe.Core", methodName : "window_event"});
 			this.game.onwindowsized(_event);
 			break;
 		case 8:
-			this.emitter.emit(32,_event);
+			this.emitter.emit(32,_event,{ fileName : "Core.hx", lineNumber : 466, className : "luxe.Core", methodName : "window_event"});
 			this.game.onwindowminimized(_event);
 			break;
 		case 10:
-			this.emitter.emit(33,_event);
+			this.emitter.emit(33,_event,{ fileName : "Core.hx", lineNumber : 471, className : "luxe.Core", methodName : "window_event"});
 			this.game.onwindowrestored(_event);
 			break;
 		default:
@@ -3901,12 +3901,12 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this.debug.start(luxe_Tag.renderdt);
 		if(!this.headless) {
 			this.debug.start(luxe_Tag.render);
-			this.emitter.emit(9);
+			this.emitter.emit(9,null,{ fileName : "Core.hx", lineNumber : 493, className : "luxe.Core", methodName : "render"});
 			this.game.onprerender();
-			this.emitter.emit(10);
+			this.emitter.emit(10,null,{ fileName : "Core.hx", lineNumber : 496, className : "luxe.Core", methodName : "render"});
 			this.game.onrender();
 			this.renderer.process();
-			this.emitter.emit(11);
+			this.emitter.emit(11,null,{ fileName : "Core.hx", lineNumber : 500, className : "luxe.Core", methodName : "render"});
 			this.game.onpostrender();
 			this.debug.end(luxe_Tag.render);
 			var _batch = this.debug.batcher;
@@ -3914,11 +3914,11 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 				this.debug.start(luxe_Tag.debug_batch);
 				_batch.draw_calls = 0;
 				_batch.vert_count = 0;
-				_batch.emitter.emit(1,_batch);
+				_batch.emitter.emit(1,_batch,{ fileName : "Batcher.hx", lineNumber : 357, className : "phoenix.Batcher", methodName : "draw"});
 				_batch.view.process();
 				_batch.renderer.state.viewport(_batch.view.get_viewport().x,_batch.view.get_viewport().y,_batch.view.get_viewport().w,_batch.view.get_viewport().h);
 				_batch.batch(false);
-				_batch.emitter.emit(2,_batch);
+				_batch.emitter.emit(2,_batch,{ fileName : "Batcher.hx", lineNumber : 363, className : "phoenix.Batcher", methodName : "draw"});
 				this.renderer.stats.geometry_count += _batch.geometry.size();
 				this.renderer.stats.dynamic_batched_count += _batch.dynamic_batched_count;
 				this.renderer.stats.static_batched_count += _batch.static_batched_count;
@@ -3939,7 +3939,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		var event = { scancode : scancode, keycode : keycode, state : luxe_InteractState.down, mod : mod, repeat : repeat, timestamp : timestamp, window_id : window_id};
 		if(!this.shutting_down) {
 			this.input.check_named_keys(event,true);
-			this.emitter.emit(12,event);
+			this.emitter.emit(12,event,{ fileName : "Core.hx", lineNumber : 559, className : "luxe.Core", methodName : "onkeydown"});
 			this.game.onkeydown(event);
 			if(scancode == snow_system_input_Scancodes.grave) this.show_console(!this.console_visible);
 		}
@@ -3949,7 +3949,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		var event = { scancode : scancode, keycode : keycode, state : luxe_InteractState.up, mod : mod, repeat : repeat, timestamp : timestamp, window_id : window_id};
 		if(!this.shutting_down) {
 			this.input.check_named_keys(event);
-			this.emitter.emit(13,event);
+			this.emitter.emit(13,event,{ fileName : "Core.hx", lineNumber : 589, className : "luxe.Core", methodName : "onkeyup"});
 			this.game.onkeyup(event);
 		}
 	}
@@ -3968,21 +3968,21 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		}
 		var event = { text : text, start : start, length : length, type : _type, timestamp : timestamp, window_id : window_id};
 		if(!this.shutting_down) {
-			this.emitter.emit(14,event);
+			this.emitter.emit(14,event,{ fileName : "Core.hx", lineNumber : 622, className : "luxe.Core", methodName : "ontextinput"});
 			this.game.ontextinput(event);
 		}
 	}
 	,oninputdown: function(name,event) {
 		if(!this.inited) return;
 		if(!this.shutting_down) {
-			this.emitter.emit(15,{ name : name, event : event});
+			this.emitter.emit(15,{ name : name, event : event},{ fileName : "Core.hx", lineNumber : 638, className : "luxe.Core", methodName : "oninputdown"});
 			this.game.oninputdown(name,event);
 		}
 	}
 	,oninputup: function(name,event) {
 		if(!this.inited) return;
 		if(!this.shutting_down) {
-			this.emitter.emit(16,{ name : name, event : event});
+			this.emitter.emit(16,{ name : name, event : event},{ fileName : "Core.hx", lineNumber : 652, className : "luxe.Core", methodName : "oninputup"});
 			this.game.oninputup(name,event);
 		}
 	}
@@ -3992,7 +3992,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		var event = { timestamp : timestamp, window_id : window_id, state : luxe_InteractState.down, button : button, x : x, y : y, xrel : x, yrel : y, pos : this.screen.cursor.get_pos()};
 		if(!this.shutting_down) {
 			this.input.check_named_mouse(event,true);
-			this.emitter.emit(17,event);
+			this.emitter.emit(17,event,{ fileName : "Core.hx", lineNumber : 685, className : "luxe.Core", methodName : "onmousedown"});
 			this.game.onmousedown(event);
 		}
 	}
@@ -4002,7 +4002,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		var event = { timestamp : timestamp, window_id : window_id, state : luxe_InteractState.up, button : button, x : x, y : y, xrel : x, yrel : y, pos : this.screen.cursor.get_pos()};
 		if(!this.shutting_down) {
 			this.input.check_named_mouse(event);
-			this.emitter.emit(18,event);
+			this.emitter.emit(18,event,{ fileName : "Core.hx", lineNumber : 714, className : "luxe.Core", methodName : "onmouseup"});
 			this.game.onmouseup(event);
 		}
 	}
@@ -4011,7 +4011,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this.screen.cursor.set_internal(new phoenix_Vector(x,y));
 		var event = { timestamp : timestamp, window_id : window_id, state : luxe_InteractState.move, button : 0, x : x, y : y, xrel : xrel, yrel : yrel, pos : this.screen.cursor.get_pos()};
 		if(!this.shutting_down) {
-			this.emitter.emit(19,event);
+			this.emitter.emit(19,event,{ fileName : "Core.hx", lineNumber : 742, className : "luxe.Core", methodName : "onmousemove"});
 			this.game.onmousemove(event);
 		}
 	}
@@ -4020,7 +4020,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		var event = { timestamp : timestamp, window_id : window_id, state : luxe_InteractState.wheel, button : 0, x : x, y : y, xrel : x, yrel : y, pos : this.screen.cursor.get_pos()};
 		if(!this.shutting_down) {
 			this.input.check_named_mouse(event,false);
-			this.emitter.emit(20,event);
+			this.emitter.emit(20,event,{ fileName : "Core.hx", lineNumber : 768, className : "luxe.Core", methodName : "onmousewheel"});
 			this.game.onmousewheel(event);
 		}
 	}
@@ -4029,7 +4029,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this._touch_pos = new phoenix_Vector(x,y);
 		var event = { state : luxe_InteractState.down, timestamp : timestamp, touch_id : touch_id, x : x, y : y, dx : x, dy : y, pos : this._touch_pos};
 		if(!this.shutting_down) {
-			this.emitter.emit(21,event);
+			this.emitter.emit(21,event,{ fileName : "Core.hx", lineNumber : 798, className : "luxe.Core", methodName : "ontouchdown"});
 			this.game.ontouchdown(event);
 		}
 	}
@@ -4038,7 +4038,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this._touch_pos = new phoenix_Vector(x,y);
 		var event = { state : luxe_InteractState.up, timestamp : timestamp, touch_id : touch_id, x : x, y : y, dx : x, dy : y, pos : this._touch_pos};
 		if(!this.shutting_down) {
-			this.emitter.emit(22,event);
+			this.emitter.emit(22,event,{ fileName : "Core.hx", lineNumber : 841, className : "luxe.Core", methodName : "ontouchup"});
 			this.game.ontouchup(event);
 		}
 	}
@@ -4047,7 +4047,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		this._touch_pos = new phoenix_Vector(x,y);
 		var event = { state : luxe_InteractState.move, timestamp : timestamp, touch_id : touch_id, x : x, y : y, dx : dx, dy : dy, pos : this._touch_pos};
 		if(!this.shutting_down) {
-			this.emitter.emit(23,event);
+			this.emitter.emit(23,event,{ fileName : "Core.hx", lineNumber : 867, className : "luxe.Core", methodName : "ontouchmove"});
 			this.game.ontouchmove(event);
 		}
 	}
@@ -4055,7 +4055,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		if(!this.inited) return;
 		var event = { timestamp : timestamp, type : luxe_GamepadEventType.axis, state : luxe_InteractState.axis, gamepad : gamepad, button : -1, axis : axis, value : value, id : null};
 		if(!this.shutting_down) {
-			this.emitter.emit(24,event);
+			this.emitter.emit(24,event,{ fileName : "Core.hx", lineNumber : 893, className : "luxe.Core", methodName : "ongamepadaxis"});
 			this.game.ongamepadaxis(event);
 		}
 	}
@@ -4064,7 +4064,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		var event = { timestamp : timestamp, type : luxe_GamepadEventType.button, state : luxe_InteractState.down, gamepad : gamepad, button : button, axis : -1, value : value, id : null};
 		if(!this.shutting_down) {
 			this.input.check_named_gamepad_buttons(event,true);
-			this.emitter.emit(25,event);
+			this.emitter.emit(25,event,{ fileName : "Core.hx", lineNumber : 918, className : "luxe.Core", methodName : "ongamepaddown"});
 			this.game.ongamepaddown(event);
 		}
 	}
@@ -4073,7 +4073,7 @@ luxe_Core.prototype = $extend(snow_App.prototype,{
 		var event = { timestamp : timestamp, type : luxe_GamepadEventType.button, state : luxe_InteractState.up, gamepad : gamepad, button : button, axis : -1, value : value, id : null};
 		if(!this.shutting_down) {
 			this.input.check_named_gamepad_buttons(event,false);
-			this.emitter.emit(26,event);
+			this.emitter.emit(26,event,{ fileName : "Core.hx", lineNumber : 943, className : "luxe.Core", methodName : "ongamepadup"});
 			this.game.ongamepadup(event);
 		}
 	}
@@ -4178,12 +4178,12 @@ luxe_Debug.prototype = {
 	}
 	,create_debug_console: function() {
 		var _g = this;
-		this.core.emitter.on(13,$bind(this,this.keyup));
-		this.core.emitter.on(12,$bind(this,this.keydown));
-		this.core.emitter.on(18,$bind(this,this.mouseup));
-		this.core.emitter.on(17,$bind(this,this.mousedown));
-		this.core.emitter.on(19,$bind(this,this.mousemove));
-		this.core.emitter.on(20,$bind(this,this.mousewheel));
+		this.core.emitter.on(13,$bind(this,this.keyup),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+		this.core.emitter.on(12,$bind(this,this.keydown),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+		this.core.emitter.on(18,$bind(this,this.mouseup),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+		this.core.emitter.on(17,$bind(this,this.mousedown),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+		this.core.emitter.on(19,$bind(this,this.mousemove),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+		this.core.emitter.on(20,$bind(this,this.mousewheel),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
 		this.batcher = new phoenix_Batcher(Luxe.renderer,"debug_batcher");
 		this.view = new phoenix_Camera({ camera_name : "debug_batcher_camera"});
 		this.batcher.view = this.view;
@@ -4208,7 +4208,7 @@ luxe_Debug.prototype = {
 				++_g1;
 				view.onwindowsized(_event);
 			}
-		});
+		},{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
 		this.batcher.enabled = false;
 		var _g3 = 0;
 		var _g11 = luxe_Debug.views;
@@ -4320,12 +4320,12 @@ luxe_Debug.prototype = {
 		}
 	}
 	,destroy: function() {
-		this.core.emitter.off(13,$bind(this,this.keyup));
-		this.core.emitter.off(12,$bind(this,this.keydown));
-		this.core.emitter.off(18,$bind(this,this.mouseup));
-		this.core.emitter.off(17,$bind(this,this.mousedown));
-		this.core.emitter.off(19,$bind(this,this.mousemove));
-		this.core.emitter.off(20,$bind(this,this.mousewheel));
+		this.core.emitter.off(13,$bind(this,this.keyup),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		this.core.emitter.off(12,$bind(this,this.keydown),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		this.core.emitter.off(18,$bind(this,this.mouseup),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		this.core.emitter.off(17,$bind(this,this.mousedown),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		this.core.emitter.off(19,$bind(this,this.mousemove),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		this.core.emitter.off(20,$bind(this,this.mousewheel),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
 		luxe_Debug.shut_down = true;
 	}
 	,process: function() {
@@ -5052,7 +5052,7 @@ luxe_Log._get_spacing = function(_file) {
 var luxe_DebugError = $hxClasses["luxe.DebugError"] = { __ename__ : ["luxe","DebugError"], __constructs__ : ["assertion","null_assertion"] };
 luxe_DebugError.assertion = function(expr) { var $x = ["assertion",0,expr]; $x.__enum__ = luxe_DebugError; $x.toString = $estr; return $x; };
 luxe_DebugError.null_assertion = function(expr) { var $x = ["null_assertion",1,expr]; $x.__enum__ = luxe_DebugError; $x.toString = $estr; return $x; };
-var luxe_Visual = function(_options) {
+var luxe_Visual = function(_options,_pos_info) {
 	this.ignore_texture_on_geometry_change = false;
 	this._creating_geometry = false;
 	this._has_custom_origin = false;
@@ -5063,7 +5063,7 @@ var luxe_Visual = function(_options) {
 	if(_options == null) throw new js__$Boot_HaxeError(luxe_DebugError.null_assertion("_options was null" + (" ( " + "Visual requires non-null options" + " )")));
 	this._rotation_euler = new phoenix_Vector();
 	this._rotation_quat = new phoenix_Quaternion();
-	luxe_Entity.call(this,_options);
+	luxe_Entity.call(this,_options,_pos_info);
 	this.set_color(new phoenix_Color());
 	this.set_size(new phoenix_Vector());
 	if(this.options.texture != null) this.set_texture(this.options.texture);
@@ -5219,7 +5219,7 @@ var luxe_NineSlice = function(_options) {
 	if(_options == null) _options = { no_geometry : true}; else _options.no_geometry = true;
 	this.nineslice_options = _options;
 	if(_options.batcher != null) this._batcher = _options.batcher; else this._batcher = Luxe.renderer.batcher;
-	luxe_Visual.call(this,_options);
+	luxe_Visual.call(this,_options,{ fileName : "NineSlice.hx", lineNumber : 74, className : "luxe.NineSlice", methodName : "new"});
 	if(_options.top != null) this.top = _options.top;
 	if(_options.left != null) this.left = _options.left;
 	if(_options.right != null) this.right = _options.right;
@@ -5407,13 +5407,13 @@ $hxClasses["luxe.Parcel"] = luxe_Parcel;
 luxe_Parcel.__name__ = ["luxe","Parcel"];
 luxe_Parcel.prototype = {
 	on: function(ev,handler) {
-		this.emitter.on(ev,handler);
+		this.emitter.on(ev,handler,{ fileName : "Parcel.hx", lineNumber : 138, className : "luxe.Parcel", methodName : "on"});
 	}
 	,off: function(ev,handler) {
-		this.emitter.off(ev,handler);
+		this.emitter.off(ev,handler,{ fileName : "Parcel.hx", lineNumber : 139, className : "luxe.Parcel", methodName : "off"});
 	}
 	,emit: function(ev,data) {
-		this.emitter.emit(ev,data);
+		this.emitter.emit(ev,data,{ fileName : "Parcel.hx", lineNumber : 140, className : "luxe.Parcel", methodName : "emit"});
 	}
 	,is_loaded: function(_id) {
 		return HxOverrides.indexOf(this.loaded,_id,0) != -1;
@@ -5428,7 +5428,7 @@ luxe_Parcel.prototype = {
 			if(_g.list.bytes.length + _g.list.texts.length + _g.list.jsons.length + _g.list.textures.length + _g.list.shaders.length + _g.list.fonts.length + _g.list.sounds.length == 0) {
 				_g.state = 2;
 				_g.time_to_load = snow_Snow.core.timestamp() - _g.start_load;
-				_g.emitter.emit(2,_g);
+				_g.emitter.emit(2,_g,{ fileName : "Parcel.hx", lineNumber : 581, className : "luxe.Parcel", methodName : "do_complete"});
 				if(_g.oncomplete != null) _g.oncomplete(_g);
 				return;
 			}
@@ -5885,18 +5885,18 @@ luxe_Parcel.prototype = {
 	}
 	,one_loaded: function(_item_id,_load_id,_resource,_index,_total) {
 		var _state = { id : _item_id, load_id : _load_id, resource : _resource, index : _index, total : _total};
-		this.emitter.emit(1,_state);
+		this.emitter.emit(1,_state,{ fileName : "Parcel.hx", lineNumber : 514, className : "luxe.Parcel", methodName : "one_loaded"});
 		if(this.onprogress != null) this.onprogress(_state);
 		if(_index == _total) {
 			this.state = 2;
 			this.time_to_load = snow_Snow.core.timestamp() - this.start_load;
-			this.emitter.emit(2,this);
+			this.emitter.emit(2,this,{ fileName : "Parcel.hx", lineNumber : 581, className : "luxe.Parcel", methodName : "do_complete"});
 			if(this.oncomplete != null) this.oncomplete(this);
 		}
 	}
 	,one_failed: function(_item_id,_load_id,_error,_index,_total) {
 		var _state = { id : _item_id, load_id : _load_id, error : _error, index : _index, total : _total};
-		this.emitter.emit(3,_state);
+		this.emitter.emit(3,_state,{ fileName : "Parcel.hx", lineNumber : 538, className : "luxe.Parcel", methodName : "one_failed"});
 		if(this.onfailed != null) this.onfailed(_state);
 	}
 	,get_listed: function() {
@@ -5951,7 +5951,7 @@ luxe_Parcel.prototype = {
 	,do_complete: function(_load_id) {
 		this.state = 2;
 		this.time_to_load = snow_Snow.core.timestamp() - this.start_load;
-		this.emitter.emit(2,this);
+		this.emitter.emit(2,this,{ fileName : "Parcel.hx", lineNumber : 581, className : "luxe.Parcel", methodName : "do_complete"});
 		if(this.oncomplete != null) this.oncomplete(this);
 	}
 	,empty_list: function() {
@@ -6107,7 +6107,7 @@ luxe_Resources.prototype = {
 		this.emit(2,resource);
 		this.update_stats(resource,1);
 	}
-	,remove: function(resource) {
+	,remove: function(resource,_pos) {
 		if(!this.cache.exists(resource.id)) throw new js__$Boot_HaxeError(luxe_DebugError.assertion("cache.exists(resource.id)" + ""));
 		this.emit(7,resource);
 		this.update_stats(resource,-1);
@@ -6127,14 +6127,14 @@ luxe_Resources.prototype = {
 		return true;
 	}
 	,on: function(ev,handler) {
-		this.emitter.on(ev,handler);
+		this.emitter.on(ev,handler,{ fileName : "Resources.hx", lineNumber : 119, className : "luxe.Resources", methodName : "on"});
 	}
 	,off: function(ev,handler) {
-		this.emitter.off(ev,handler);
+		this.emitter.off(ev,handler,{ fileName : "Resources.hx", lineNumber : 125, className : "luxe.Resources", methodName : "off"});
 	}
 	,emit: function(ev,data) {
-		this.emitter.emit(1,data);
-		this.emitter.emit(ev,data);
+		this.emitter.emit(1,data,{ fileName : "Resources.hx", lineNumber : 131, className : "luxe.Resources", methodName : "emit"});
+		this.emitter.emit(ev,data,{ fileName : "Resources.hx", lineNumber : 132, className : "luxe.Resources", methodName : "emit"});
 	}
 	,load_bytes: function(_id) {
 		if(_id == null) throw new js__$Boot_HaxeError(luxe_DebugError.null_assertion("_id was null" + ""));
@@ -6334,33 +6334,33 @@ var luxe_Scene = function(_name) {
 	this.entities = new haxe_ds_StringMap();
 	this._delayed_init_entities = [];
 	this._delayed_reset_entities = [];
-	Luxe.core.emitter.on(2,$bind(this,this.init));
-	Luxe.core.emitter.on(8,$bind(this,this._destroy));
-	Luxe.core.emitter.on(6,$bind(this,this.update));
-	Luxe.core.emitter.on(9,$bind(this,this.prerender));
-	Luxe.core.emitter.on(11,$bind(this,this.postrender));
-	Luxe.core.emitter.on(10,$bind(this,this.render));
-	Luxe.core.emitter.on(12,$bind(this,this.keydown));
-	Luxe.core.emitter.on(13,$bind(this,this.keyup));
-	Luxe.core.emitter.on(14,$bind(this,this.textinput));
-	Luxe.core.emitter.on(16,$bind(this,this.inputup));
-	Luxe.core.emitter.on(15,$bind(this,this.inputdown));
-	Luxe.core.emitter.on(18,$bind(this,this.mouseup));
-	Luxe.core.emitter.on(17,$bind(this,this.mousedown));
-	Luxe.core.emitter.on(19,$bind(this,this.mousemove));
-	Luxe.core.emitter.on(20,$bind(this,this.mousewheel));
-	Luxe.core.emitter.on(22,$bind(this,this.touchup));
-	Luxe.core.emitter.on(21,$bind(this,this.touchdown));
-	Luxe.core.emitter.on(23,$bind(this,this.touchmove));
-	Luxe.core.emitter.on(26,$bind(this,this.gamepadup));
-	Luxe.core.emitter.on(25,$bind(this,this.gamepaddown));
-	Luxe.core.emitter.on(24,$bind(this,this.gamepadaxis));
-	Luxe.core.emitter.on(27,$bind(this,this.gamepaddevice));
-	Luxe.core.emitter.on(29,$bind(this,this.windowmoved));
-	Luxe.core.emitter.on(30,$bind(this,this.windowresized));
-	Luxe.core.emitter.on(31,$bind(this,this.windowsized));
-	Luxe.core.emitter.on(32,$bind(this,this.windowminimized));
-	Luxe.core.emitter.on(33,$bind(this,this.windowrestored));
+	Luxe.core.emitter.on(2,$bind(this,this.init),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(8,$bind(this,this._destroy),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(6,$bind(this,this.update),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(9,$bind(this,this.prerender),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(11,$bind(this,this.postrender),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(10,$bind(this,this.render),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(12,$bind(this,this.keydown),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(13,$bind(this,this.keyup),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(14,$bind(this,this.textinput),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(16,$bind(this,this.inputup),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(15,$bind(this,this.inputdown),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(18,$bind(this,this.mouseup),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(17,$bind(this,this.mousedown),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(19,$bind(this,this.mousemove),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(20,$bind(this,this.mousewheel),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(22,$bind(this,this.touchup),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(21,$bind(this,this.touchdown),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(23,$bind(this,this.touchmove),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(26,$bind(this,this.gamepadup),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(25,$bind(this,this.gamepaddown),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(24,$bind(this,this.gamepadaxis),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(27,$bind(this,this.gamepaddevice),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(29,$bind(this,this.windowmoved),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(30,$bind(this,this.windowresized),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(31,$bind(this,this.windowsized),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(32,$bind(this,this.windowminimized),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
+	Luxe.core.emitter.on(33,$bind(this,this.windowrestored),{ fileName : "Core.hx", lineNumber : 358, className : "luxe.Core", methodName : "on"});
 	if(Luxe.core.inited) this.init(null);
 	var _view = Luxe.core.debug.get_view("Scenes");
 	if(_view != null) _view.add_scene(this);
@@ -6372,7 +6372,7 @@ luxe_Scene.prototype = $extend(luxe_Objects.prototype,{
 	handle_duplicate_warning: function(_name) {
 		if(this.entities.exists(_name)) haxe_Log.trace("    i / scene / " + ("" + this.get_name() + " / adding a second entity named " + _name + "!\n                This will replace the existing one, possibly leaving the previous one in limbo."),{ fileName : "Scene.hx", lineNumber : 91, className : "luxe.Scene", methodName : "handle_duplicate_warning"});
 	}
-	,add: function(entity) {
+	,add: function(entity,pos) {
 		if(entity == null) throw new js__$Boot_HaxeError(luxe_DebugError.null_assertion("entity was null" + (" ( " + "can't put entity in a scene if the entity is null." + " )")));
 		this.handle_duplicate_warning(entity.get_name());
 		entity.set_scene(this);
@@ -6425,109 +6425,109 @@ luxe_Scene.prototype = $extend(luxe_Objects.prototype,{
 		return into;
 	}
 	,render: function(_) {
-		this.emit(10);
+		this.emit(10,null,{ fileName : "Scene.hx", lineNumber : 213, className : "luxe.Scene", methodName : "render"});
 	}
 	,prerender: function(_) {
-		this.emit(9);
+		this.emit(9,null,{ fileName : "Scene.hx", lineNumber : 219, className : "luxe.Scene", methodName : "prerender"});
 	}
 	,postrender: function(_) {
-		this.emit(11);
+		this.emit(11,null,{ fileName : "Scene.hx", lineNumber : 225, className : "luxe.Scene", methodName : "postrender"});
 	}
 	,keydown: function(e) {
-		this.emit(12,e);
+		this.emit(12,e,{ fileName : "Scene.hx", lineNumber : 235, className : "luxe.Scene", methodName : "keydown"});
 	}
 	,keyup: function(e) {
-		this.emit(13,e);
+		this.emit(13,e,{ fileName : "Scene.hx", lineNumber : 243, className : "luxe.Scene", methodName : "keyup"});
 	}
 	,textinput: function(e) {
-		this.emit(14,e);
+		this.emit(14,e,{ fileName : "Scene.hx", lineNumber : 251, className : "luxe.Scene", methodName : "textinput"});
 	}
 	,mousedown: function(e) {
-		this.emit(17,e);
+		this.emit(17,e,{ fileName : "Scene.hx", lineNumber : 261, className : "luxe.Scene", methodName : "mousedown"});
 	}
 	,mousewheel: function(e) {
-		this.emit(20,e);
+		this.emit(20,e,{ fileName : "Scene.hx", lineNumber : 269, className : "luxe.Scene", methodName : "mousewheel"});
 	}
 	,mouseup: function(e) {
-		this.emit(18,e);
+		this.emit(18,e,{ fileName : "Scene.hx", lineNumber : 277, className : "luxe.Scene", methodName : "mouseup"});
 	}
 	,mousemove: function(e) {
-		this.emit(19,e);
+		this.emit(19,e,{ fileName : "Scene.hx", lineNumber : 285, className : "luxe.Scene", methodName : "mousemove"});
 	}
 	,touchdown: function(event) {
-		this.emit(21,event);
+		this.emit(21,event,{ fileName : "Scene.hx", lineNumber : 293, className : "luxe.Scene", methodName : "touchdown"});
 	}
 	,touchup: function(event) {
-		this.emit(22,event);
+		this.emit(22,event,{ fileName : "Scene.hx", lineNumber : 299, className : "luxe.Scene", methodName : "touchup"});
 	}
 	,touchmove: function(event) {
-		this.emit(23,event);
+		this.emit(23,event,{ fileName : "Scene.hx", lineNumber : 305, className : "luxe.Scene", methodName : "touchmove"});
 	}
 	,gamepadaxis: function(event) {
-		this.emit(24,event);
+		this.emit(24,event,{ fileName : "Scene.hx", lineNumber : 313, className : "luxe.Scene", methodName : "gamepadaxis"});
 	}
 	,gamepadup: function(event) {
-		this.emit(26,event);
+		this.emit(26,event,{ fileName : "Scene.hx", lineNumber : 319, className : "luxe.Scene", methodName : "gamepadup"});
 	}
 	,gamepaddown: function(event) {
-		this.emit(25,event);
+		this.emit(25,event,{ fileName : "Scene.hx", lineNumber : 325, className : "luxe.Scene", methodName : "gamepaddown"});
 	}
 	,gamepaddevice: function(event) {
-		this.emit(27,event);
+		this.emit(27,event,{ fileName : "Scene.hx", lineNumber : 331, className : "luxe.Scene", methodName : "gamepaddevice"});
 	}
 	,windowmoved: function(event) {
-		this.emit(29,event);
+		this.emit(29,event,{ fileName : "Scene.hx", lineNumber : 340, className : "luxe.Scene", methodName : "windowmoved"});
 	}
 	,windowresized: function(event) {
-		this.emit(30,event);
+		this.emit(30,event,{ fileName : "Scene.hx", lineNumber : 346, className : "luxe.Scene", methodName : "windowresized"});
 	}
 	,windowsized: function(event) {
-		this.emit(31,event);
+		this.emit(31,event,{ fileName : "Scene.hx", lineNumber : 352, className : "luxe.Scene", methodName : "windowsized"});
 	}
 	,windowminimized: function(event) {
-		this.emit(32,event);
+		this.emit(32,event,{ fileName : "Scene.hx", lineNumber : 358, className : "luxe.Scene", methodName : "windowminimized"});
 	}
 	,windowrestored: function(event) {
-		this.emit(33,event);
+		this.emit(33,event,{ fileName : "Scene.hx", lineNumber : 364, className : "luxe.Scene", methodName : "windowrestored"});
 	}
 	,inputdown: function(event) {
-		this.emit(15,event);
+		this.emit(15,event,{ fileName : "Scene.hx", lineNumber : 372, className : "luxe.Scene", methodName : "inputdown"});
 	}
 	,inputup: function(event) {
-		this.emit(16,event);
+		this.emit(16,event,{ fileName : "Scene.hx", lineNumber : 378, className : "luxe.Scene", methodName : "inputup"});
 	}
 	,_destroy: function(_) {
 		this.destroy();
 	}
 	,destroy: function() {
-		Luxe.core.emitter.off(2,$bind(this,this.init));
-		Luxe.core.emitter.off(8,$bind(this,this._destroy));
-		Luxe.core.emitter.off(6,$bind(this,this.update));
-		Luxe.core.emitter.off(9,$bind(this,this.prerender));
-		Luxe.core.emitter.off(11,$bind(this,this.postrender));
-		Luxe.core.emitter.off(10,$bind(this,this.render));
-		Luxe.core.emitter.off(12,$bind(this,this.keydown));
-		Luxe.core.emitter.off(13,$bind(this,this.keyup));
-		Luxe.core.emitter.off(14,$bind(this,this.textinput));
-		Luxe.core.emitter.off(16,$bind(this,this.inputup));
-		Luxe.core.emitter.off(15,$bind(this,this.inputdown));
-		Luxe.core.emitter.off(18,$bind(this,this.mouseup));
-		Luxe.core.emitter.off(17,$bind(this,this.mousedown));
-		Luxe.core.emitter.off(19,$bind(this,this.mousemove));
-		Luxe.core.emitter.off(20,$bind(this,this.mousewheel));
-		Luxe.core.emitter.off(22,$bind(this,this.touchup));
-		Luxe.core.emitter.off(21,$bind(this,this.touchdown));
-		Luxe.core.emitter.off(23,$bind(this,this.touchmove));
-		Luxe.core.emitter.off(26,$bind(this,this.gamepadup));
-		Luxe.core.emitter.off(25,$bind(this,this.gamepaddown));
-		Luxe.core.emitter.off(24,$bind(this,this.gamepadaxis));
-		Luxe.core.emitter.off(27,$bind(this,this.gamepaddevice));
-		Luxe.core.emitter.off(29,$bind(this,this.windowmoved));
-		Luxe.core.emitter.off(30,$bind(this,this.windowresized));
-		Luxe.core.emitter.off(31,$bind(this,this.windowsized));
-		Luxe.core.emitter.off(32,$bind(this,this.windowminimized));
-		Luxe.core.emitter.off(33,$bind(this,this.windowrestored));
-		this.emit(8);
+		Luxe.core.emitter.off(2,$bind(this,this.init),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(8,$bind(this,this._destroy),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(6,$bind(this,this.update),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(9,$bind(this,this.prerender),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(11,$bind(this,this.postrender),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(10,$bind(this,this.render),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(12,$bind(this,this.keydown),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(13,$bind(this,this.keyup),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(14,$bind(this,this.textinput),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(16,$bind(this,this.inputup),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(15,$bind(this,this.inputdown),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(18,$bind(this,this.mouseup),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(17,$bind(this,this.mousedown),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(19,$bind(this,this.mousemove),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(20,$bind(this,this.mousewheel),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(22,$bind(this,this.touchup),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(21,$bind(this,this.touchdown),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(23,$bind(this,this.touchmove),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(26,$bind(this,this.gamepadup),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(25,$bind(this,this.gamepaddown),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(24,$bind(this,this.gamepadaxis),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(27,$bind(this,this.gamepaddevice),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(29,$bind(this,this.windowmoved),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(30,$bind(this,this.windowresized),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(31,$bind(this,this.windowsized),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(32,$bind(this,this.windowminimized),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		Luxe.core.emitter.off(33,$bind(this,this.windowrestored),{ fileName : "Core.hx", lineNumber : 363, className : "luxe.Core", methodName : "off"});
+		this.emit(8,null,{ fileName : "Scene.hx", lineNumber : 427, className : "luxe.Scene", methodName : "destroy"});
 		var _view = Luxe.core.debug.get_view("Scenes");
 		if(_view != null) _view.remove_scene(this);
 	}
@@ -6549,18 +6549,18 @@ luxe_Scene.prototype = $extend(luxe_Objects.prototype,{
 		var keep_going = true;
 		while(keep_going) keep_going = this._do_init();
 		this.inited = true;
-		this.emit(2);
+		this.emit(2,null,{ fileName : "Scene.hx", lineNumber : 468, className : "luxe.Scene", methodName : "init"});
 		this.reset();
 	}
 	,reset: function() {
 		this.started = false;
-		this.emit(3);
+		this.emit(3,null,{ fileName : "Scene.hx", lineNumber : 479, className : "luxe.Scene", methodName : "reset"});
 		this.started = true;
 	}
 	,update: function(dt) {
 		Luxe.core.debug.start("scene." + this.get_name());
 		this.handle_delayed_additions();
-		this.emit(6,dt);
+		this.emit(6,dt,{ fileName : "Scene.hx", lineNumber : 492, className : "luxe.Scene", methodName : "update"});
 		if(this.entity_count > 0) {
 			var $it0 = this.entities.iterator();
 			while( $it0.hasNext() ) {
@@ -6706,7 +6706,7 @@ var luxe_Sprite = function(options) {
 	if(options.centered != null) this.set_centered(options.centered);
 	if(options.flipx != null) this.set_flipx(options.flipx);
 	if(options.flipy != null) this.set_flipy(options.flipy);
-	luxe_Visual.call(this,options);
+	luxe_Visual.call(this,options,{ fileName : "Sprite.hx", lineNumber : 47, className : "luxe.Sprite", methodName : "new"});
 };
 $hxClasses["luxe.Sprite"] = luxe_Sprite;
 luxe_Sprite.__name__ = ["luxe","Sprite"];
@@ -6798,7 +6798,7 @@ luxe_Sprite.prototype = $extend(luxe_Visual.prototype,{
 	,__class__: luxe_Sprite
 	,__properties__: $extend(luxe_Visual.prototype.__properties__,{set_uv:"set_uv",set_flipy:"set_flipy",set_flipx:"set_flipx",set_centered:"set_centered"})
 });
-var luxe_Text = function(_options) {
+var luxe_Text = function(_options,_pos_info) {
 	this.text_options = _options;
 	this.text_bounds = new phoenix_Rectangle();
 	var _batcher = null;
@@ -6806,10 +6806,10 @@ var luxe_Text = function(_options) {
 		if(_options.batcher != null) _batcher = _options.batcher; else _batcher = Luxe.renderer.batcher;
 	}
 	this.geom = new phoenix_geometry_TextGeometry({ batcher : _batcher, depth : _options.depth, visible : _options.visible, immediate : _options.immediate, color : _options.color, shader : _options.shader, texture : _options.texture, text : _options.text, font : _options.font, point_size : _options.point_size, line_spacing : _options.line_spacing, letter_spacing : _options.letter_spacing, bounds : _options.bounds, bounds_wrap : _options.bounds_wrap, align : _options.align, align_vertical : _options.align_vertical, sdf : _options.sdf, smoothness : _options.smoothness, thickness : _options.thickness, outline : _options.outline, outline_color : _options.outline_color, glow_threshold : _options.glow_threshold, glow_amount : _options.glow_amount, glow_color : _options.glow_color});
-	this.geom.emitter.on(1,$bind(this,this.on_geom_text_update));
+	this.geom.emitter.on(1,$bind(this,this.on_geom_text_update),{ fileName : "Text.hx", lineNumber : 140, className : "luxe.Text", methodName : "new"});
 	_options.geometry = this.geom;
 	_options.shader = this.geom.state.shader;
-	luxe_Visual.call(this,_options);
+	luxe_Visual.call(this,_options,_pos_info);
 	this._update_bounds();
 };
 $hxClasses["luxe.Text"] = luxe_Text;
@@ -7329,8 +7329,8 @@ luxe_debug_Inspector.prototype = {
 	}
 	,create_window: function() {
 		this.window = new luxe_Sprite({ name : "debug.window", batcher : this.batcher, no_scene : true, depth : 999.1, visible : false, color : new phoenix_Color().rgb(1447449), centered : false, size : this.size, pos : this.pos});
-		this.title = new luxe_Text({ name : "debug.title", batcher : this.batcher, no_scene : true, depth : 999.2, visible : false, color : new phoenix_Color().rgb(16121979), pos : new phoenix_Vector(this.pos.x + 14,this.pos.y + 6), text : "Inspector", point_size : 15, align : 0});
-		this.version = new luxe_Text({ name : "debug.version", batcher : this.batcher, no_scene : true, depth : 999.2, visible : false, color : new phoenix_Color().rgb(5526617), pos : new phoenix_Vector(this.pos.x + (this.size.x - 14),this.pos.y + 6), text : "" + Luxe.core.runtime_info(), point_size : 13, align : 1});
+		this.title = new luxe_Text({ name : "debug.title", batcher : this.batcher, no_scene : true, depth : 999.2, visible : false, color : new phoenix_Color().rgb(16121979), pos : new phoenix_Vector(this.pos.x + 14,this.pos.y + 6), text : "Inspector", point_size : 15, align : 0},{ fileName : "Inspector.hx", lineNumber : 116, className : "luxe.debug.Inspector", methodName : "create_window"});
+		this.version = new luxe_Text({ name : "debug.version", batcher : this.batcher, no_scene : true, depth : 999.2, visible : false, color : new phoenix_Color().rgb(5526617), pos : new phoenix_Vector(this.pos.x + (this.size.x - 14),this.pos.y + 6), text : "" + Luxe.core.runtime_info(), point_size : 13, align : 1},{ fileName : "Inspector.hx", lineNumber : 130, className : "luxe.debug.Inspector", methodName : "create_window"});
 		this.window.set_locked(true);
 		this.window.geometry.id = "debug.Inspector";
 		this.title.geometry.id = "debug.title.text";
@@ -7782,7 +7782,7 @@ var luxe_debug__$ProfilerDebugView_ProfilerBar = function(_name,_max,_color) {
 	this.graph = new luxe_debug__$ProfilerDebugView_ProfilerGraph(_name);
 	this.graph.create();
 	if(_max != null) this.graph.set_max(_max);
-	this.text_item = new luxe_Text({ no_scene : true, name : "profiler.text." + _name, pos : new phoenix_Vector(0,0), color : _color, point_size : this.height * 1.8, depth : 999.3, text : "", batcher : Luxe.debug.batcher});
+	this.text_item = new luxe_Text({ no_scene : true, name : "profiler.text." + _name, pos : new phoenix_Vector(0,0), color : _color, point_size : this.height * 1.8, depth : 999.3, text : "", batcher : Luxe.debug.batcher},{ fileName : "ProfilerDebugView.hx", lineNumber : 475, className : "luxe.debug._ProfilerDebugView.ProfilerBar", methodName : "new"});
 	this.bg_geometry = Luxe.draw.box({ color : new phoenix_Color().rgb(592137), depth : 999.3, batcher : Luxe.debug.batcher, x : 0, y : 0, w : this.graph.width, h : this.graph.height});
 	this.bar_geometry = Luxe.draw.box({ color : _color, depth : 999.33, batcher : Luxe.debug.batcher, x : 1, y : 1, w : this.graph.width - 2, h : this.graph.height - 2});
 	this.hide();
@@ -7843,7 +7843,7 @@ luxe_debug_SceneDebugView.__super__ = luxe_debug_DebugView;
 luxe_debug_SceneDebugView.prototype = $extend(luxe_debug_DebugView.prototype,{
 	create: function() {
 		var debug = Luxe.debug;
-		this.items_list = new luxe_Text({ name : "debug.scene.list", depth : 999.3, no_scene : true, color : new phoenix_Color(0,0,0,1).rgb(16121979), pos : new phoenix_Vector(0,0), font : Luxe.renderer.font, text : this.get_list(), point_size : this.font_size, batcher : debug.batcher, visible : false});
+		this.items_list = new luxe_Text({ name : "debug.scene.list", depth : 999.3, no_scene : true, color : new phoenix_Color(0,0,0,1).rgb(16121979), pos : new phoenix_Vector(0,0), font : Luxe.renderer.font, text : this.get_list(), point_size : this.font_size, batcher : debug.batcher, visible : false},{ fileName : "SceneDebugView.hx", lineNumber : 29, className : "luxe.debug.SceneDebugView", methodName : "create"});
 		this.items_list.geometry.id = "debug.scene.list.geometry";
 		this.resize();
 	}
@@ -8000,8 +8000,8 @@ luxe_debug_StatsDebugView.prototype = $extend(luxe_debug_DebugView.prototype,{
 	,create: function() {
 		var _g = this;
 		var debug = Luxe.debug;
-		this.render_stats_text = new luxe_Text({ name : "debug.render.stats", depth : 999.3, no_scene : true, color : new phoenix_Color(0,0,0,1).rgb(16121979), pos : new phoenix_Vector(0,0), font : Luxe.renderer.font, text : this.get_render_stats_string(), point_size : this.font_size, batcher : debug.batcher, visible : false});
-		this.resource_list_text = new luxe_Text({ name : "debug.resource.stats", depth : 999.3, no_scene : true, color : new phoenix_Color(0,0,0,1).rgb(16121979), pos : new phoenix_Vector(0,0), font : Luxe.renderer.font, text : "", align : 1, point_size : this.font_size * 0.9, batcher : debug.batcher, visible : false});
+		this.render_stats_text = new luxe_Text({ name : "debug.render.stats", depth : 999.3, no_scene : true, color : new phoenix_Color(0,0,0,1).rgb(16121979), pos : new phoenix_Vector(0,0), font : Luxe.renderer.font, text : this.get_render_stats_string(), point_size : this.font_size, batcher : debug.batcher, visible : false},{ fileName : "StatsDebugView.hx", lineNumber : 79, className : "luxe.debug.StatsDebugView", methodName : "create"});
+		this.resource_list_text = new luxe_Text({ name : "debug.resource.stats", depth : 999.3, no_scene : true, color : new phoenix_Color(0,0,0,1).rgb(16121979), pos : new phoenix_Vector(0,0), font : Luxe.renderer.font, text : "", align : 1, point_size : this.font_size * 0.9, batcher : debug.batcher, visible : false},{ fileName : "StatsDebugView.hx", lineNumber : 92, className : "luxe.debug.StatsDebugView", methodName : "create"});
 		this.render_stats_text.geometry.id = "debug.render.stats.geometry";
 		this.render_stats_text.geometry.id = "debug.resource.stats.geometry";
 		this.resize();
@@ -8234,7 +8234,7 @@ luxe_debug_TraceDebugView.prototype = $extend(luxe_debug_DebugView.prototype,{
 	,create: function() {
 		var debug = Luxe.debug;
 		var text_bounds = new phoenix_Rectangle(debug.padding.x + 20,debug.padding.y + 40,Luxe.core.screen.get_w() - debug.padding.x * 2 - 20,Luxe.core.screen.get_h() - debug.padding.y * 2 - 40);
-		this.lines = new luxe_Text({ name : "debug.log.text", no_scene : true, depth : 999.3, color : new phoenix_Color().rgb(8947848), bounds : text_bounds, bounds_wrap : true, font : Luxe.renderer.font, text : "", align_vertical : 4, point_size : 12, batcher : debug.batcher, visible : false});
+		this.lines = new luxe_Text({ name : "debug.log.text", no_scene : true, depth : 999.3, color : new phoenix_Color().rgb(8947848), bounds : text_bounds, bounds_wrap : true, font : Luxe.renderer.font, text : "", align_vertical : 4, point_size : 12, batcher : debug.batcher, visible : false},{ fileName : "TraceDebugView.hx", lineNumber : 35, className : "luxe.debug.TraceDebugView", methodName : "create"});
 		if(this.lines.geometry != null) {
 			this.lines.geometry.set_clip_rect(text_bounds);
 			this.lines.geometry.set_locked(true);
@@ -8424,7 +8424,7 @@ luxe_resource_Resource.prototype = {
 		if(this.ref == 0 || _force) {
 			this.clear();
 			this.set_state(6);
-			this.system.remove(this);
+			this.system.remove(this,{ fileName : "Resource.hx", lineNumber : 67, className : "luxe.resource.Resource", methodName : "destroy"});
 			this.system.emit(8,this);
 		}
 	}
@@ -11356,10 +11356,10 @@ $hxClasses["phoenix.Batcher"] = phoenix_Batcher;
 phoenix_Batcher.__name__ = ["phoenix","Batcher"];
 phoenix_Batcher.prototype = {
 	on: function(event,handler) {
-		this.emitter.on(event,handler);
+		this.emitter.on(event,handler,{ fileName : "Batcher.hx", lineNumber : 106, className : "phoenix.Batcher", methodName : "on"});
 	}
 	,off: function(event,handler) {
-		return this.emitter.off(event,handler);
+		return this.emitter.off(event,handler,{ fileName : "Batcher.hx", lineNumber : 111, className : "phoenix.Batcher", methodName : "off"});
 	}
 	,add: function(_geom,_force_add) {
 		if(_force_add == null) _force_add = false;
@@ -11487,11 +11487,11 @@ phoenix_Batcher.prototype = {
 		if(persist_immediate == null) persist_immediate = false;
 		this.draw_calls = 0;
 		this.vert_count = 0;
-		this.emitter.emit(1,this);
+		this.emitter.emit(1,this,{ fileName : "Batcher.hx", lineNumber : 357, className : "phoenix.Batcher", methodName : "draw"});
 		this.view.process();
 		this.renderer.state.viewport(this.view.get_viewport().x,this.view.get_viewport().y,this.view.get_viewport().w,this.view.get_viewport().h);
 		this.batch(persist_immediate);
-		this.emitter.emit(2,this);
+		this.emitter.emit(2,this,{ fileName : "Batcher.hx", lineNumber : 363, className : "phoenix.Batcher", methodName : "draw"});
 	}
 	,update_view: function() {
 		this.view.process();
@@ -14446,11 +14446,11 @@ phoenix_RenderPath.prototype = {
 				Luxe.debug.start("batch." + batch.name);
 				batch.draw_calls = 0;
 				batch.vert_count = 0;
-				batch.emitter.emit(1,batch);
+				batch.emitter.emit(1,batch,{ fileName : "Batcher.hx", lineNumber : 357, className : "phoenix.Batcher", methodName : "draw"});
 				batch.view.process();
 				batch.renderer.state.viewport(batch.view.get_viewport().x,batch.view.get_viewport().y,batch.view.get_viewport().w,batch.view.get_viewport().h);
 				batch.batch(false);
-				batch.emitter.emit(2,batch);
+				batch.emitter.emit(2,batch,{ fileName : "Batcher.hx", lineNumber : 363, className : "phoenix.Batcher", methodName : "draw"});
 				_stats.geometry_count += batch.geometry.size();
 				_stats.dynamic_batched_count += batch.dynamic_batched_count;
 				_stats.static_batched_count += batch.static_batched_count;
@@ -17991,7 +17991,7 @@ phoenix_geometry_TextGeometry.prototype = $extend(phoenix_geometry_Geometry.prot
 		var _diff = _vertidx - _total_idx;
 		if(_diff > 0) this.vertices.splice(_total_idx * 6,_diff * 6);
 		this.dirty_align = false;
-		this.emitter.emit(1);
+		this.emitter.emit(1,null,{ fileName : "TextGeometry.hx", lineNumber : 453, className : "phoenix.geometry.TextGeometry", methodName : "update_text"});
 	}
 	,update_char: function(_letteridx,_x,_y,_w,_h,_u,_v,_u2,_v2,_color) {
 		var vert0;
@@ -18281,7 +18281,7 @@ var snow_Snow = function() {
 	this.was_ready = false;
 	this.has_shutdown = false;
 	this.shutting_down = false;
-	this.debug = false;
+	this.debug = true;
 	this.os = "unknown";
 	this.platform = "unknown";
 	this.freeze = false;
@@ -18605,6 +18605,12 @@ var snow_api_Promise = function(func) {
 $hxClasses["snow.api.Promise"] = snow_api_Promise;
 snow_api_Promise.__name__ = ["snow","api","Promise"];
 snow_api_Promise.all = function(list) {
+	var _g = 0;
+	while(_g < list.length) {
+		var item = list[_g];
+		++_g;
+		if(item == null) throw new js__$Boot_HaxeError("Promise.all handed an array with null items within it");
+	}
 	return new snow_api_Promise(function(ok,no) {
 		var current = 0;
 		var total = list.length;
@@ -18627,10 +18633,10 @@ snow_api_Promise.all = function(list) {
 			no(reject_result);
 		};
 		var index1 = 0;
-		var _g = 0;
-		while(_g < list.length) {
-			var promise = list[_g];
-			++_g;
+		var _g1 = 0;
+		while(_g1 < list.length) {
+			var promise = list[_g1];
+			++_g1;
 			promise.then((function(f,a1) {
 				return function(a2) {
 					f(a1,a2);
@@ -23239,3 +23245,5 @@ snow_types__$Types_FileEventType_$Impl_$.create = 3;
 snow_types__$Types_FileEventType_$Impl_$.drop = 4;
 LuxeApp.main();
 })(typeof console != "undefined" ? console : {log:function(){}}, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
+
+//# sourceMappingURL=luxe_empty.js.map

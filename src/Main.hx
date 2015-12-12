@@ -1,7 +1,9 @@
-
 import luxe.Input;
+import luxe.States;
 
 class Main extends luxe.Game {
+
+    public static var state: States;
 
     override function config(config:luxe.AppConfig) {
 
@@ -11,7 +13,9 @@ class Main extends luxe.Game {
 
     override function ready() {
 
-      Luxe.renderer.clear_color.rgb(0xffffff);
+      state = new States({ name: 'state' });
+
+      state.add( new Game() );
 
     } //ready
 
@@ -24,8 +28,6 @@ class Main extends luxe.Game {
     } //onkeyup
 
     override function update(dt:Float) {
-
-
 
     } //update
 
