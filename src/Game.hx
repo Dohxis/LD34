@@ -53,8 +53,7 @@ class Game extends luxe.State {
 
         //create_map();
         //create_map_collision();
-        //sim = Luxe.physics.add_engine(Simulation);
-        //sim.paused = false;
+        
   }
 
     override function update( delta:Float ) {
@@ -90,23 +89,8 @@ class Game extends luxe.State {
             //Create the tilemap visuals
         map.display({ scale:map_scale, filter:FilterType.nearest });
 
-        for(_group in map.tiledmap_data.object_groups) {
-            for(_object in _group.objects) {
-
-                switch(_object.type) {
-
-                    case 'spawn': {
-
-                        //The spawn position is set from the map (this is an egzample so I dont forget)
-
-                    }
-
-                } //switch type
-            } //each object
-        } //each object group
-
         for(layer in map.tiledmap_data.image_layers) {
-
+            
             new luxe.Sprite({
                 name:'image_layer.${layer.name}',
                 centered: false, depth:-1,
@@ -118,23 +102,8 @@ class Game extends luxe.State {
             });
 
         } //each image_layer
-
-
-            //fetch the goemetry for the foreground
-        var _rows = map.visual.geometry_for_layer('collision');
-
-            //for each row in the tiles
-        for(_row in _rows) {
-                //for each tile in that row
-            for(_geom in _row) {
-                    //if there is a tile at all
-                if(_geom != null) {
-                        //move it above the player depth
-                    _geom.depth = 5;
-                }
-            }
-        } //each row
-
+        
+        
     } //create_map
 
  }
