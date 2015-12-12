@@ -40,7 +40,7 @@ class Game extends luxe.State {
 
         //--------------------------------------------//
                     //Player
-        var playerSprite = Luxe.resources.texture('assets/playerSprite.png');
+        var playerSprite = Luxe.resources.texture('assets/playerSpriteBeauty.png');
 		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
 			player = new Sprite({
 				pos : Luxe.screen.mid,
@@ -71,6 +71,9 @@ class Game extends luxe.State {
     }
 
     function auto_move(delta : Float){
+        if(mSpeed > 0) player.flipx = false;
+        else player.flipx = true;
+
 		if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax) mSpeed -= 800*delta;
             	sim.player_velocity.x = mSpeed;
