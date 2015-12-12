@@ -5,13 +5,19 @@ import luxe.Vector;
 import luxe.Transform;
 import luxe.Component;
 import luxe.Entity;
+import luxe.collision.shapes.Polygon;
+import luxe.collision.data.ShapeCollision;
 
 class Player extends Component{
 	var player : Sprite;
 
 	override function init(){
+		sim = Luxe.physics.add_engine(Simulation);
+        sim.draw = false;
+        sim.player_collider = Polygon.rectangle(0,0,8,8);
 		player = cast entity;
 		move_keys();
+		sim.player_collider.position = Luxe.screen.mid;
 	}
 
 	function move_keys(){
@@ -31,11 +37,11 @@ class Player extends Component{
 	function auto_move(delta : Float){
 		if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax) mSpeed -= 800*delta;
-            sim.player_velocity.x += mSpeed * delta;
+            	sim.player_velocity.x = mSpeed;
         }
         else{
             if(mSpeed < speedMax) mSpeed += 800*delta;
-            sim.player_velocity.x += mSpeed * delta;
+            	sim.player_velocity.x = mSpeed;
         }
 	}
 }

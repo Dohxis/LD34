@@ -46,7 +46,7 @@ class Simulation extends luxe.Physics.PhysicsEngine {
     override public function update() {
 
             //don't do anything unless we are running
-        if(paused) return;
+        //if(paused) return;
 
             //We start by appling the forces
         handle_physics();
