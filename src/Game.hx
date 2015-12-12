@@ -51,7 +51,7 @@ class Game extends luxe.State {
                     //Player
         //-------------------------------------------//
 
-        //create_map();
+        create_map();
         //create_map_collision();
         
   }

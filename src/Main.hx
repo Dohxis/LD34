@@ -25,6 +25,7 @@ class Main extends luxe.Game {
         config.preload.textures.push({id:'assets/Tiles/16.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Tiles/17.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Tiles/18.png', filter_min:nearest, filter_mag:nearest });
+        config.preload.textures.push({id:'assets/tileset.png', filter_min:nearest, filter_mag:nearest });
 
         config.preload.texts.push({id:'assets/tilemap.tmx'});
 
