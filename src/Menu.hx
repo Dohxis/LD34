@@ -4,6 +4,7 @@ import luxe.Sprite;
 import luxe.Vector;
 import phoenix.Texture;
 import luxe.Color;
+import luxe.tween.Actuate;
 
 // Snow
 import luxe.options.ParticleOptions;
@@ -14,6 +15,8 @@ class Menu extends luxe.State {
   var bgImage: Sprite;
   var logo: Sprite;
   var snow: ParticleSystem;
+  var play: Sprite;
+  var start: Bool;
 
   public function new() {
 
@@ -24,9 +27,11 @@ class Menu extends luxe.State {
   function create_background(){
     var bg_image = Luxe.resources.texture('assets/bg_image.png');
     var logo_image = Luxe.resources.texture('assets/logo.png');
+    var play_image = Luxe.resources.texture('assets/play.png');
 
     bg_image.filter_min = bg_image.filter_mag = FilterType.nearest;
     logo_image.filter_min = logo_image.filter_mag = FilterType.nearest;
+    play_image.filter_min = play_image.filter_mag = FilterType.nearest;
 
     bgImage = new Sprite({
       name: 'bgImage',
@@ -42,20 +47,42 @@ class Menu extends luxe.State {
       size: new Vector(290, 50)
     });
 
+    play = new Sprite({
+      name: 'playImage',
+      texture: play_image,
+      pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y),
+      size: new Vector(400, 100)
+    });
+
   }
 
   override function onenter<T>(_:T) {
     create_background();
     create_snow();
+
+    Actuate.tween(play.pos, 2, { y:250 })
+                   .ease( luxe.tween.easing.Bounce.easeOut ).repeat();
+
+                   Actuate.tween(logo.pos, 1, { y:50 })
+                                  .ease( luxe.tween.easing.Bounce.easeOut );
+
+
+
+    start = false;
+
   }
 
   override function onleave<T>(_:T) {
     snow.destroy();
+    play.destroy();
+    logo.destroy();
+    bgImage.destroy();
   }
 
   override function update( dt:Float ) {
 
-
+    if(start)
+      Main.state.set('game');
 
   }
 
@@ -65,6 +92,11 @@ class Menu extends luxe.State {
       Luxe.shutdown();
     }
 
+  }
+
+  override function onmousedown( e:MouseEvent ){
+    if(e.button == MouseButton.left)
+      start = true;
   }
 
   function create_snow(){
