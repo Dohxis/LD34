@@ -4,24 +4,22 @@ import luxe.Sprite;
 import luxe.Vector;
 import luxe.Transform;
 
+/*class PlayerSprite extends luxe.Component{
+}*/
+
 class Player{
 	var player : Sprite;
-	var playerSprite = Luxe.resources.texture('assets/playerSprite.png');
 
-	function init(){
-		player_create();
+	public function init(){
+		var playerSprite = Luxe.resources.texture('assets/playerSprite.png');
+			player = new Sprite({
+				pos : Luxe.screen.mid,
+				name : 'player',
+				texture : playerSprite,
+				size : new Vector(124, 124)
+			});
+		move_keys();
 	}
-
-    function player_create() {
-        Luxe.renderer.clear_color.rgb(0x010101);
-        player = new Sprite({
-            pos : Luxe.screen.mid,
-            name : 'player',
-            texture : playerSprite,
-            size : new Vector(124, 124)
-        });
-        move_keys();
-    }
 
 	function move_keys(){
         Luxe.input.bind_key('left', Key.left);

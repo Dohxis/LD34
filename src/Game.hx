@@ -11,10 +11,11 @@ class Game extends luxe.State {
         super({ name:'game' });
     }
 
-    override function init(){
-    }
-
     var move : Player;
+
+    override function init(){
+        move.init();
+    }
 
     override function update( delta:Float ) {
         move.update(delta);
