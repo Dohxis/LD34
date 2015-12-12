@@ -5,9 +5,15 @@ import luxe.Vector;
 import phoenix.Texture;
 
 class Menu extends luxe.State {
+<<<<<<< HEAD
 
   var bgImage: Sprite;
 
+=======
+  
+  var bgImage: Sprite;
+  
+>>>>>>> origin/master
   public function new() {
 
     super({ name:'menu' });
