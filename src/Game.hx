@@ -119,7 +119,7 @@ class Game extends luxe.State {
 
 
             //fetch the goemetry for the foreground
-        var _rows = map.visual.geometry_for_layer('visualfg');
+        var _rows = map.visual.geometry_for_layer('collision');
 
             //for each row in the tiles
         for(_row in _rows) {
