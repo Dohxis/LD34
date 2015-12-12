@@ -11,7 +11,7 @@ class Main extends luxe.Game {
 
     override function ready() {
 
-      Luxe.renderer.clear_color.rgb(0x121212);
+      Luxe.renderer.clear_color.rgb(0xffffff);
 
     } //ready
 

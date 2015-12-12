@@ -8,13 +8,14 @@
 
         <style> #window1 { margin: 0; padding: 0; } </style>
 
-        <script type="text/javascript" src="./lib/howler.js"></script>
-        
+        {{#each project.app.web.libs~}}
+            <script type="text/javascript" src="{{this}}"></script>
+        {{/each}}
 
     </head>
 
     <body style="padding: 0; margin: 0; background-color: #111111;">
-        <script type="text/javascript" src="./luxe_empty.js"></script>
+        <script type="text/javascript" src="./{{project.app.name}}{{#if project.app.web.min}}.min{{/if}}.js"></script>
 
         <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
     </body>
