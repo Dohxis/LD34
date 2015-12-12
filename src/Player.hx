@@ -10,11 +10,12 @@ import luxe.collision.data.ShapeCollision;
 
 class Player extends Component{
 	var player : Sprite;
+	var sim: Simulation;
 
 	override function init(){
 		sim = Luxe.physics.add_engine(Simulation);
         sim.draw = false;
-        sim.player_collider = Polygon.rectangle(0,0,8,8);
+        sim.player_collider = Polygon.rectangle(0,0,0,0);
 		player = cast entity;
 		move_keys();
 		sim.player_collider.position = Luxe.screen.mid;
@@ -27,7 +28,6 @@ class Player extends Component{
 
 	var speedMax : Float = 300;
     var mSpeed : Float = 0;
-	var sim : Simulation;
 
 	override function update(delta:Float) {
 		auto_move(delta);

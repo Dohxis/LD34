@@ -25,16 +25,18 @@ class Game extends luxe.State {
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
 
-  var sim:Simulation;
-
     public function new() {
         super({ name:'game' });
     }
 
-    var playerMove : Player;
     var player : Sprite;
 
+    public var sim : Simulation;
+
     override function onenter<T>(_:T) {
+
+        sim = Luxe.physics.add_engine(Simulation);
+        sim.draw = false;
 
         //--------------------------------------------//
                     //Player
@@ -46,18 +48,38 @@ class Game extends luxe.State {
 				texture : playerSprite,
 				size : new Vector(124, 124)
 			});
-        playerMove = new Player({name : 'player'});
-        player.add(playerMove);
+        sim.player_collider = Polygon.rectangle(0,0,124,124);
+        move_keys();
                     //Player
         //-------------------------------------------//
 
         create_map();
         create_map_collision();
-        
-  }
+    }
+
+    function move_keys(){
+        Luxe.input.bind_key('left', Key.left);
+        Luxe.input.bind_key('left', Key.key_a);
+    }
+
+    var speedMax : Float = 300;
+    var mSpeed : Float = 0;
 
     override function update( delta:Float ) {
+        auto_move(delta);
+		player.pos.copy_from(sim.player_collider.position);
     }
+
+    function auto_move(delta : Float){
+		if(Luxe.input.inputdown('left')){
+            if(mSpeed > -speedMax) mSpeed -= 800*delta;
+            	sim.player_velocity.x = mSpeed;
+        }
+        else{
+            if(mSpeed < speedMax) mSpeed += 800*delta;
+            	sim.player_velocity.x = mSpeed;
+        }
+	}
 
     override function onkeyup( e:KeyEvent ) {
         if(e.keycode == Key.escape) {
@@ -66,16 +88,14 @@ class Game extends luxe.State {
     }
 
     function create_map_collision() {
-
         var bounds = map.layer('Tile Layer 1').bounds_fitted();
         for(bound in bounds) {
             bound.x *= map.tile_width * map_scale;
             bound.y *= map.tile_height * map_scale;
             bound.w *= map.tile_width * map_scale;
             bound.h *= map.tile_height * map_scale;
-            //sim.obstacle_colliders.push(Polygon.rectangle(bound.x, bound.y, bound.w, bound.h, false));
+            sim.obstacle_colliders.push(Polygon.rectangle(bound.x, bound.y, bound.w, bound.h, false));
         }
-
     } //create_map_collision
 
     function create_map() {
@@ -90,7 +110,7 @@ class Game extends luxe.State {
         map.display({ scale:map_scale, filter:FilterType.nearest });
 
         for(layer in map.tiledmap_data.image_layers) {
-            
+
             new luxe.Sprite({
                 name:'image_layer.${layer.name}',
                 centered: false, depth:-1,
@@ -102,8 +122,8 @@ class Game extends luxe.State {
             });
 
         } //each image_layer
-        
-        
+
+
     } //create_map
 
  }
