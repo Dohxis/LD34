@@ -7,6 +7,8 @@ class Main extends luxe.Game {
 
     override function config(config:luxe.AppConfig) {
 
+        config.preload.textures.push({ id:'assets/bg_image.png' });
+
         return config;
 
     } //config
