@@ -14,6 +14,8 @@ class Main extends luxe.Game {
         config.preload.textures.push({id: 'assets/playerSprite.png'});
         config.preload.textures.push({id: 'assets/logo.png'});
         config.preload.textures.push({ id:'assets/bg_image.png' });
+        config.preload.textures.push({ id:'assets/play.png' });
+
         return config;
 
     } //config
@@ -24,7 +26,7 @@ class Main extends luxe.Game {
 
         state.add( new Game() );
         state.add( new Menu() );
-        state.set('game');
+        state.set('menu');
 
     } //ready
 
