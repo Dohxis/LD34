@@ -1,7 +1,7 @@
 import luxe.States;
 import luxe.Input;
 
-class Game extends luxe.State {
+class Menu extends luxe.State {
 
   public function new() {
 
