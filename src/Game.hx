@@ -60,6 +60,8 @@ class Game extends luxe.State {
     function move_keys(){
         Luxe.input.bind_key('left', Key.left);
         Luxe.input.bind_key('left', Key.key_a);
+        Luxe.input.bind_key('jump', Key.key_w);
+        Luxe.input.bind_key('jump', Key.space);
     }
 
     var speedMax : Float = 300;
@@ -67,6 +69,7 @@ class Game extends luxe.State {
 
     override function update( delta:Float ) {
         auto_move(delta);
+        jump(delta);
 		player.pos.copy_from(sim.player_collider.position);
     }
 
@@ -76,13 +79,21 @@ class Game extends luxe.State {
 
 		if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax) mSpeed -= 800*delta;
-            	sim.player_velocity.x = mSpeed;
+                sim.player_velocity.x = mSpeed;
         }
         else{
             if(mSpeed < speedMax) mSpeed += 800*delta;
             	sim.player_velocity.x = mSpeed;
         }
 	}
+
+    var jumpSize : Float = 550;
+
+    function jump(delta : Float){
+        if(Luxe.input.inputdown('jump') && sim.player_can_jump == true){
+            sim.player_velocity.y = -jumpSize;
+        }
+    }
 
     override function onkeyup( e:KeyEvent ) {
         if(e.keycode == Key.escape) {
