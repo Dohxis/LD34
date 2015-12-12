@@ -4,20 +4,6 @@ import luxe.collision.shapes.Polygon;
 import luxe.Vector;
 import luxe.utils.Maths;
 
-
-// The Simulation class handles two things:
-//
-//  - physics (simulation of gravity and forces)
-//  - collision (separating colliding shapes from each other)
-//
-//   It is helpful to understand that these two concepts are distinct.
-//   Often however, since the "response" from a collision overlap
-//   will be fed directly back into the physics as a force,
-//   it is easy to see them as one concept. Be aware of the difference :)
-
-// - Collision = separating things that overlap)
-// - Collision response = forces applied due to collision ("physics")
-
 class Simulation extends luxe.Physics.PhysicsEngine {
 
     public var player_collider: Shape;
