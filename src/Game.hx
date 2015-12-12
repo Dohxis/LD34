@@ -32,7 +32,7 @@ class Game extends luxe.State {
 
     var move : Player;
 
-    override function init() {
+    override function onenter<T>(_:T) {
 
         //move.init();
         //create_map();
@@ -44,7 +44,7 @@ class Game extends luxe.State {
   }
 
     override function update( delta:Float ) {
-        move.update(delta);
+        //move.update(delta);
     }
 
     override function onkeyup( e:KeyEvent ) {
