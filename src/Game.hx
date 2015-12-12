@@ -17,36 +17,31 @@ import luxe.importers.tiled.TiledMap;
 import luxe.importers.tiled.TiledObjectGroup;
 
 class Game extends luxe.State {
-    
+
   var map: TiledMap;
   var map_scale: Int = 1;
-  
+
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
-  
+
   var sim:Simulation;
-    
+
     public function new() {
         super({ name:'game' });
     }
 
-<<<<<<< HEAD
     var move : Player;
 
-    override function init(){
-        move.init();
-    }
-=======
     override function init() {
 
+        move.init();
         create_map();
         create_map_collision();
 
             //start the simulation
         sim.paused = false;
-    
+
   }
->>>>>>> origin/master
 
     override function update( delta:Float ) {
         move.update(delta);
@@ -57,7 +52,7 @@ class Game extends luxe.State {
             Luxe.shutdown();
         }
     }
-    
+
     function create_map_collision() {
 
         var bounds = map.layer('collision').bounds_fitted();
@@ -98,7 +93,7 @@ class Game extends luxe.State {
         } //each object group
 
         for(layer in map.tiledmap_data.image_layers) {
-            
+
             new luxe.Sprite({
                 name:'image_layer.${layer.name}',
                 centered: false, depth:-1,
