@@ -27,10 +27,7 @@ class Main extends luxe.Game {
         state.add( new Game() );
         state.add( new Menu() );
         state.set('menu');
-<<<<<<< HEAD
         state.set('game');
-=======
->>>>>>> origin/master
 
     } //ready
 
