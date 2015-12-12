@@ -6,13 +6,10 @@ class Main extends luxe.Game {
     public static var state: States;
 
     override function config(config:luxe.AppConfig) {
-<<<<<<< HEAD
+
         config.preload.textures.push({id: 'assets/playerSprite.png'});
-=======
-
+        config.preload.textures.push({id: 'assets/logo.png'});
         config.preload.textures.push({ id:'assets/bg_image.png' });
-
->>>>>>> origin/master
         return config;
 
     } //config
