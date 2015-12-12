@@ -6,7 +6,7 @@ class Main extends luxe.Game {
     public static var state: States;
 
     override function config(config:luxe.AppConfig) {
-        
+
         config.preload.textures.push({id:'assets/Tiles/1.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Tiles/2.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Tiles/3.png', filter_min:nearest, filter_mag:nearest });
@@ -25,9 +25,9 @@ class Main extends luxe.Game {
         config.preload.textures.push({id:'assets/Tiles/16.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Tiles/17.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Tiles/18.png', filter_min:nearest, filter_mag:nearest });
-        
+
         config.preload.texts.push({id:'assets/tilemap.tmx'});
-        
+
         config.preload.textures.push({id: 'assets/playerSprite.png'});
         config.preload.textures.push({id: 'assets/logo.png'});
         config.preload.textures.push({ id:'assets/bg_image.png' });
@@ -41,7 +41,7 @@ class Main extends luxe.Game {
 
         state.add( new Game() );
         state.add( new Menu() );
-        state.set('game');
+        state.set('menu');
 
     } //ready
 
