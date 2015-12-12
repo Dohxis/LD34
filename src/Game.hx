@@ -52,7 +52,7 @@ class Game extends luxe.State {
         //-------------------------------------------//
 
         create_map();
-        //create_map_collision();
+        create_map_collision();
         
   }
 
@@ -67,13 +67,13 @@ class Game extends luxe.State {
 
     function create_map_collision() {
 
-        var bounds = map.layer('collision').bounds_fitted();
+        var bounds = map.layer('Tile Layer 1').bounds_fitted();
         for(bound in bounds) {
             bound.x *= map.tile_width * map_scale;
             bound.y *= map.tile_height * map_scale;
             bound.w *= map.tile_width * map_scale;
             bound.h *= map.tile_height * map_scale;
-            sim.obstacle_colliders.push(Polygon.rectangle(bound.x, bound.y, bound.w, bound.h, false));
+            //sim.obstacle_colliders.push(Polygon.rectangle(bound.x, bound.y, bound.w, bound.h, false));
         }
 
     } //create_map_collision
