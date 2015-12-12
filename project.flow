@@ -2,9 +2,9 @@
 
   luxe:{
     window: {
-      width:960,
-      height:640,
-      title:'luxe empty project',
+      width:640,
+      height:480,
+      title:'LD34',
       fullscreen:false,
       resizable:true,
       borderless:false
@@ -12,13 +12,13 @@
   },
 
   project : {
-    name : 'empty',
+    name : 'ld34',
     version : '1.0.0',
-    author : 'luxeengine',
+    author : 'ainoraz.dohxis.edve98',
 
     app : {
-      name : 'luxe_empty',
-      package : 'com.luxeengine.empty'
+      name : 'ld34',
+      package : 'com.mariuk.ld34'
     },
 
     build : {
