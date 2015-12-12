@@ -51,11 +51,10 @@ class Game extends luxe.State {
                     //Player
         //-------------------------------------------//
 
-        create_map();
-        create_map_collision();
-        sim = Luxe.physics.add_engine(Simulation);
-        sim.paused = false;
-
+        //create_map();
+        //create_map_collision();
+        //sim = Luxe.physics.add_engine(Simulation);
+        //sim.paused = false;
   }
 
     override function update( delta:Float ) {

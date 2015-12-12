@@ -8,7 +8,6 @@ import luxe.Entity;
 
 class Player extends Component{
 	var player : Sprite;
-	var physics: Simulation;
 
 	override function init(){
 		player = cast entity;
@@ -22,15 +21,21 @@ class Player extends Component{
 
 	var speedMax : Float = 300;
     var mSpeed : Float = 0;
+	var sim : Simulation;
 
 	override function update(delta:Float) {
-        if(Luxe.input.inputdown('left')){
+		auto_move(delta);
+		player.pos.copy_from(sim.player_collider.position);
+    }
+
+	function auto_move(delta : Float){
+		if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax) mSpeed -= 800*delta;
-            player.pos.x += mSpeed * delta;
+            sim.player_velocity.x += mSpeed * delta;
         }
         else{
             if(mSpeed < speedMax) mSpeed += 800*delta;
-            player.pos.x += mSpeed * delta;
+            sim.player_velocity.x += mSpeed * delta;
         }
-    }
+	}
 }

@@ -106,7 +106,7 @@ class Simulation extends luxe.Physics.PhysicsEngine {
             if(collision.unitVector.y != 0 && Maths.sign(collision.unitVector.y) != Maths.sign(player_velocity.y)) {
                 player_velocity.y = 0;
                 if(collision.unitVector.y < 0) {
-                    player_can_jump = true;
+                    //player_can_jump = false;
                 }
             }
 
