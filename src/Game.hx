@@ -34,12 +34,12 @@ class Game extends luxe.State {
 
     override function init() {
 
-        move.init();
-        create_map();
-        create_map_collision();
+        //move.init();
+        //create_map();
+        //create_map_collision();
 
             //start the simulation
-        sim.paused = false;
+        //sim.paused = false;
 
   }
 

@@ -6,7 +6,7 @@ class Main extends luxe.Game {
     public static var state: States;
 
     override function config(config:luxe.AppConfig) {
-      
+
         config.preload.textures.push({id: 'assets/playerSprite.png'});
         config.preload.textures.push({id: 'assets/logo.png'});
         config.preload.textures.push({ id:'assets/bg_image.png' });
@@ -20,7 +20,7 @@ class Main extends luxe.Game {
 
       state.add( new Game() );
       state.add( new Menu() );
-      state.set('game');
+      state.set('menu');
 
     } //ready
 
