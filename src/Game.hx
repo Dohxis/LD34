@@ -102,7 +102,7 @@ class Game extends luxe.State {
     }
 
     function create_map_collision() {
-        var bounds = map.layer('Tile Layer 1').bounds_fitted();
+        var bounds = map.layer('ground').bounds_fitted();
         for(bound in bounds) {
             bound.x *= map.tile_width * map_scale;
             bound.y *= map.tile_height * map_scale;
@@ -115,7 +115,7 @@ class Game extends luxe.State {
     function create_map() {
 
             //Fetch the loaded tmx data from the assets
-        var map_data = Luxe.resources.text('assets/tilemap.tmx').asset.text;
+        var map_data = Luxe.resources.text('assets/level1.tmx').asset.text;
 
             //parse that data into a usable TiledMap instance
         map = new TiledMap({ format:'tmx', tiled_file_data: map_data });
