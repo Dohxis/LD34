@@ -101,7 +101,7 @@ class Game extends luxe.State {
 
     override function onkeyup( e:KeyEvent ) {
         if(e.keycode == Key.escape) {
-            Luxe.shutdown();
+            Main.state.set('game over');
         }
     }
 
@@ -143,5 +143,11 @@ class Game extends luxe.State {
 
 
     } //create_map
+    
+    override function onleave<T>(_:T) {
+      player.destroy();
+      map.destroy();
+      Luxe.camera.focus(new Vector(320, 240));
+    }
 
  }
