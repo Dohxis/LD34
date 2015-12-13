@@ -11,6 +11,15 @@
     }
   },
 
+  flow : {
+          build: {
+              android : {
+                  sdk : '~/SDKs/android-sdk',
+                  ant_path : '~/SDKs/apache-ant'
+              }
+          }
+      },
+
   project : {
     name : 'ld34',
     version : '1.0.0',
