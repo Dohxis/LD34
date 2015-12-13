@@ -30,6 +30,13 @@ class Game extends luxe.State {
 
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
+  
+  var bullet : Sprite;
+  var canShoot : Bool = true;
+  var shootCooldown : Float = 1;
+  var cooldown : Float = 0;
+  
+  var level : Int = 2; // add 1 if you win (?
 
     public function new() {
         super({ name:'game' });
@@ -41,6 +48,8 @@ class Game extends luxe.State {
     public var sim : Simulation;
 
     override function onenter<T>(_:T) {
+
+        Luxe.renderer.clear_color.rgb(0xd5edf7);
 
         var bg_image = Luxe.resources.texture('assets/bg2.png');
         bgImage = new Sprite({
@@ -84,20 +93,25 @@ class Game extends luxe.State {
 
     function move_keys(){
         Luxe.input.bind_key('left', Key.key_z);
-        Luxe.input.bind_key('jump', Key.key_x);
+        Luxe.input.bind_key('action', Key.key_x);
     }
 
     var speedMax : Float = 300;
     var mSpeed : Float = 0;
 
     override function update( delta:Float ) {
-        if(player == null) {
-            return;
-        }
-        auto_move(delta);
-        jump(delta);
-        camera_follow(delta);
-		player.pos.copy_from(sim.player_collider.position);
+      if(player == null) {
+        return;
+      }
+      auto_move(delta);
+      jump(delta);
+      camera_follow(delta);
+		  player.pos.copy_from(sim.player_collider.position);
+      if(!canShoot) cooldown += delta;
+      if(cooldown >= shootCooldown) {
+        cooldown = 0;
+        canShoot = true;
+      }
     }
 
     function auto_move(delta : Float){
@@ -130,9 +144,11 @@ class Game extends luxe.State {
     var once : Bool = false;
 
     function jump(delta : Float){
-        if(Luxe.input.inputdown('jump') && sim.player_can_jump == true){
+      if(level == 1){
+        if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
             sim.player_velocity.y = -jumpSize;
         }
+<<<<<<< HEAD
         if(sim.player_can_jump == false){
             anim.animation = 'jump';
             once = false;
@@ -141,6 +157,25 @@ class Game extends luxe.State {
             once = true;
             anim.animation = 'run';
         }
+=======
+      }
+      if(level == 2){
+        if(Luxe.input.inputdown('action') && canShoot){
+          shoot();
+          canShoot = false;
+        }
+      }
+    }
+
+    function shoot(){
+      var bullet_image = Luxe.resources.texture('assets/bg_image.png');
+      bullet = new Sprite({
+        name: "snowball",
+        texture: bullet_image,
+        pos: player.pos,
+        size: new Vector(16, 16)
+      });
+>>>>>>> origin/master
     }
 
     override function onkeyup( e:KeyEvent ) {
