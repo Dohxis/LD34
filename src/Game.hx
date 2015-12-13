@@ -105,13 +105,13 @@ class Game extends luxe.State {
     var mSpeed : Float = 0;
 
     override function update( delta:Float ) {
-          if(player == null) {
+        if(player == null) {
           return;
         }
         auto_move(delta);
-        jump(delta);
+        action(delta);
         camera_follow(delta);
-	    player.pos.copy_from(sim.player_collider.position);
+	      player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
     }
 
@@ -119,7 +119,7 @@ class Game extends luxe.State {
         if(mSpeed > 0) player.flipx = true;
         else player.flipx = false;
 
-		if(Luxe.input.inputdown('left')){
+		    if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax){
                 mSpeed -= 800*delta;
                 if(mSpeed > 0 && sim.player_velocity.x != 0) anim.animation = 'slide';
@@ -127,6 +127,7 @@ class Game extends luxe.State {
             }
                 sim.player_velocity.x = mSpeed;
         }
+        
         else{
             if(mSpeed < speedMax){
                 mSpeed += 800*delta;
@@ -135,7 +136,7 @@ class Game extends luxe.State {
             }
             	sim.player_velocity.x = mSpeed;
         }
-	}
+	  }
 
     function camera_follow(delta : Float){
 
@@ -149,14 +150,14 @@ class Game extends luxe.State {
     var jumpSize : Float = 550;
     var once : Bool = false;
 
-    function jump(delta : Float){
-      if(level == 1){
-        if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
-            sim.player_velocity.y = -jumpSize;
+    function action(delta : Float){
+        if(level == 1){
+            if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
+                sim.player_velocity.y = -jumpSize;
         }
         if(sim.player_can_jump == false){
-            anim.animation = 'jump';
-            once = false;
+              anim.animation = 'jump';
+              once = false;
         }
         if(sim.player_can_jump == true && once == false){
             once = true;
@@ -172,19 +173,19 @@ class Game extends luxe.State {
     }
 
     function handle_bullets(delta : Float){
-     if(!canShoot) cooldown += delta;
-     if(cooldown >= shootCooldown) {
-       cooldown = 0;
-       canShoot = true;
-     }
-        if(bullets != null){
-            var i : Int = 0;
-            for(bullet in bullets){
-                if(bulletDirections[i]) bullet.pos.x += 500 * delta;
-                 else bullet.pos.x += -500 * delta;
-                i++;
-            }
+      if(!canShoot) cooldown += delta;
+      if(cooldown >= shootCooldown) {
+          cooldown = 0;
+          canShoot = true;
+      }
+      if(bullets != null){
+        var i : Int = 0;
+        for(bullet in bullets){
+        if(bulletDirections[i]) bullet.pos.x += 500 * delta;
+          else bullet.pos.x += -500 * delta;
+          i++;
         }
+      }
     }
 
     function shoot(){
@@ -217,16 +218,16 @@ class Game extends luxe.State {
     } //create_map_collision
 
     function create_map() {
-
-            //Fetch the loaded tmx data from the assets
+        
+        //Fetch the loaded tmx data from the assets
         var map_data = Luxe.resources.text('assets/level1.tmx').asset.text;
-
-            //parse that data into a usable TiledMap instance
+        
+        //parse that data into a usable TiledMap instance
         map = new TiledMap({ format:'tmx', tiled_file_data: map_data });
-
-            //Create the tilemap visuals
+        
+        //Create the tilemap visuals
         map.display({ scale:map_scale, filter:FilterType.nearest });
-
+        
         for(layer in map.tiledmap_data.image_layers) {
 
             new luxe.Sprite({
@@ -241,14 +242,17 @@ class Game extends luxe.State {
 
         } //each image_layer
 
-
     } //create_map
 
     override function onleave<T>(_:T) {
-      player.destroy();
-      map.destroy();
-      bgImage.destroy();
-      Luxe.camera.focus(new Vector(320, 240));
+        player.destroy();
+        map.destroy();
+        bgImage.destroy();
+        Luxe.camera.focus(new Vector(320, 240));
+      
+        for(bullet in bullets){
+            bullet.destroy();
+        }
     }
 
  }
