@@ -36,7 +36,7 @@ class Game extends luxe.State {
 
     override function onenter<T>(_:T) {
 
-
+      Luxe.renderer.clear_color.rgb(0xd5edf7);
 
 
         var bg_image = Luxe.resources.texture('assets/bg2.png');
@@ -158,7 +158,7 @@ class Game extends luxe.State {
 
 
     } //create_map
-    
+
     override function onleave<T>(_:T) {
       player.destroy();
       map.destroy();
