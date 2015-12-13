@@ -10,6 +10,7 @@ import luxe.Vector;
 import luxe.Transform;
 import luxe.Entity;
 import luxe.Component;
+import luxe.Log.log;
 
 import luxe.Parcel;
 import luxe.ParcelProgress;
@@ -27,6 +28,8 @@ class Game extends luxe.State {
   var map: TiledMap;
   var map_scale: Int = 1;
   var bgImage: Sprite;
+  var camX: Float;
+  var camY: Float;
 
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
@@ -36,7 +39,11 @@ class Game extends luxe.State {
   var shootCooldown : Float = 1;
   var cooldown : Float = 0;
 
+<<<<<<< HEAD
   var level : Int = 2; // add 1 if you win (?
+=======
+  var level : Int = 1; // add 1 if you win (?
+>>>>>>> origin/master
 
     public function new() {
         super({ name:'game' });
@@ -93,7 +100,11 @@ class Game extends luxe.State {
 
     function move_keys(){
         Luxe.input.bind_key('left', Key.key_z);
+        Luxe.input.bind_key('left', Key.left);
+        Luxe.input.bind_key('jump', Key.key_x);
+        Luxe.input.bind_key('jump', Key.space);
         Luxe.input.bind_key('action', Key.key_x);
+
     }
 
     var speedMax : Float = 300;
@@ -137,8 +148,13 @@ class Game extends luxe.State {
 	}
 
     function camera_follow(delta : Float){
-        Luxe.camera.focus(new Vector(player.pos.x, player.pos.y - 120), delta);
+
+        camX = player.pos.x + 425;
+        camY = player.pos.y - 251 - (player.pos.y - 371);
+
+        Luxe.camera.focus(new Vector(camX, camY), delta);
     }
+
 
     var jumpSize : Float = 550;
     var once : Bool = false;
@@ -148,6 +164,10 @@ class Game extends luxe.State {
         if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
             sim.player_velocity.y = -jumpSize;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
         if(sim.player_can_jump == false){
             anim.animation = 'jump';
             once = false;
@@ -156,6 +176,10 @@ class Game extends luxe.State {
             once = true;
             anim.animation = 'run';
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
       }
       if(level == 2){
         if(Luxe.input.inputdown('action') && canShoot){
@@ -173,6 +197,10 @@ class Game extends luxe.State {
         pos: player.pos,
         size: new Vector(16, 16)
       });
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     }
 
     override function onkeyup( e:KeyEvent ) {
@@ -223,6 +251,7 @@ class Game extends luxe.State {
     override function onleave<T>(_:T) {
       player.destroy();
       map.destroy();
+      bgImage.destroy();
       Luxe.camera.focus(new Vector(320, 240));
     }
 
