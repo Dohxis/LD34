@@ -30,12 +30,12 @@ class Game extends luxe.State {
 
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
-  
+
   var bullet : Sprite;
   var canShoot : Bool = true;
   var shootCooldown : Float = 1;
   var cooldown : Float = 0;
-  
+
   var level : Int = 2; // add 1 if you win (?
 
     public function new() {
@@ -148,7 +148,6 @@ class Game extends luxe.State {
         if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
             sim.player_velocity.y = -jumpSize;
         }
-<<<<<<< HEAD
         if(sim.player_can_jump == false){
             anim.animation = 'jump';
             once = false;
@@ -157,7 +156,6 @@ class Game extends luxe.State {
             once = true;
             anim.animation = 'run';
         }
-=======
       }
       if(level == 2){
         if(Luxe.input.inputdown('action') && canShoot){
@@ -175,7 +173,6 @@ class Game extends luxe.State {
         pos: player.pos,
         size: new Vector(16, 16)
       });
->>>>>>> origin/master
     }
 
     override function onkeyup( e:KeyEvent ) {
