@@ -11,7 +11,7 @@ class Main extends luxe.Game {
 
         config.preload.texts.push({id:'assets/tilemap.tmx'});
 
-        config.preload.textures.push({id: 'assets/playerSprite.png'});
+        config.preload.textures.push({id: 'assets/playerSpriteBeauty.png'});
         config.preload.textures.push({id: 'assets/logo.png'});
         config.preload.textures.push({ id:'assets/bg_image.png' });
         config.preload.textures.push({ id:'assets/play.png' });
