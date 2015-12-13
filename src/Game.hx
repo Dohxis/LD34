@@ -10,6 +10,7 @@ import luxe.Vector;
 import luxe.Transform;
 import luxe.Entity;
 import luxe.Component;
+import luxe.Log.log;
 
 import luxe.Parcel;
 import luxe.ParcelProgress;
@@ -27,6 +28,8 @@ class Game extends luxe.State {
   var map: TiledMap;
   var map_scale: Int = 1;
   var bgImage: Sprite;
+  var camX: Float;
+  var camY: Float;
 
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
@@ -88,7 +91,9 @@ class Game extends luxe.State {
 
     function move_keys(){
         Luxe.input.bind_key('left', Key.key_z);
+        Luxe.input.bind_key('left', Key.left);
         Luxe.input.bind_key('jump', Key.key_x);
+        Luxe.input.bind_key('jump', Key.space);
     }
 
     var speedMax : Float = 300;
@@ -119,10 +124,14 @@ class Game extends luxe.State {
 	}
 
     function camera_follow(delta : Float){
-        Luxe.camera.focus(new Vector(player.pos.x, player.pos.y - 120), delta);
+
+        camX = player.pos.x + 425;
+        camY = player.pos.y - 251 - (player.pos.y - 371);
+
+        Luxe.camera.focus(new Vector(camX, camY), delta);
     }
 
-    var jumpSize : Float = 550;
+    var jumpSize : Float = 500;
 
     function jump(delta : Float){
         if(Luxe.input.inputdown('jump') && sim.player_can_jump == true){
@@ -178,6 +187,7 @@ class Game extends luxe.State {
     override function onleave<T>(_:T) {
       player.destroy();
       map.destroy();
+      bgImage.destroy();
       Luxe.camera.focus(new Vector(320, 240));
     }
 
