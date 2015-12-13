@@ -34,13 +34,15 @@ class Game extends luxe.State {
     var spawn_pos:Vector;
     var portals:Map<Int, Vector>;
     
+    var spikes = [];
+    
     var bullets = [];
     var bulletDirections = [];
     var canShoot : Bool = true;
     var shootCooldown : Float = 1;
     var cooldown : Float = 0;
     
-    var level : Int = 2; // add 1 if you win (?)
+    var level : Int = 1; // add 1 if you win (?)
     
     public function new() {
         super({ name:'game' });
@@ -52,6 +54,8 @@ class Game extends luxe.State {
     public var sim : Simulation;
     
     override function onenter<T>(_:T) {
+        
+        Luxe.events.listen('simulation.triggers.collide', on_trigger);
         
         Luxe.renderer.clear_color.rgb(0xd5edf7);
         
@@ -76,6 +80,40 @@ class Game extends luxe.State {
         move_keys();
         create_map();
         create_map_collision();
+        load_spikes();
+    }
+    
+    function load_spikes() {
+        
+        var bounds = map.layer('collide').bounds_fitted();
+        for(bound in bounds) {
+            var shape = Polygon.rectangle(
+                bound.x *= map.tile_width * map_scale,
+                bound.y *= map.tile_height * map_scale,
+                bound.w *= map.tile_width * map_scale,
+                bound.h *= map.tile_height * map_scale
+            );            
+            shape.tags.set('type', 'collide');
+            sim.trigger_colliders.push(Polygon.rectangle(bound.x, bound.y, bound.w, bound.h, false));
+        }
+    }
+    
+    function on_trigger(collisions:Array<ShapeCollision>){
+        for(collision in collisions) {
+            var _type = collision.shape2.tags.get('type');
+            trace(_type);
+            
+            switch(_type) {
+                case 'collide':
+                    Main.state.set('game over');
+                  
+                case 'exit':
+
+                case _:
+          
+          } //switch type
+
+      } //each collision
     }
     
     function create_player(){
@@ -83,7 +121,7 @@ class Game extends luxe.State {
 			      player = new Sprite({
 				    name : 'player',
 				    texture : playerSprite,
-                    size : new Vector(124,124)
+            size : new Vector(124,124)
 			   });
     }
     
