@@ -26,6 +26,7 @@ class Game extends luxe.State {
 
   var map: TiledMap;
   var map_scale: Int = 1;
+  var bgImage: Sprite;
 
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
@@ -41,6 +42,18 @@ class Game extends luxe.State {
 
     override function onenter<T>(_:T) {
 
+
+
+
+        var bg_image = Luxe.resources.texture('assets/bg2.png');
+        bgImage = new Sprite({
+          name: 'bgImage',
+          depth: -1,
+          texture: bg_image,
+          pos: new Vector(320, 240),
+          size: new Vector(3200, 480)
+        });
+
         sim = Luxe.physics.add_engine(Simulation);
         sim.draw = false;
         assets_loaded();
@@ -55,8 +68,16 @@ class Game extends luxe.State {
         create_map_collision();
     }
 
+<<<<<<< HEAD
     function create_player(){
         var playerSprite = Luxe.resources.texture('assets/SantaShit.png');
+=======
+
+
+        //--------------------------------------------//
+                    //Player
+        var playerSprite = Luxe.resources.texture('assets/playerSpriteBeauty.png');
+>>>>>>> origin/master
 		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
 
 			player = new Sprite({
@@ -64,6 +85,7 @@ class Game extends luxe.State {
 				texture : playerSprite,
                 size : new Vector(124,124)
 			});
+<<<<<<< HEAD
     }
 
     function create_player_animation(){
@@ -72,13 +94,22 @@ class Game extends luxe.State {
         anim.add_from_json_object( anim_object.asset.json );
         anim.animation = 'run';
         anim.play();
+=======
+
+        sim.player_collider = Polygon.rectangle(100, 370,115,115);
+        move_keys();
+                    //Player
+        //-------------------------------------------//
+
+        create_map();
+        create_map_collision();
+
+>>>>>>> origin/master
     }
 
     function move_keys(){
-        Luxe.input.bind_key('left', Key.left);
-        Luxe.input.bind_key('left', Key.key_a);
-        Luxe.input.bind_key('jump', Key.key_w);
-        Luxe.input.bind_key('jump', Key.space);
+        Luxe.input.bind_key('left', Key.key_z);
+        Luxe.input.bind_key('jump', Key.key_x);
     }
 
     var speedMax : Float = 300;
@@ -109,7 +140,7 @@ class Game extends luxe.State {
 	}
 
     function camera_follow(delta : Float){
-        Luxe.camera.focus(player.pos, delta);
+        Luxe.camera.focus(new Vector(player.pos.x, player.pos.y - 120), delta);
     }
 
     var jumpSize : Float = 550;
@@ -122,7 +153,7 @@ class Game extends luxe.State {
 
     override function onkeyup( e:KeyEvent ) {
         if(e.keycode == Key.escape) {
-            Luxe.shutdown();
+            Main.state.set('game over');
         }
     }
 
@@ -164,5 +195,11 @@ class Game extends luxe.State {
 
 
     } //create_map
+    
+    override function onleave<T>(_:T) {
+      player.destroy();
+      map.destroy();
+      Luxe.camera.focus(new Vector(320, 240));
+    }
 
  }

@@ -7,7 +7,15 @@ class Main extends luxe.Game {
 
     override function config(config:luxe.AppConfig) {
 
+        config.preload.textures.push({id:'assets/bg2.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/tileset.png', filter_min:nearest, filter_mag:nearest });
+        config.preload.textures.push({id:'assets/tileset2.png', filter_min:nearest, filter_mag:nearest });
+        config.preload.textures.push({id:'assets/Igloo.png', filter_min:nearest, filter_mag:nearest });
+        config.preload.textures.push({id:'assets/Crystal.png', filter_min:nearest, filter_mag:nearest });
+        config.preload.textures.push({id:'assets/IceBox.png', filter_min:nearest, filter_mag:nearest });
+        config.preload.textures.push({id:'assets/Sign_2.png', filter_min:nearest, filter_mag:nearest });
+
+
 
         config.preload.texts.push({id:'assets/level1.tmx'});
         config.preload.textures.push({id: 'assets/SantaShit.png'});
@@ -31,14 +39,6 @@ class Main extends luxe.Game {
         state.set('menu');
 
     } //ready
-
-    override function onkeyup( e:KeyEvent ) {
-
-        if(e.keycode == Key.escape) {
-            Luxe.shutdown();
-        }
-
-    } //onkeyup
 
     override function update(dt:Float) {
 
