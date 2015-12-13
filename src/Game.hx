@@ -74,10 +74,8 @@ class Game extends luxe.State {
     }
 
     function move_keys(){
-        Luxe.input.bind_key('left', Key.left);
-        Luxe.input.bind_key('left', Key.key_a);
-        Luxe.input.bind_key('jump', Key.key_w);
-        Luxe.input.bind_key('jump', Key.space);
+        Luxe.input.bind_key('left', Key.key_z);
+        Luxe.input.bind_key('jump', Key.key_x);
     }
 
     var speedMax : Float = 300;
@@ -118,7 +116,7 @@ class Game extends luxe.State {
 
     override function onkeyup( e:KeyEvent ) {
         if(e.keycode == Key.escape) {
-            Luxe.shutdown();
+            Main.state.set('game over');
         }
     }
 
@@ -160,5 +158,11 @@ class Game extends luxe.State {
 
 
     } //create_map
+    
+    override function onleave<T>(_:T) {
+      player.destroy();
+      map.destroy();
+      Luxe.camera.focus(new Vector(320, 240));
+    }
 
  }
