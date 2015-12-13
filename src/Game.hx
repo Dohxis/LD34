@@ -109,7 +109,7 @@ class Game extends luxe.State {
         auto_move(delta);
         action(delta);
         camera_follow(delta);
-	    player.pos.copy_from(sim.player_collider.position);
+	      player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
     }
     
@@ -122,7 +122,7 @@ class Game extends luxe.State {
             anim.animation = 'idle';
         }
 
-		if(Luxe.input.inputdown('left')){
+		    if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax){
                 mSpeed -= 800*delta;
                 if(mSpeed > 0 && sim.player_velocity.x != 0) anim.animation = 'slide';
@@ -142,7 +142,6 @@ class Game extends luxe.State {
     }
 
     function camera_follow(delta : Float){
-        
         camX = player.pos.x + 425;
         camY = player.pos.y - 251 - (player.pos.y - 371);
         
@@ -160,7 +159,7 @@ class Game extends luxe.State {
             if(sim.player_can_jump == false){
                 anim.animation = 'jump';
                 once = false;
-              }
+            }
             if(sim.player_can_jump == true && once == false && sim.player_velocity.x != 0){
                 once = true;
                 anim.animation = 'run';
@@ -170,6 +169,7 @@ class Game extends luxe.State {
                 anim.animation = 'idle';
             }
         }
+        
         if(level == 2){
             if(Luxe.input.inputdown('action') && canShoot){
                 shoot();
@@ -179,31 +179,31 @@ class Game extends luxe.State {
     }
     
     function handle_bullets(delta : Float){
-      if(!canShoot) cooldown += delta;
-      if(cooldown >= shootCooldown) {
-          cooldown = 0;
-          canShoot = true;
-      }
-      if(bullets != null){
-        var i : Int = 0;
-        for(bullet in bullets){
-        if(bulletDirections[i]) bullet.pos.x += 500 * delta;
-          else bullet.pos.x += -500 * delta;
-          i++;
+        if(!canShoot) cooldown += delta;
+        if(cooldown >= shootCooldown) {
+            cooldown = 0;
+            canShoot = true;
         }
-      }
+        if(bullets != null){
+            var i : Int = 0;
+            for(bullet in bullets){
+              if(bulletDirections[i]) bullet.pos.x += 500 * delta;
+              else bullet.pos.x += -500 * delta;
+              i++;
+            }
+        }
     }
     
     function shoot(){
-      var bullet_image = Luxe.resources.texture('assets/bg_image.png');
-      bullets.push( new Sprite({
-        name: "snowball",
-        texture: bullet_image,
-        pos: player.pos,
-        size: new Vector(16, 16)
-      }) );
-      if(mSpeed > 0) bulletDirections.push(true);
-      else bulletDirections.push(false);
+        var bullet_image = Luxe.resources.texture('assets/bg_image.png');
+        bullets.push( new Sprite({
+            name: "snowball",
+            texture: bullet_image,
+            pos: player.pos,
+            size: new Vector(16, 16)
+        }) );
+        if(mSpeed > 0) bulletDirections.push(true);
+        else bulletDirections.push(false);
     }
     
     override function onkeyup( e:KeyEvent ) {
@@ -260,5 +260,6 @@ class Game extends luxe.State {
             bullet.destroy();
         }
     }
-
+    
  }
+ 
