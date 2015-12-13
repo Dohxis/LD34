@@ -42,9 +42,6 @@ class Game extends luxe.State {
 
     override function onenter<T>(_:T) {
 
-
-
-
         var bg_image = Luxe.resources.texture('assets/bg2.png');
         bgImage = new Sprite({
           name: 'bgImage',
@@ -57,7 +54,7 @@ class Game extends luxe.State {
         sim = Luxe.physics.add_engine(Simulation);
         sim.draw = false;
         assets_loaded();
-        sim.player_collider = Polygon.rectangle(0, 500, 90, 90);
+        sim.player_collider = Polygon.rectangle(100, 370, 90, 90);
     }
 
     function assets_loaded(){
@@ -68,16 +65,8 @@ class Game extends luxe.State {
         create_map_collision();
     }
 
-<<<<<<< HEAD
     function create_player(){
         var playerSprite = Luxe.resources.texture('assets/SantaShit.png');
-=======
-
-
-        //--------------------------------------------//
-                    //Player
-        var playerSprite = Luxe.resources.texture('assets/playerSpriteBeauty.png');
->>>>>>> origin/master
 		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
 
 			player = new Sprite({
@@ -85,7 +74,6 @@ class Game extends luxe.State {
 				texture : playerSprite,
                 size : new Vector(124,124)
 			});
-<<<<<<< HEAD
     }
 
     function create_player_animation(){
@@ -94,17 +82,6 @@ class Game extends luxe.State {
         anim.add_from_json_object( anim_object.asset.json );
         anim.animation = 'run';
         anim.play();
-=======
-
-        sim.player_collider = Polygon.rectangle(100, 370,115,115);
-        move_keys();
-                    //Player
-        //-------------------------------------------//
-
-        create_map();
-        create_map_collision();
-
->>>>>>> origin/master
     }
 
     function move_keys(){
@@ -195,7 +172,7 @@ class Game extends luxe.State {
 
 
     } //create_map
-    
+
     override function onleave<T>(_:T) {
       player.destroy();
       map.destroy();
