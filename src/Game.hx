@@ -34,16 +34,13 @@ class Game extends luxe.State {
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
 
-  var bullet : Sprite;
+  var bullets = [];
+  var bulletDirections = [];
   var canShoot : Bool = true;
   var shootCooldown : Float = 1;
   var cooldown : Float = 0;
 
-<<<<<<< HEAD
-  var level : Int = 2; // add 1 if you win (?
-=======
   var level : Int = 1; // add 1 if you win (?
->>>>>>> origin/master
 
     public function new() {
         super({ name:'game' });
@@ -100,9 +97,6 @@ class Game extends luxe.State {
 
     function move_keys(){
         Luxe.input.bind_key('left', Key.key_z);
-        Luxe.input.bind_key('left', Key.left);
-        Luxe.input.bind_key('jump', Key.key_x);
-        Luxe.input.bind_key('jump', Key.space);
         Luxe.input.bind_key('action', Key.key_x);
 
     }
@@ -111,18 +105,14 @@ class Game extends luxe.State {
     var mSpeed : Float = 0;
 
     override function update( delta:Float ) {
-      if(player == null) {
-        return;
-      }
-      auto_move(delta);
-      jump(delta);
-      camera_follow(delta);
-		  player.pos.copy_from(sim.player_collider.position);
-      if(!canShoot) cooldown += delta;
-      if(cooldown >= shootCooldown) {
-        cooldown = 0;
-        canShoot = true;
-      }
+          if(player == null) {
+          return;
+        }
+        auto_move(delta);
+        jump(delta);
+        camera_follow(delta);
+	    player.pos.copy_from(sim.player_collider.position);
+        handle_bullets(delta);
     }
 
     function auto_move(delta : Float){
@@ -164,10 +154,6 @@ class Game extends luxe.State {
         if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
             sim.player_velocity.y = -jumpSize;
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
         if(sim.player_can_jump == false){
             anim.animation = 'jump';
             once = false;
@@ -176,10 +162,6 @@ class Game extends luxe.State {
             once = true;
             anim.animation = 'run';
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
       }
       if(level == 2){
         if(Luxe.input.inputdown('action') && canShoot){
@@ -189,18 +171,32 @@ class Game extends luxe.State {
       }
     }
 
+    function handle_bullets(delta : Float){
+     if(!canShoot) cooldown += delta;
+     if(cooldown >= shootCooldown) {
+       cooldown = 0;
+       canShoot = true;
+     }
+        if(bullets != null){
+            var i : Int = 0;
+            for(bullet in bullets){
+                if(bulletDirections[i]) bullet.pos.x += 500 * delta;
+                 else bullet.pos.x += -500 * delta;
+                i++;
+            }
+        }
+    }
+
     function shoot(){
       var bullet_image = Luxe.resources.texture('assets/bg_image.png');
-      bullet = new Sprite({
+      bullets.push( new Sprite({
         name: "snowball",
         texture: bullet_image,
         pos: player.pos,
         size: new Vector(16, 16)
-      });
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
+      }) );
+      if(mSpeed > 0) bulletDirections.push(true);
+      else bulletDirections.push(false);
     }
 
     override function onkeyup( e:KeyEvent ) {
