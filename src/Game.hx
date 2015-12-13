@@ -43,12 +43,11 @@ class Game extends luxe.State {
         var playerSprite = Luxe.resources.texture('assets/playerSpriteBeauty.png');
 		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
 			player = new Sprite({
-				pos : Luxe.screen.mid,
 				name : 'player',
 				texture : playerSprite,
-				size : new Vector(124, 124)
+                size : new Vector(124,124)
 			});
-        sim.player_collider = Polygon.rectangle(0,0,124,124);
+        sim.player_collider = Polygon.rectangle(0,0,115,115);
         move_keys();
                     //Player
         //-------------------------------------------//
@@ -70,6 +69,7 @@ class Game extends luxe.State {
     override function update( delta:Float ) {
         auto_move(delta);
         jump(delta);
+        camera_follow(delta);
 		player.pos.copy_from(sim.player_collider.position);
     }
 
@@ -86,6 +86,10 @@ class Game extends luxe.State {
             	sim.player_velocity.x = mSpeed;
         }
 	}
+
+    function camera_follow(delta : Float){
+        Luxe.camera.focus(player.pos, delta);
+    }
 
     var jumpSize : Float = 550;
 
