@@ -21,6 +21,7 @@ class Game extends luxe.State {
 
   var map: TiledMap;
   var map_scale: Int = 1;
+  var bgImage: Sprite;
 
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
@@ -35,8 +36,22 @@ class Game extends luxe.State {
 
     override function onenter<T>(_:T) {
 
+
+
+
+        var bg_image = Luxe.resources.texture('assets/bg2.png');
+        bgImage = new Sprite({
+          name: 'bgImage',
+          depth: -1,
+          texture: bg_image,
+          pos: new Vector(320, 240),
+          size: new Vector(3200, 480)
+        });
+
         sim = Luxe.physics.add_engine(Simulation);
         sim.draw = false;
+
+
 
         //--------------------------------------------//
                     //Player
@@ -47,13 +62,15 @@ class Game extends luxe.State {
 				texture : playerSprite,
                 size : new Vector(124,124)
 			});
-        sim.player_collider = Polygon.rectangle(0,0,115,115);
+
+        sim.player_collider = Polygon.rectangle(100, 370,115,115);
         move_keys();
                     //Player
         //-------------------------------------------//
 
         create_map();
         create_map_collision();
+
     }
 
     function move_keys(){
@@ -88,7 +105,7 @@ class Game extends luxe.State {
 	}
 
     function camera_follow(delta : Float){
-        Luxe.camera.focus(player.pos, delta);
+        Luxe.camera.focus(new Vector(player.pos.x, player.pos.y - 120), delta);
     }
 
     var jumpSize : Float = 550;
