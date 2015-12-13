@@ -78,7 +78,7 @@ class Game extends luxe.State {
         create_player();
         create_player_animation();
         move_keys();
-        //create_enemy_animation();
+        //create_enemy();
         create_map();
         create_map_collision();
         load_spikes();
@@ -139,16 +139,28 @@ class Game extends luxe.State {
         Luxe.input.bind_key('action', Key.key_x);
     }
     
-    var enemy : Sprite;
+    var enemy = [];
     var enemyAnim : SpriteAnimation;
+    var enemyCount : Int = 0;
+    
+    function create_enemy(){
+        var enemySprite = Luxe.resources.texture('assets/snowman.png');
+        enemy.push(new Sprite({
+            name: "enemy",
+            texture: enemySprite,
+            pos: player.pos,
+            size : new Vector(72,72)
+        }));
+        create_enemy_animation();
+    }
     
     function create_enemy_animation(){
         var enemy_object = Luxe.resources.json('assets/snowman.json');
-        enemyAnim = enemy.add( new SpriteAnimation({ name:'anim' }) );
+        enemyAnim = enemy[enemyCount].add( new SpriteAnimation({ name:'anim' }) );
         enemyAnim.add_from_json_object( enemy_object.asset.json );
         enemyAnim.animation = 'idle';
-        enemyAnim.play();
-        
+        enemyCount++;
+        enemyAnim.play();    
     }
     
     var speedMax : Float = 300;
@@ -172,7 +184,7 @@ class Game extends luxe.State {
         if(sim.player_velocity.x == 0 && anim.animation != 'idle'){
             anim.animation = 'idle';
         }
-
+        
 		    if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax){
                 mSpeed -= 800*delta;
