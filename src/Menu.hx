@@ -87,11 +87,9 @@ class Menu extends luxe.State {
   }
 
   override function onkeyup( e:KeyEvent ) {
-
-    if(e.keycode == Key.escape) {
-      Luxe.shutdown();
-    }
-
+      if(e.keycode == Key.escape) {
+          Luxe.shutdown();
+      }
   }
 
   override function onmousedown( e:MouseEvent ){

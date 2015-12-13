@@ -16,5 +16,11 @@
         "frameset": ["4 hold 10"],
         "loop": "true",
         "speed": "1"
+    },
+    "idle" :{
+        "frame_size":{ "x":"198", "y":"198"},
+        "frameset": ["17-18"],
+        "loop": "true",
+        "speed": "4"
     }
 }

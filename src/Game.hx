@@ -114,10 +114,18 @@ class Game extends luxe.State {
 	    player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
     }
-
+    
+    var onceIdle : Bool = false;
+    
     function auto_move(delta : Float){
         if(mSpeed > 0) player.flipx = true;
         else player.flipx = false;
+        
+        if(sim.player_velocity.x == 0 && onceIdle == false){
+            anim.animation = 'idle';
+            onceIdle = true;
+        }
+        if(sim.player_velocity.x != 0) onceIdle = false;
 
 		if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax){
