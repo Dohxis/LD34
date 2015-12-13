@@ -113,17 +113,14 @@ class Game extends luxe.State {
         handle_bullets(delta);
     }
     
-    var onceIdle : Bool = false;
     
     function auto_move(delta : Float){
         if(mSpeed > 0) player.flipx = true;
         else player.flipx = false;
         
-        if(sim.player_velocity.x == 0 && onceIdle == false){
+        if(sim.player_velocity.x == 0 && anim.animation != 'idle'){
             anim.animation = 'idle';
-            onceIdle = true;
         }
-        if(sim.player_velocity.x != 0) onceIdle = false;
 
 		if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax){
@@ -164,9 +161,13 @@ class Game extends luxe.State {
                 anim.animation = 'jump';
                 once = false;
               }
-            if(sim.player_can_jump == true && once == false){
+            if(sim.player_can_jump == true && once == false && sim.player_velocity.x != 0){
                 once = true;
                 anim.animation = 'run';
+            }
+            if(sim.player_can_jump == true && once == false && sim.player_velocity.x == 0){
+                once = true;
+                anim.animation = 'idle';
             }
         }
         if(level == 2){
