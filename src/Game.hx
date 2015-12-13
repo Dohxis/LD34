@@ -31,7 +31,8 @@ class Game extends luxe.State {
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
   
-  var bullet : Sprite;
+  var bullets = [];
+  var bulletDirections = [];
   var canShoot : Bool = true;
   var shootCooldown : Float = 1;
   var cooldown : Float = 0;
@@ -114,6 +115,15 @@ class Game extends luxe.State {
         cooldown = 0;
         canShoot = true;
       }
+      if(bullets != null){
+        var i : Int = 0;
+        for(bullet in bullets){
+          if(bulletDirections[i]) bullet.pos.x += 500 * delta;
+          else bullet.pos.x += -500 * delta;
+          i++;
+        }
+      }
+      
     }
 
     function auto_move(delta : Float){
@@ -152,12 +162,14 @@ class Game extends luxe.State {
 
     function shoot(){
       var bullet_image = Luxe.resources.texture('assets/bg_image.png');
-      bullet = new Sprite({
+      bullets.push( new Sprite({
         name: "snowball",
         texture: bullet_image,
         pos: player.pos,
         size: new Vector(16, 16)
-      });
+      }) );
+      if(mSpeed > 0) bulletDirections.push(true);
+      else bulletDirections.push(false);
     }
 
     override function onkeyup( e:KeyEvent ) {
