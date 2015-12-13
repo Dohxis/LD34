@@ -40,7 +40,7 @@ class Game extends luxe.State {
     var shootCooldown : Float = 1;
     var cooldown : Float = 0;
     
-    var level : Int = 1; // add 1 if you win (?)
+    var level : Int = 2; // add 1 if you win (?)
     
     public function new() {
         super({ name:'game' });
@@ -67,7 +67,7 @@ class Game extends luxe.State {
         sim = Luxe.physics.add_engine(Simulation);
         sim.draw = false;
         assets_loaded();
-        sim.player_collider = Polygon.rectangle(100, 370, 90, 90);
+        sim.player_collider = Polygon.rectangle(100, 370, 80, 80);
     }
     
     function assets_loaded(){
@@ -83,7 +83,7 @@ class Game extends luxe.State {
 			      player = new Sprite({
 				    name : 'player',
 				    texture : playerSprite,
-            size : new Vector(124,124)
+                    size : new Vector(124,124)
 			   });
     }
     
@@ -195,15 +195,27 @@ class Game extends luxe.State {
     }
     
     function shoot(){
-        var bullet_image = Luxe.resources.texture('assets/bg_image.png');
-        bullets.push( new Sprite({
+        var bullet_image = Luxe.resources.texture('assets/snowball.png');
+        bullets.push(new Sprite({
             name: "snowball",
             texture: bullet_image,
             pos: player.pos,
-            size: new Vector(16, 16)
-        }) );
+            size : new Vector(72,72)
+        }));
+        create_shoot_animation();
         if(mSpeed > 0) bulletDirections.push(true);
         else bulletDirections.push(false);
+    }
+    
+    var snowball : SpriteAnimation;
+    var count : Int = 0;
+    function create_shoot_animation(){
+        var snow_object = Luxe.resources.json('assets/snowball.json');
+        snowball= bullets[count].add( new SpriteAnimation({ name:'snowball' }) );
+        snowball.add_from_json_object(snow_object.asset.json );
+        snowball.animation = 'throw';
+        count++;
+        snowball.play();
     }
     
     override function onkeyup( e:KeyEvent ) {

@@ -15,7 +15,8 @@ class Main extends luxe.Game {
         config.preload.textures.push({id:'assets/IceBox.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Sign_2.png', filter_min:nearest, filter_mag:nearest });
 
-
+        config.preload.textures.push({id:'assets/snowball.png'});
+        config.preload.jsons.push({id:'assets/snowball.json'});
 
         config.preload.texts.push({id:'assets/level1.tmx'});
         config.preload.textures.push({id: 'assets/SantaShit.png'});
