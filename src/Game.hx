@@ -34,6 +34,13 @@ class Game extends luxe.State {
   var spawn_pos:Vector;
   var portals:Map<Int, Vector>;
 
+  var bullet : Sprite;
+  var canShoot : Bool = true;
+  var shootCooldown : Float = 1;
+  var cooldown : Float = 0;
+
+  var level : Int = 1; // add 1 if you win (?
+
     public function new() {
         super({ name:'game' });
     }
@@ -72,8 +79,6 @@ class Game extends luxe.State {
 
     function create_player(){
         var playerSprite = Luxe.resources.texture('assets/SantaShit.png');
-		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
-
 			player = new Sprite({
 				name : 'player',
 				texture : playerSprite,
@@ -94,19 +99,26 @@ class Game extends luxe.State {
         Luxe.input.bind_key('left', Key.left);
         Luxe.input.bind_key('jump', Key.key_x);
         Luxe.input.bind_key('jump', Key.space);
+        Luxe.input.bind_key('action', Key.key_x);
+
     }
 
     var speedMax : Float = 300;
     var mSpeed : Float = 0;
 
     override function update( delta:Float ) {
-        if(player == null) {
-            return;
-        }
-        auto_move(delta);
-        jump(delta);
-        camera_follow(delta);
-		player.pos.copy_from(sim.player_collider.position);
+      if(player == null) {
+        return;
+      }
+      auto_move(delta);
+      jump(delta);
+      camera_follow(delta);
+		  player.pos.copy_from(sim.player_collider.position);
+      if(!canShoot) cooldown += delta;
+      if(cooldown >= shootCooldown) {
+        cooldown = 0;
+        canShoot = true;
+      }
     }
 
     function auto_move(delta : Float){
@@ -114,11 +126,19 @@ class Game extends luxe.State {
         else player.flipx = false;
 
 		if(Luxe.input.inputdown('left')){
-            if(mSpeed > -speedMax) mSpeed -= 800*delta;
+            if(mSpeed > -speedMax){
+                mSpeed -= 800*delta;
+                if(mSpeed > 0 && sim.player_velocity.x != 0) anim.animation = 'slide';
+                if(mSpeed < 0) anim.animation = 'run';
+            }
                 sim.player_velocity.x = mSpeed;
         }
         else{
-            if(mSpeed < speedMax) mSpeed += 800*delta;
+            if(mSpeed < speedMax){
+                mSpeed += 800*delta;
+                if(mSpeed < 0 && sim.player_velocity.x != 0) anim.animation = 'slide';
+                if(mSpeed > 0) anim.animation = 'run';
+            }
             	sim.player_velocity.x = mSpeed;
         }
 	}
@@ -131,12 +151,43 @@ class Game extends luxe.State {
         Luxe.camera.focus(new Vector(camX, camY), delta);
     }
 
-    var jumpSize : Float = 500;
+
+    var jumpSize : Float = 550;
+    var once : Bool = false;
 
     function jump(delta : Float){
-        if(Luxe.input.inputdown('jump') && sim.player_can_jump == true){
+      if(level == 1){
+        if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
             sim.player_velocity.y = -jumpSize;
         }
+
+        if(sim.player_can_jump == false){
+            anim.animation = 'jump';
+            once = false;
+        }
+        if(sim.player_can_jump == true && once == false){
+            once = true;
+            anim.animation = 'run';
+        }
+
+      }
+      if(level == 2){
+        if(Luxe.input.inputdown('action') && canShoot){
+          shoot();
+          canShoot = false;
+        }
+      }
+    }
+
+    function shoot(){
+      var bullet_image = Luxe.resources.texture('assets/bg_image.png');
+      bullet = new Sprite({
+        name: "snowball",
+        texture: bullet_image,
+        pos: player.pos,
+        size: new Vector(16, 16)
+      });
+
     }
 
     override function onkeyup( e:KeyEvent ) {
