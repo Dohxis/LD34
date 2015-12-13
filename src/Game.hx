@@ -67,8 +67,6 @@ class Game extends luxe.State {
 
     function create_player(){
         var playerSprite = Luxe.resources.texture('assets/SantaShit.png');
-		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
-
 			player = new Sprite({
 				name : 'player',
 				texture : playerSprite,
@@ -107,11 +105,19 @@ class Game extends luxe.State {
         else player.flipx = false;
 
 		if(Luxe.input.inputdown('left')){
-            if(mSpeed > -speedMax) mSpeed -= 800*delta;
+            if(mSpeed > -speedMax){
+                mSpeed -= 800*delta;
+                if(mSpeed > 0 && sim.player_velocity.x != 0) anim.animation = 'slide';
+                if(mSpeed < 0) anim.animation = 'run';
+            }
                 sim.player_velocity.x = mSpeed;
         }
         else{
-            if(mSpeed < speedMax) mSpeed += 800*delta;
+            if(mSpeed < speedMax){
+                mSpeed += 800*delta;
+                if(mSpeed < 0 && sim.player_velocity.x != 0) anim.animation = 'slide';
+                if(mSpeed > 0) anim.animation = 'run';
+            }
             	sim.player_velocity.x = mSpeed;
         }
 	}
@@ -121,10 +127,19 @@ class Game extends luxe.State {
     }
 
     var jumpSize : Float = 550;
+    var once : Bool = false;
 
     function jump(delta : Float){
         if(Luxe.input.inputdown('jump') && sim.player_can_jump == true){
             sim.player_velocity.y = -jumpSize;
+        }
+        if(sim.player_can_jump == false){
+            anim.animation = 'jump';
+            once = false;
+        }
+        if(sim.player_can_jump == true && once == false){
+            once = true;
+            anim.animation = 'run';
         }
     }
 
