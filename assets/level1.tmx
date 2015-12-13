@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="15" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="140" height="15" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
   <image source="tileset.png" width="384" height="126"/>
  </tileset>
@@ -18,19 +18,19 @@
  <tileset firstgid="158" name="IceBox" tilewidth="32" tileheight="32">
   <image source="IceBox.png" width="101" height="101"/>
  </tileset>
- <layer name="ground" width="100" height="15">
+ <layer name="ground" width="140" height="15">
   <data encoding="base64" compression="zlib">
-   eJzt1jdPw0AYxvFAKKET+hegw0aHjQ4bHTY6bHT4ApSFzkIRHT4n/wyWLCunnHN3iR38Sr/hJPvJnXR+lFAomGCC8euc4gznuMAlrnCNmzTu67/OLe5wjwc84gnPeEnjvjJxXvGGd5/mZ9p84BNfPs336iTb8d/4wa+hfZnO9+ok2/H2PjHRLanoK+suyty/ejSgEU1oRgta0YZ2g/uUGXufyHaLm28xFX1l3UWZ+9eBTnShGz3oRR/6MSDxe9b5Tfy/tPeJbLe4+Ra91leDGMIwRjCKMYxjApMSGdb5Tfy/FPWVrp7Rnal6N6cwjRnMYg7zWMAilhT2pmNEfaWrZ3Rnqt7NZaxgFWtYxwY2sYVthb3pGFFf6eoZE5kqs4Nd7GEfBzjEEY5xgixkI4wcFKAQRSiOk+l8Phd5yEfEJ+tEZ3RzXpksZ4bo/di6BKUoQzmqUYNa1MXJdj4fRQUqUeWTdaIzujmvMysqkSF6P7b+A4GVe40=
+   eJzt2FdT1FAYxvFFQJFeBPkGgAhSLpCOKFVAmiAdQem9Y6G3GxSQG8pIUfmc/LnYmUxms5vsJptEzjPzu0jm5J1zkpnzJnE4RERERO5ntrGDXexhHz/wEwcmzkvEmjnEEX7hGCc4xRnOTZyXiP/zGxe4tGl9Ef/mCtf4Y9P6It7F23eMv/iHG4PmZXR9Ee/i7TuGtF8Y0Tus3o+SkIwUPEMqniMN6XiBDGQiC9nmTNMykfYLtb1Dy15mh36Ug5fIRR7yUYBCFKEYJXiFUnOmqCnO52PE96u0X6jtHVr2Mqv2o9d4gzKUowKVqEI13qIGtajDO9SjwYzJaozz+Rjx/arUj/TqI3rXlO5tvvwDakQTmvEeLWjFB7ShHR3oRBe60YNeH+b+P0SpH+nVR/SuKd3bfPkH9BF96McnfMYABjGEYYxgFGMYxwQmsYZ1Sa1Vlef0GGt2lPqRXn3EiJp6ZArTmMEs5jCPBSxiCcv4gq/4hu9YwSa2JLU2VJ7TY+xdAvAAgQjCY4QiDOEu1iofH4yHeIQQmxx7WqOW9aqpJa+hdL1V7o+79UUgElGIRjwS8BSJLtYuHx+DWMThiU2OPa1Ry3rV1JLXULreKvfH3fpuAQiymH0=
   </data>
  </layer>
- <layer name="noncollide" width="100" height="15">
+ <layer name="noncollide" width="140" height="15">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7D594BXFOwmJK2CJgAAAADwx1wHAIoF7a4Ang==
+   eJztzjEBAAAIA6D172BXE+z2EBKQAAAAAAAAQDfXAQBeWh2MAJ4=
   </data>
  </layer>
- <layer name="collide" width="100" height="15">
+ <layer name="collide" width="140" height="15">
   <data encoding="base64" compression="zlib">
-   eJzt1t0KwCAIgFHffO7nwSdExEZdSEWrfQe86UI0BBWZx2ahFvvgOhAcFqfFNboQAAAa4dZIvvAX3BoJfwEAcyjtT+97jxr+qLQ/ve89alidSpjBOI8rUnn2WNNvLldLcQbjPK7o3WNNv7lcHjfh+yVy
+   eJzt17sKwDAIQFH/vOnjwyOUDC3JIMGapPeAi4PooKDIPDaNpLEH94E5HBqnxhXdCAAAAPAh/iZY8DdhdNw0WHDTAB+tW2zNe/SA8bRusTXv0QNiJbl3uOzzipI8Z+yZt1brT8oOl31e0XvGnnlrtVaSAXeHJXI=
   </data>
  </layer>
 </map>
