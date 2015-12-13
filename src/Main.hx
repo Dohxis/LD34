@@ -10,8 +10,9 @@ class Main extends luxe.Game {
         config.preload.textures.push({id:'assets/tileset.png', filter_min:nearest, filter_mag:nearest });
 
         config.preload.texts.push({id:'assets/level1.tmx'});
+        config.preload.textures.push({id: 'assets/SantaShit.png'});
+        config.preload.jsons.push({id: 'assets/PlayerAnimation.json'});
 
-        config.preload.textures.push({id: 'assets/playerSpriteBeauty.png'});
         config.preload.textures.push({id: 'assets/logo.png'});
         config.preload.textures.push({ id:'assets/bg_image.png' });
         config.preload.textures.push({ id:'assets/play.png' });

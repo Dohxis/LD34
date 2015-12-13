@@ -3,10 +3,10 @@
         "frame_size":{ "x":"198", "y":"198" },
         "frameset": ["1-12"],
         "loop": "true",
-        "speed": "8"
+        "speed": "15"
     },
     "slide" : {
-        "frame_size":{ "x":"198", "y":198" },
+        "frame_size":{ "x":"198", "y":"198" },
         "frameset": ["13-16"],
         "loop": "true",
         "speed": "6"

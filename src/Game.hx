@@ -11,6 +11,11 @@ import luxe.Transform;
 import luxe.Entity;
 import luxe.Component;
 
+import luxe.Parcel;
+import luxe.ParcelProgress;
+import phoenix.Texture;
+import luxe.components.sprite.SpriteAnimation;
+
 import luxe.collision.shapes.Polygon;
 import luxe.collision.data.ShapeCollision;
 
@@ -30,6 +35,7 @@ class Game extends luxe.State {
     }
 
     var player : Sprite;
+    var anim : SpriteAnimation;
 
     public var sim : Simulation;
 
@@ -37,23 +43,35 @@ class Game extends luxe.State {
 
         sim = Luxe.physics.add_engine(Simulation);
         sim.draw = false;
+        assets_loaded();
+        sim.player_collider = Polygon.rectangle(0, 500, 90, 90);
+    }
 
-        //--------------------------------------------//
-                    //Player
-        var playerSprite = Luxe.resources.texture('assets/playerSpriteBeauty.png');
+    function assets_loaded(){
+        create_player();
+        create_player_animation();
+        move_keys();
+        create_map();
+        create_map_collision();
+    }
+
+    function create_player(){
+        var playerSprite = Luxe.resources.texture('assets/SantaShit.png');
 		playerSprite.filter_min = playerSprite.filter_mag = FilterType.nearest;
+
 			player = new Sprite({
 				name : 'player',
 				texture : playerSprite,
                 size : new Vector(124,124)
 			});
-        sim.player_collider = Polygon.rectangle(0,0,115,115);
-        move_keys();
-                    //Player
-        //-------------------------------------------//
+    }
 
-        create_map();
-        create_map_collision();
+    function create_player_animation(){
+        var anim_object = Luxe.resources.json('assets/PlayerAnimation.json');
+        anim = player.add( new SpriteAnimation({ name:'anim' }) );
+        anim.add_from_json_object( anim_object.asset.json );
+        anim.animation = 'run';
+        anim.play();
     }
 
     function move_keys(){
@@ -67,6 +85,9 @@ class Game extends luxe.State {
     var mSpeed : Float = 0;
 
     override function update( delta:Float ) {
+        if(player == null) {
+            return;
+        }
         auto_move(delta);
         jump(delta);
         camera_follow(delta);
@@ -74,8 +95,8 @@ class Game extends luxe.State {
     }
 
     function auto_move(delta : Float){
-        if(mSpeed > 0) player.flipx = false;
-        else player.flipx = true;
+        if(mSpeed > 0) player.flipx = true;
+        else player.flipx = false;
 
 		if(Luxe.input.inputdown('left')){
             if(mSpeed > -speedMax) mSpeed -= 800*delta;
