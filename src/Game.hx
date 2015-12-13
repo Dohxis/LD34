@@ -57,10 +57,8 @@ class Game extends luxe.State {
     }
 
     function move_keys(){
-        Luxe.input.bind_key('left', Key.left);
-        Luxe.input.bind_key('left', Key.key_a);
-        Luxe.input.bind_key('jump', Key.key_w);
-        Luxe.input.bind_key('jump', Key.space);
+        Luxe.input.bind_key('left', Key.key_z);
+        Luxe.input.bind_key('jump', Key.key_x);
     }
 
     var speedMax : Float = 300;
