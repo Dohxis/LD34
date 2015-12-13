@@ -78,6 +78,7 @@ class Game extends luxe.State {
         create_player();
         create_player_animation();
         move_keys();
+        //create_enemy_animation();
         create_map();
         create_map_collision();
         load_spikes();
@@ -136,6 +137,18 @@ class Game extends luxe.State {
     function move_keys(){
         Luxe.input.bind_key('left', Key.key_z);
         Luxe.input.bind_key('action', Key.key_x);
+    }
+    
+    var enemy : Sprite;
+    var enemyAnim : SpriteAnimation;
+    
+    function create_enemy_animation(){
+        var enemy_object = Luxe.resources.json('assets/snowman.json');
+        enemyAnim = enemy.add( new SpriteAnimation({ name:'anim' }) );
+        enemyAnim.add_from_json_object( enemy_object.asset.json );
+        enemyAnim.animation = 'idle';
+        enemyAnim.play();
+        
     }
     
     var speedMax : Float = 300;
