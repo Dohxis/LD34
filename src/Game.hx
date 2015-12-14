@@ -43,6 +43,9 @@ class Game extends luxe.State {
     var cooldown : Float = 0;
 
     var level : Int = 1; // add 1 if you win (?)
+    
+    var jumpPadVelocity = 550;
+    var jumpPadResetsSpeed = true;
 
     public function new() {
         super({ name:'game' });
@@ -79,13 +82,14 @@ class Game extends luxe.State {
         create_map();
         create_map_collision();
         load_spikes();
+        load_jumps();
         create_player();
         create_player_animation();
         move_keys();
         //sim.draw = true;
     }
     
-    function load_spikes() { // a bit buggy but works oik
+    function load_spikes() { // a bit buggy but works ok
       
       var bounds = map.layer('collide').bounds_fitted();
       for(bound in bounds) {
@@ -93,11 +97,28 @@ class Game extends luxe.State {
         var shape = Polygon.rectangle(
           bound.x = bound.x * map.tile_width * map_scale + 50,
           bound.y = bound.y * map.tile_height * map_scale + 50,
-          bound.w *= map.tile_width * map_scale,
-          bound.h *= map.tile_height * map_scale
+          bound.w = bound.w * map.tile_width * map_scale - 10,
+          bound.h = bound.h * map.tile_height * map_scale
         );
         
         shape.tags.set('type', 'collide');
+        sim.trigger_colliders.push(shape);
+      }
+    }
+    
+    function load_jumps() { // a bit buggy but works ok
+      
+      var bounds = map.layer('jump').bounds_fitted();
+      for(bound in bounds) {
+        trace(bound.x + ' ' + bound.y + '\n');
+        var shape = Polygon.rectangle(
+          bound.x = bound.x * map.tile_width * map_scale + 50,
+          bound.y = bound.y * map.tile_height * map_scale + 50,
+          bound.w = bound.w * map.tile_width * map_scale - 10,
+          bound.h = bound.h * map.tile_height * map_scale
+        );
+        
+        shape.tags.set('type', 'jump');
         sim.trigger_colliders.push(shape);
       }
     }
@@ -109,11 +130,16 @@ class Game extends luxe.State {
 
             switch(_type) {
                 case 'collide':
-                    Main.state.set('game over');
+                  Main.state.set('game over');
+
+                case 'jump':
+                  if(jumpPadResetsSpeed){
+                    sim.player_velocity.y = 0;
+                  }
+                  sim.player_velocity.y = -jumpPadVelocity;
 
                 case 'exit':
-
-                case _:
+                  //nextLevel(); <------------------  (todo)
 
           } //switch type
 
