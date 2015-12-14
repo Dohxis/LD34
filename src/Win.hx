@@ -43,7 +43,7 @@ class Win extends luxe.State {
       size: new Vector(1280, 720)
     });
     
-    if(level == 3){
+    if(level == 4){
       text1.geom = Luxe.draw.text({
         text : "You win the game!",
         bounds : new Rectangle(0, 25, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
@@ -73,7 +73,7 @@ class Win extends luxe.State {
       point_size : 32
     });
     
-    if(level == 3){
+    if(level == 4){
       text3.geom = Luxe.draw.text({
         text : "Press space to restart the game",
         bounds : new Rectangle(0, 200, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),

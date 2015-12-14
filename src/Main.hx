@@ -58,9 +58,8 @@ class Main extends luxe.Game {
         jump.volume = 0.5;
 
         state.add( new Menu() );
-        state.add( new Game(1, 0) );
+        state.add( new Game(3, 0) );
         state.set('menu');
-        //trace(state.current_state);
         music();
 
     } //ready
