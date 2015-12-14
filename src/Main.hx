@@ -25,6 +25,7 @@ class Main extends luxe.Game {
         config.preload.jsons.push({id:'assets/snowball.json'});
 
         config.preload.texts.push({id:'assets/level1.tmx'});
+        config.preload.texts.push({id:'assets/level3.tmx'});
 
         config.preload.textures.push({id: 'assets/SantaShit.png'});
         config.preload.jsons.push({id: 'assets/PlayerAnimation.json'});
