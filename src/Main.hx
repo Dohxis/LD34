@@ -17,6 +17,8 @@ class Main extends luxe.Game {
         config.preload.textures.push({id:'assets/caneGreenSmall.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/caneRedSmall.png', filter_min:nearest, filter_mag:nearest });
         config.preload.textures.push({id:'assets/Tree_2.png', filter_min:nearest, filter_mag:nearest });
+        config.preload.texts.push({id:'assets/level2.tmx'});
+        config.preload.textures.push({id:'assets/string.png', filter_min:nearest, filter_mag:nearest });
 
 
         config.preload.textures.push({id:'assets/snowball.png'});

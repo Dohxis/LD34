@@ -82,7 +82,7 @@ class Game extends luxe.State {
         create_player();
         create_player_animation();
         move_keys();
-        //sim.draw = true;
+        sim.draw = true;
     }
 
     function load_spikes() { // a bit buggy but works oik
@@ -307,7 +307,7 @@ class Game extends luxe.State {
     function create_map() {
 
         //Fetch the loaded tmx data from the assets
-        var map_data = Luxe.resources.text('assets/level1.tmx').asset.text;
+        var map_data = Luxe.resources.text('assets/level2.tmx').asset.text;
 
         //parse that data into a usable TiledMap instance
         map = new TiledMap({ format:'tmx', tiled_file_data: map_data });
