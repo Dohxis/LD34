@@ -4,7 +4,7 @@
     window: {
       width:1280,
       height:720,
-      title:'LD34',
+      title:'Santa Rush',
       fullscreen:false,
       resizable:true,
       borderless:false
@@ -12,12 +12,12 @@
   },
 
   project : {
-    name : 'ld34',
+    name : 'SantaRush',
     version : '1.0.0',
     author : 'ainoraz.dohxis.edve98',
 
     app : {
-      name : 'ld34',
+      name : 'SantaRush',
       package : 'com.mariuk.ld34'
     },
 

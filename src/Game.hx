@@ -153,7 +153,9 @@ class Game extends luxe.State {
         sim.trigger_colliders.push(shape);
       }
     }
-
+    
+    var playOnce : Bool = false;
+    
     function on_trigger(collisions:Array<ShapeCollision>){
         for(collision in collisions) {
             var _type = collision.shape2.tags.get('type');
@@ -164,7 +166,8 @@ class Game extends luxe.State {
                   Main.state.set('game over');
 
                 case 'jump':
-                  if(jumpPadResetsSpeed){
+                  if(jumpPadResetsSpeed && playOnce == false){
+                    playOnce = true;
                     sim.player_velocity.y = 0;
                     Main.strin.play();
                   }
@@ -213,6 +216,8 @@ class Game extends luxe.State {
 
     var speedMax : Float = 300;
     var mSpeed : Float = 0;
+    
+    var playOnceCount : Int = 0;
 
     override function update( delta:Float ) {
         if(player == null) return;
@@ -223,8 +228,15 @@ class Game extends luxe.State {
 	    player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
         count_time(delta);
-
-        bgImage.pos.x = player.pos.x + 420;
+        
+        if(playOnce == true){
+            playOnceCount++;
+            if(playOnceCount == 20){
+                playOnce = false;
+                playOnceCount = 0;
+            }
+        }
+        bgImage.pos.x = sim.player_collider.position.x + 420;
     }
 
     var timeAdd : Float = 0;
@@ -277,6 +289,7 @@ class Game extends luxe.State {
     function action(delta : Float){
       if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
           sim.player_velocity.y = -jumpSize;
+          Main.jump.play();
       }
       if(sim.player_can_jump == false){
           anim.animation = 'jump';
