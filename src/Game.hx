@@ -44,7 +44,7 @@ class Game extends luxe.State {
 
     var level : Int = 1; // add 1 if you win (?)
     
-    var jumpPadVelocity = 550;
+    var jumpPadVelocity = 700;
     var jumpPadResetsSpeed = true;
 
     public function new() {
@@ -86,7 +86,9 @@ class Game extends luxe.State {
         //loads jump pads
         var lay : Bool = false;
         for(laye in map.layers){
+          trace(laye.name);
           if(laye.name == 'jump'){
+            trace("Works");
             lay = true;
           }
         }
@@ -97,9 +99,9 @@ class Game extends luxe.State {
         create_player();
         create_player_animation();
         move_keys();
-        //sim.draw = true;
+        sim.draw = true;
     }
-    
+
     function load_spikes() { // a bit buggy but works ok
       
       var bounds = map.layer('collide').bounds_fitted();
@@ -111,7 +113,7 @@ class Game extends luxe.State {
           bound.w = bound.w * map.tile_width * map_scale - 10,
           bound.h = bound.h * map.tile_height * map_scale
         );
-        
+
         shape.tags.set('type', 'collide');
         sim.trigger_colliders.push(shape);
       }
@@ -125,8 +127,8 @@ class Game extends luxe.State {
         var shape = Polygon.rectangle(
           bound.x = bound.x * map.tile_width * map_scale + 50,
           bound.y = bound.y * map.tile_height * map_scale + 50,
-          bound.w = bound.w * map.tile_width * map_scale - 10,
-          bound.h = bound.h * map.tile_height * map_scale
+          bound.w = bound.w * 2 * map.tile_width * map_scale - 10,
+          bound.h = bound.h * 2 * map.tile_height * map_scale
         );
         
         shape.tags.set('type', 'jump');
@@ -215,6 +217,8 @@ class Game extends luxe.State {
         camera_follow(delta);
 	      player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
+
+        bgImage.pos.x = player.pos.x + 420;
     }
 
 
@@ -342,7 +346,7 @@ class Game extends luxe.State {
     function create_map() {
 
         //Fetch the loaded tmx data from the assets
-        var map_data = Luxe.resources.text('assets/level1.tmx').asset.text;
+        var map_data = Luxe.resources.text('assets/level2.tmx').asset.text;
 
         //parse that data into a usable TiledMap instance
         map = new TiledMap({ format:'tmx', tiled_file_data: map_data });
@@ -371,14 +375,14 @@ class Game extends luxe.State {
         map.destroy();
         bgImage.destroy();
         Luxe.camera.focus(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y));
-        
+
         for(bullet in bullets){
             bullet.destroy();
         }
-        
+
         sim.obstacle_colliders = []; //hax
         sim.trigger_colliders = []; // hax
-        
+
         //sim.destroy(); <------------------------ (todo)
     }
 
