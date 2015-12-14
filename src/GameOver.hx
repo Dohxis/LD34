@@ -70,7 +70,6 @@ class GameOver extends luxe.State {
 
   override function onkeyup( e:KeyEvent ) {
     if(e.keycode == Key.key_x) {
-      destroy_text();
       Main.state.set('game');
     }
   }
@@ -85,6 +84,7 @@ class GameOver extends luxe.State {
   }
 
   override function onleave<T>(_:T) {
+    destroy_text();
     bgImage.destroy();
   }
 

@@ -27,6 +27,11 @@
  <tileset firstgid="227" name="caneGreenSmall" tilewidth="33" tileheight="33">
   <image source="caneGreenSmall.png" width="70" height="70"/>
  </tileset>
+ <layer name="exit" width="140" height="15">
+  <data encoding="base64" compression="zlib">
+   eJztzkNyBQAUAMF/mdg2f2zbtq2zp0+Rl8Wbqt5PoZBlWZZlWZZlWZZlWfb/K6GUMsqpoJIqqqmhljrqaaCRpojZLLxmWmiljXY66KSLbnropY9+BhgMeM3iKzLEMCOMMsY4E0wyxTQzzDLHfMRsFt4CiyyxzAqrrLHOBptssc0Ou+wFvGbx7XPAIUccc8IpZ5xzwSVXXHPDbcRsFt4d9zzwyBPPvPDKG+988MkX3/xEzGZZlv1Rv2UmHKg=
+  </data>
+ </layer>
  <layer name="noncollide" width="140" height="15">
   <data encoding="base64" compression="zlib">
    eJztzsUNA1AQA9H030iYmZmZObVkCvjXrFaKR3onXxyJKKWUUkoppf6tKGKII4EkUkg7+2K9qXAZZJFDHgUUUXL2xXpT4cqooIoa6mig6eyL9abCtdBGB1300MfA2RfrTYUbYoQxJphihrmzL9abCrfAEiusscEWO2dfrDcVbo8DjjjhjAuuzr5YbyrcDXc88MQLb3ycfbHelFLqV30B9iL/SQ==
@@ -34,7 +39,7 @@
  </layer>
  <layer name="ground" width="140" height="15">
   <data encoding="base64" compression="zlib">
-   eJzt2EdP3FAUhmFaqKGFBPgH9BYWAUJC74TeQ+819F52lA0JbRNAdPidvJuRrBGesT322B7uJz0LS/bRubZ0j20/PxEREZH3mX0c4BBHOMZf/MOJiX2JWDOnOMM5LvAfl7jCtYl9iXg/N7jFnU3ri3g393jAo03ri2iL1neMJzzjxaC+jK4voi1a3zGk88KI2WH1eZSEZKQgFWlIRwYykYVs5OArcs1p0zKRzguls0PNXmaHefQNechHAb6jED/wE0UoRglKzWlRVRzPx4jvV+m8UDo71OxlVp1HZShHBSpRhWrUoBZ1qMcvNKARTWg2o1mVcTwfI75f5eaRXnNE75rSvc2Tf0AtaEUb2tGBTnShGz34jV70oR8DGPSgd1+I3DzSa47oXVO6t3nyD2gIwxjBKMYwjglMYgrTmMEs5vAH8x707guRm0d6zREjauqRBSxiCctYwSrWsI4NbGIL29jBLvbMaNYp/ghAIIIQhnBE4KOC8z8gGCEItcmxuzWqWa+SWs415K63yv1xtb5IRCEaMfiCeCQg8Y21O58fi0+Iw2ebHLtbo5r1KqnlXEPueqvcH1frewVJ1YdI
+   eJztmMluwjAURaFAmctYyh/Qbuk3tmXDzAaooBP9zp4NkhXV4ES2ccQ70llESq78Esk3SSYjCIJwnbzgK77hCMc4wSnOLrguIUzmuMAlrnCNG9zi+wXXJfhnh3v8SGm+4JdP/MLvlOYLyUj6jvGDB/x1tC7X+UIykr5jqH3hojtC76MBPuKTwblDfHa7nOBR+8K0O+LsZdJH/jk+Hxffr2pfmHZHnL1M+sg/x+fj4vtV10e2esR2prq3yT8g/+j6yFaP2M5U9zb5B+QfXR/Z6hEXmddOFm8wh3ksYwWrWDM4v4C3WMRSSo7PzRhnXpOsaIbu+lDuz6n56niHDWziPfbwAfv/zB49v4Vt7GA3JcfnZowzr0lWNEN3fSj359R8fxKEbGg=
   </data>
  </layer>
  <layer name="noncollide2" width="140" height="15">

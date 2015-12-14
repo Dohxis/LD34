@@ -84,9 +84,9 @@ class Game extends luxe.State {
         move_keys();
         //sim.draw = true;
     }
-    
+
     function load_spikes() { // a bit buggy but works oik
-      
+
       var bounds = map.layer('collide').bounds_fitted();
       for(bound in bounds) {
         trace(bound.x + ' ' + bound.y + '\n');
@@ -96,12 +96,12 @@ class Game extends luxe.State {
           bound.w *= map.tile_width * map_scale,
           bound.h *= map.tile_height * map_scale
         );
-        
+
         shape.tags.set('type', 'collide');
         sim.trigger_colliders.push(shape);
       }
     }
-    
+
     function on_trigger(collisions:Array<ShapeCollision>){
         for(collision in collisions) {
             var _type = collision.shape2.tags.get('type');
@@ -178,6 +178,8 @@ class Game extends luxe.State {
         camera_follow(delta);
 	      player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
+
+        bgImage.pos.x = player.pos.x + 420;
     }
 
 
@@ -334,14 +336,14 @@ class Game extends luxe.State {
         map.destroy();
         bgImage.destroy();
         Luxe.camera.focus(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y));
-        
+
         for(bullet in bullets){
             bullet.destroy();
         }
-        
+
         sim.obstacle_colliders = []; //hax
         sim.trigger_colliders = []; // hax
-        
+
         //sim.destroy(); <------------------------ (todo)
     }
 
