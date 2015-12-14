@@ -42,7 +42,7 @@ class Game extends luxe.State {
     var shootCooldown : Float = 1;
     var cooldown : Float = 0;
 
-    var level : Int = 1; // add 1 if you win (?)
+    var level : Int = 1;
 
     var jumpPadVelocity = 700;
     var jumpPadResetsSpeed = true;
@@ -295,30 +295,21 @@ class Game extends luxe.State {
     var once : Bool = false;
 
     function action(delta : Float){
-        if(level == 1){
-            if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
-                sim.player_velocity.y = -jumpSize;
-            }
-            if(sim.player_can_jump == false){
-                anim.animation = 'jump';
-                once = false;
-            }
-            if(sim.player_can_jump == true && once == false && sim.player_velocity.x != 0){
-                once = true;
-                anim.animation = 'run';
-            }
-            if(sim.player_can_jump == true && once == false && sim.player_velocity.x == 0){
-                once = true;
-                anim.animation = 'idle';
-            }
-        }
-
-        if(level == 2){
-            if(Luxe.input.inputdown('action') && canShoot){
-                shoot();
-                canShoot = false;
-            }
-        }
+      if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
+          sim.player_velocity.y = -jumpSize;
+      }
+      if(sim.player_can_jump == false){
+          anim.animation = 'jump';
+          once = false;
+      }
+      if(sim.player_can_jump == true && once == false && sim.player_velocity.x != 0){
+          once = true;
+          anim.animation = 'run';
+      }
+      if(sim.player_can_jump == true && once == false && sim.player_velocity.x == 0){
+          once = true;
+          anim.animation = 'idle';
+      }
     }
 
     function handle_bullets(delta : Float){
@@ -335,30 +326,6 @@ class Game extends luxe.State {
               i++;
             }
         }
-    }
-
-    function shoot(){
-        var bullet_image = Luxe.resources.texture('assets/snowball.png');
-        bullets.push(new Sprite({
-            name: "snowball",
-            texture: bullet_image,
-            pos: player.pos,
-            size : new Vector(72,72)
-        }));
-        create_shoot_animation();
-        if(mSpeed > 0) bulletDirections.push(true);
-        else bulletDirections.push(false);
-    }
-
-    var snowball : SpriteAnimation;
-    var count : Int = 0;
-    function create_shoot_animation(){
-        var snow_object = Luxe.resources.json('assets/snowball.json');
-        snowball= bullets[count].add( new SpriteAnimation({ name:'snowball' }) );
-        snowball.add_from_json_object(snow_object.asset.json );
-        snowball.animation = 'throw';
-        count++;
-        snowball.play();
     }
 
     override function onkeyup( e:KeyEvent ) {
@@ -382,7 +349,7 @@ class Game extends luxe.State {
     function create_map() {
 
         //Fetch the loaded tmx data from the assets
-        var map_data = Luxe.resources.text('assets/level3.tmx').asset.text;
+        var map_data = Luxe.resources.text('assets/level' + level + '.tmx').asset.text;
 
         //parse that data into a usable TiledMap instance
         map = new TiledMap({ format:'tmx', tiled_file_data: map_data });
@@ -411,10 +378,6 @@ class Game extends luxe.State {
         map.destroy();
         bgImage.destroy();
         Luxe.camera.focus(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y));
-
-        for(bullet in bullets){
-            bullet.destroy();
-        }
 
         sim.obstacle_colliders = []; //hax
         sim.trigger_colliders = []; // hax
