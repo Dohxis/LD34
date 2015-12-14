@@ -66,12 +66,11 @@ class Main extends luxe.Game {
 
     function music() {
         var music = Luxe.audio.get('music');
-                music.volume = 0.1;
+                music.volume = 0.3;
                 music.loop();
     }
-
+    
     override function update(dt:Float) {
-
     } //update
 
 

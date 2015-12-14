@@ -246,12 +246,21 @@ class Game extends luxe.State {
         auto_move(delta);
         action(delta);
         camera_follow(delta);
-	      player.pos.copy_from(sim.player_collider.position);
+	    player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
-
+        count_time(delta);
+        
         bgImage.pos.x = player.pos.x + 420;
     }
-
+    
+    var timeAdd : Float = 0;
+    var time : Int;
+    
+    function count_time(delta){
+            timeAdd = timeAdd + delta;
+            time = Std.int(timeAdd);
+            trace(time);
+    }
 
     function auto_move(delta : Float){
         if(mSpeed > 0) player.flipx = true;
