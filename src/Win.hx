@@ -18,8 +18,9 @@ class Win extends luxe.State {
   var text2 : Text;
   var text3 : Text;
 
-  public function new() {
+  public function new(scr : Int) {
     super({ name:'win' });
+    score = scr;
   }
 
   override function onenter<T>(_:T) {
@@ -70,8 +71,8 @@ class Win extends luxe.State {
 
   override function onkeyup( e:KeyEvent ) {
     if(e.keycode == Key.space) {
+      Main.state.add(new Game(1, 0));
       Main.state.set('game');
-      //do more stuff
     }
   }
 

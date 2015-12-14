@@ -45,11 +45,9 @@ class Main extends luxe.Game {
 
         state = new States({ name: 'state' });
 
-        state.add( new Game() );
         state.add( new Menu() );
-        state.add( new GameOver() );
-        state.add( new Win() );
-        state.set('game');
+        state.add( new Game(1, 0) );
+        state.set('menu');
 
     } //ready
 

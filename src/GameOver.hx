@@ -12,14 +12,20 @@ import luxe.Text;
 class GameOver extends luxe.State {
 
   var bgImage : Sprite;
-  var score : Int = 0;
-
+  var score : Int;
+  var oldScore : Int;
+  
+  var level : Int;
+  
   var text1 : Text;
   var text2 : Text;
   var text3 : Text;
 
-  public function new() {
+  public function new(lvl : Int, scr : Int, oldScr : Int) {
     super({ name:'game over' });
+    level = lvl;
+    score = scr;
+    oldScore = oldScr;
   }
 
   override function onenter<T>(_:T) {
@@ -70,7 +76,8 @@ class GameOver extends luxe.State {
 
   override function onkeyup( e:KeyEvent ) {
     if(e.keycode == Key.space) {
-      Main.state.set('game');
+      Main.state.add(new Game(level, oldScore));
+      Main.state.set( 'game' );
     }
   }
 

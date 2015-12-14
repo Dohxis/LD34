@@ -46,9 +46,15 @@ class Game extends luxe.State {
 
     var jumpPadVelocity = 700;
     var jumpPadResetsSpeed = true;
+    
+    var oldScore : Int;
+    var score : Int;
 
-    public function new() {
+    public function new(lvl : Int, scr : Int) {
         super({ name:'game' });
+        level = lvl;
+        score = scr;
+        oldScore = scr;
     }
 
     var player : Sprite;
@@ -162,6 +168,7 @@ class Game extends luxe.State {
 
             switch(_type) {
                 case 'collide':
+                  Main.state.add(new GameOver(level, score, oldScore));
                   Main.state.set('game over');
 
                 case 'jump':
@@ -171,15 +178,20 @@ class Game extends luxe.State {
                   sim.player_velocity.y = -jumpPadVelocity;
 
                 case 'exit':
-                  //nextLevel(); // todo
+                  if(level == 3){
+                    Main.state.add(new Win(score));
+                    Main.state.set('win');
+                  }
+                  else{
+                    trace("----------------------------going to next level!!!");
+                    Main.state.add(new Game(level+1, score));
+                    Main.state.set('game');
+                  }
+                  //Main.state.unset('game') ; //kill remove unset
 
           } //switch type
 
       } //each collision
-    }
-
-    function nextLevel(){
-      trace("A winner is you!");
     }
 
     function create_player(){
@@ -351,7 +363,8 @@ class Game extends luxe.State {
 
     override function onkeyup( e:KeyEvent ) {
         if(e.keycode == Key.escape) {
-            Main.state.set('game over');
+          Main.state.add(new GameOver(level, score, oldScore));
+          Main.state.set('game over');
         }
     }
 
