@@ -46,7 +46,7 @@ class Game extends luxe.State {
 
     var jumpPadVelocity = 700;
     var jumpPadResetsSpeed = true;
-    
+
     var score : Int;
 
     public function new(lvl : Int, scr : Int) {
@@ -62,7 +62,7 @@ class Game extends luxe.State {
     public var sim : Simulation;
 
     override function onenter<T>(_:T) {
-        
+
         Luxe.events.listen('simulation.triggers.collide', on_trigger);
 
         Luxe.renderer.clear_color.rgb(0xd5edf7);
@@ -223,12 +223,12 @@ class Game extends luxe.State {
 	    player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
         count_time(delta);
-        
+
         bgImage.pos.x = player.pos.x + 420;
     }
-    
+
     var timeAdd : Float = 0;
-    
+
     function count_time(delta){
             timeAdd = timeAdd + delta;
             if(timeAdd >= 1){

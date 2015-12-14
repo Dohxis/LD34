@@ -70,7 +70,7 @@ class Main extends luxe.Game {
                 music.volume = 0.1;
                 music.loop();
     }
-    
+
     override function update(dt:Float) {
     } //update
 
