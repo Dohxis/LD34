@@ -101,7 +101,7 @@ class Game extends luxe.State {
         create_player();
         create_player_animation();
         move_keys();
-        //sim.draw = true;
+        sim.draw = true;
     }
 
     function load_spikes() { // a bit buggy but works ok
@@ -171,7 +171,7 @@ class Game extends luxe.State {
                   sim.player_velocity.y = -jumpPadVelocity;
 
                 case 'exit':
-                  nextLevel(); // todo
+                  //nextLevel(); // todo
 
           } //switch type
 
