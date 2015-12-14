@@ -9,7 +9,7 @@ import luxe.Rectangle;
 import luxe.Text.TextAlign;
 import luxe.Text;
 
-class GameOver extends luxe.State {
+class Win extends luxe.State {
 
   var bgImage : Sprite;
   var score : Int = 0;
@@ -19,7 +19,7 @@ class GameOver extends luxe.State {
   var text3 : Text;
 
   public function new() {
-    super({ name:'game over' });
+    super({ name:'win' });
   }
 
   override function onenter<T>(_:T) {
@@ -40,7 +40,7 @@ class GameOver extends luxe.State {
     });
 
     text1.geom = Luxe.draw.text({
-      text : "Game over!",
+      text : "You win!",
       bounds : new Rectangle(0, 25, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
       color : new Color().rgb(0x12004d),
       align : TextAlign.center,
@@ -71,6 +71,7 @@ class GameOver extends luxe.State {
   override function onkeyup( e:KeyEvent ) {
     if(e.keycode == Key.space) {
       Main.state.set('game');
+      //do more stuff
     }
   }
 

@@ -51,7 +51,8 @@ class Main extends luxe.Game {
         state.add( new GameOver() );
         state.set('menu');
         music();
-
+        state.add( new Win() );
+        state.set('game');
     } //ready
     
     function music() {

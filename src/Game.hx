@@ -158,7 +158,7 @@ class Game extends luxe.State {
     function on_trigger(collisions:Array<ShapeCollision>){
         for(collision in collisions) {
             var _type = collision.shape2.tags.get('type');
-            trace(_type);
+            //trace(_type);
 
             switch(_type) {
                 case 'collide':
@@ -171,7 +171,7 @@ class Game extends luxe.State {
                   sim.player_velocity.y = -jumpPadVelocity;
 
                 case 'exit':
-                  nextLevel(); // todo
+                  //nextLevel(); // todo
 
           } //switch type
 
