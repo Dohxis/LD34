@@ -46,7 +46,7 @@ class Game extends luxe.State {
 
     var jumpPadVelocity = 700;
     var jumpPadResetsSpeed = true;
-    
+
     var score : Int;
 
     public function new(lvl : Int, scr : Int) {
@@ -62,7 +62,7 @@ class Game extends luxe.State {
     public var sim : Simulation;
 
     override function onenter<T>(_:T) {
-        
+
         Luxe.events.listen('simulation.triggers.collide', on_trigger);
 
         Luxe.renderer.clear_color.rgb(0xd5edf7);
@@ -83,10 +83,9 @@ class Game extends luxe.State {
     }
 
     function assets_loaded(){
-        //create_enemy();
         create_map();
         create_map_collision();
-        //load_spikes();
+        load_spikes();
 
         //loads jump pads
         var lay : Bool = false;
@@ -215,30 +214,6 @@ class Game extends luxe.State {
         Luxe.input.bind_key('action', Key.key_x);
     }
 
-    var enemy = [];
-    var enemyAnim : SpriteAnimation;
-    var enemyCount : Int = 0;
-
-    function create_enemy(){
-        var enemySprite = Luxe.resources.texture('assets/snowman.png');
-        enemy.push(new Sprite({
-            name: "enemy",
-            texture: enemySprite,
-            pos: player.pos,
-            size : new Vector(72,72)
-        }));
-        create_enemy_animation();
-    }
-
-    function create_enemy_animation(){
-        var enemy_object = Luxe.resources.json('assets/snowman.json');
-        enemyAnim = enemy[enemyCount].add( new SpriteAnimation({ name:'anim' }) );
-        enemyAnim.add_from_json_object( enemy_object.asset.json );
-        enemyAnim.animation = 'idle';
-        enemyCount++;
-        enemyAnim.play();
-    }
-
     var speedMax : Float = 300;
     var mSpeed : Float = 0;
     
@@ -263,9 +238,9 @@ class Game extends luxe.State {
         }
         bgImage.pos.x = sim.player_collider.position.x + 420;
     }
-    
+
     var timeAdd : Float = 0;
-    
+
     function count_time(delta){
             timeAdd = timeAdd + delta;
             if(timeAdd >= 1){
@@ -282,7 +257,7 @@ class Game extends luxe.State {
             anim.animation = 'idle';
         }
 
-		    if(Luxe.input.inputdown('left')){
+		    if(Luxe.input.inputdown('left') && player.pos.x > 250){
             if(mSpeed > -speedMax){
                 mSpeed -= 800*delta;
                 if(mSpeed > 0 && sim.player_velocity.x != 0) anim.animation = 'slide';

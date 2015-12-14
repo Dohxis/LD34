@@ -5,6 +5,7 @@ import luxe.Vector;
 import phoenix.Texture;
 import luxe.Color;
 import luxe.tween.Actuate;
+import luxe.Text;
 
 // Snow
 import luxe.options.ParticleOptions;
@@ -15,7 +16,7 @@ class Menu extends luxe.State {
   var bgImage: Sprite;
   var logo: Sprite;
   var snow: ParticleSystem;
-  var play: Sprite;
+  var play: Text;
   var start: Bool;
 
   public function new() {
@@ -47,11 +48,12 @@ class Menu extends luxe.State {
       size: new Vector(1000, 200)
     });
 
-    play = new Sprite({
+    play = new Text({
       name: 'playImage',
-      texture: play_image,
-      pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y),
-      size: new Vector(400, 100)
+      text: 'Press [SPACE] to start!',
+      color: new Color().rgb(0x00003d),
+      pos: new Vector(Luxe.screen.mid.x - 200, Luxe.screen.mid.y),
+      point_size: 42
     });
 
   }
@@ -60,11 +62,11 @@ class Menu extends luxe.State {
     create_background();
     create_snow();
 
-    Actuate.tween(play.pos, 2, { y:250 })
-                   .ease( luxe.tween.easing.Bounce.easeOut ).repeat();
+    Actuate.tween(play.pos, 2, { y:300 })
+                   .ease( luxe.tween.easing.Bounce.easeOut );
 
-                   Actuate.tween(logo.pos, 1, { y:150 })
-                                  .ease( luxe.tween.easing.Bounce.easeOut );
+     Actuate.tween(logo.pos, 1, { y:150 })
+                    .ease( luxe.tween.easing.Bounce.easeOut );
 
 
 
@@ -86,8 +88,8 @@ class Menu extends luxe.State {
 
   }
 
-  override function onmousedown( e:MouseEvent ){
-    if(e.button == MouseButton.left)
+  override function onkeydown( e:KeyEvent ){
+    if(e.keycode == Key.space)
       start = true;
   }
 

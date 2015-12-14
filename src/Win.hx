@@ -42,15 +42,27 @@ class Win extends luxe.State {
       pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y),
       size: new Vector(1280, 720)
     });
-
-    text1.geom = Luxe.draw.text({
-      text : "You win!",
-      bounds : new Rectangle(0, 25, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
-      color : new Color().rgb(0x12004d),
-      align : TextAlign.center,
-      align_vertical : TextAlign.top,
-      point_size : 64
-    });
+    
+    if(level == 3){
+      text1.geom = Luxe.draw.text({
+        text : "You win the game!",
+        bounds : new Rectangle(0, 25, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
+        color : new Color().rgb(0x12004d),
+        align : TextAlign.center,
+        align_vertical : TextAlign.top,
+        point_size : 64
+      });
+    }
+    else{
+      text1.geom = Luxe.draw.text({
+        text : "You win!",
+        bounds : new Rectangle(0, 25, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
+        color : new Color().rgb(0x12004d),
+        align : TextAlign.center,
+        align_vertical : TextAlign.top,
+        point_size : 64
+      });
+    }
 
     text2.geom = Luxe.draw.text({
       text : "Your time was: " + score + ' s',
@@ -60,15 +72,28 @@ class Win extends luxe.State {
       align_vertical : TextAlign.top,
       point_size : 32
     });
-
-    text3.geom = Luxe.draw.text({
-      text : "Press space to go to the next level",
-      bounds : new Rectangle(0, 200, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
-      color : new Color().rgb(0x12004d),
-      align : TextAlign.center,
-      align_vertical : TextAlign.top,
-      point_size : 16
-    });
+    
+    if(level == 3){
+      text3.geom = Luxe.draw.text({
+        text : "Press space to restart the game",
+        bounds : new Rectangle(0, 200, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
+        color : new Color().rgb(0x12004d),
+        align : TextAlign.center,
+        align_vertical : TextAlign.top,
+        point_size : 16
+      });
+    }
+    else{
+      text3.geom = Luxe.draw.text({
+        text : "Press space to go to the next level",
+        bounds : new Rectangle(0, 200, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
+        color : new Color().rgb(0x12004d),
+        align : TextAlign.center,
+        align_vertical : TextAlign.top,
+        point_size : 16
+      });
+    }
+    
   }
 
   override function onkeyup( e:KeyEvent ) {
