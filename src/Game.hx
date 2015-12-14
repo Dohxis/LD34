@@ -101,7 +101,7 @@ class Game extends luxe.State {
         create_player();
         create_player_animation();
         move_keys();
-        sim.draw = true;
+        //sim.draw = true;
     }
 
     function load_spikes() { // a bit buggy but works ok
@@ -158,7 +158,7 @@ class Game extends luxe.State {
     function on_trigger(collisions:Array<ShapeCollision>){
         for(collision in collisions) {
             var _type = collision.shape2.tags.get('type');
-            trace(_type);
+            //trace(_type);
 
             switch(_type) {
                 case 'collide':
