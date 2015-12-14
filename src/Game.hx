@@ -46,7 +46,7 @@ class Game extends luxe.State {
 
     var jumpPadVelocity = 700;
     var jumpPadResetsSpeed = true;
-    
+
     var oldScore : Int;
     var score : Int;
 
@@ -174,6 +174,7 @@ class Game extends luxe.State {
                 case 'jump':
                   if(jumpPadResetsSpeed){
                     sim.player_velocity.y = 0;
+                    Main.strin.play();
                   }
                   sim.player_velocity.y = -jumpPadVelocity;
 
@@ -298,6 +299,7 @@ class Game extends luxe.State {
         if(level == 1){
             if(Luxe.input.inputdown('action') && sim.player_can_jump == true){
                 sim.player_velocity.y = -jumpSize;
+                Main.jump.play();
             }
             if(sim.player_can_jump == false){
                 anim.animation = 'jump';

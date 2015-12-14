@@ -1,9 +1,12 @@
 import luxe.Input;
 import luxe.States;
+import luxe.Sound;
 
 class Main extends luxe.Game {
 
     public static var state: States;
+    public static var strin: Sound;
+    public static var jump: Sound;
 
     override function config(config:luxe.AppConfig) {
 
@@ -21,7 +24,9 @@ class Main extends luxe.Game {
         config.preload.textures.push({id:'assets/string.png', filter_min:nearest, filter_mag:nearest });
 
         config.preload.sounds.push({id: 'assets/Music.wav', name: 'music', is_stream : true});
-        
+        config.preload.sounds.push({id: 'assets/jump.wav', name: 'jump', is_stream : true});
+        config.preload.sounds.push({id: 'assets/string.wav', name: 'string', is_stream : true});
+
         config.preload.textures.push({id:'assets/snowball.png'});
         config.preload.jsons.push({id:'assets/snowball.json'});
 
@@ -46,12 +51,19 @@ class Main extends luxe.Game {
 
         state = new States({ name: 'state' });
 
+        strin = Luxe.audio.get('string');
+        jump = Luxe.audio.get('jump');
+
+        strin.volume = 1;
+        jump.volume = 1;
+
         state.add( new Menu() );
         state.add( new Game(1, 0) );
         state.set('menu');
         music();
+
     } //ready
-    
+
     function music() {
         var music = Luxe.audio.get('music');
                 music.volume = 0.1;
