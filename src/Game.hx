@@ -245,7 +245,7 @@ class Game extends luxe.State {
             anim.animation = 'idle';
         }
 
-		    if(Luxe.input.inputdown('left')){
+		    if(Luxe.input.inputdown('left') && player.pos.x > 250){
             if(mSpeed > -speedMax){
                 mSpeed -= 800*delta;
                 if(mSpeed > 0 && sim.player_velocity.x != 0) anim.animation = 'slide';
