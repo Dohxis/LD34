@@ -52,7 +52,7 @@ class GameOver extends luxe.State {
     });
 
     text2.geom = Luxe.draw.text({
-      text : "Your score was: " + score,
+      text : "Your time was: " + score + ' s',
       bounds : new Rectangle(0, 150, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
       color : new Color().rgb(0x12004d),
       align : TextAlign.center,
