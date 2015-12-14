@@ -58,7 +58,7 @@ class GameOver extends luxe.State {
     });
 
     text3.geom = Luxe.draw.text({
-      text : "Press X to restart",
+      text : "Press space to restart",
       bounds : new Rectangle(0, 200, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
       color : new Color().rgb(0x12004d),
       align : TextAlign.center,
@@ -69,7 +69,7 @@ class GameOver extends luxe.State {
   }
 
   override function onkeyup( e:KeyEvent ) {
-    if(e.keycode == Key.key_x) {
+    if(e.keycode == Key.space) {
       Main.state.set('game');
     }
   }
