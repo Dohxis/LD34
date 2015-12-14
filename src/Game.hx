@@ -249,13 +249,13 @@ class Game extends luxe.State {
 	    player.pos.copy_from(sim.player_collider.position);
         handle_bullets(delta);
         count_time(delta);
-        
+
         bgImage.pos.x = player.pos.x + 420;
     }
-    
+
     var timeAdd : Float = 0;
     var time : Int;
-    
+
     function count_time(delta){
             timeAdd = timeAdd + delta;
             time = Std.int(timeAdd);

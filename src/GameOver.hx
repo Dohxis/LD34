@@ -14,9 +14,9 @@ class GameOver extends luxe.State {
   var bgImage : Sprite;
   var score : Int;
   var oldScore : Int;
-  
+
   var level : Int;
-  
+
   var text1 : Text;
   var text2 : Text;
   var text3 : Text;
@@ -48,7 +48,7 @@ class GameOver extends luxe.State {
     text1.geom = Luxe.draw.text({
       text : "Game over!",
       bounds : new Rectangle(0, 25, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
-      color : new Color().rgb(0x12004d),
+      color : new Color().rgb(0x00003d),
       align : TextAlign.center,
       align_vertical : TextAlign.top,
       point_size : 64
@@ -57,7 +57,7 @@ class GameOver extends luxe.State {
     text2.geom = Luxe.draw.text({
       text : "Your score was: " + score,
       bounds : new Rectangle(0, 150, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
-      color : new Color().rgb(0x12004d),
+      color : new Color().rgb(0x00003d),
       align : TextAlign.center,
       align_vertical : TextAlign.top,
       point_size : 32
@@ -66,7 +66,7 @@ class GameOver extends luxe.State {
     text3.geom = Luxe.draw.text({
       text : "Press space to restart",
       bounds : new Rectangle(0, 200, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
-      color : new Color().rgb(0x12004d),
+      color : new Color().rgb(0x00003d),
       align : TextAlign.center,
       align_vertical : TextAlign.top,
       point_size : 16
