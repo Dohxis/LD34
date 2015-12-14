@@ -20,7 +20,8 @@ class Main extends luxe.Game {
         config.preload.texts.push({id:'assets/level2.tmx'});
         config.preload.textures.push({id:'assets/string.png', filter_min:nearest, filter_mag:nearest });
 
-
+        config.preload.sounds.push({id: 'assets/Music.wav', name: 'music', is_stream : true});
+        
         config.preload.textures.push({id:'assets/snowball.png'});
         config.preload.jsons.push({id:'assets/snowball.json'});
 
@@ -45,12 +46,17 @@ class Main extends luxe.Game {
 
         state = new States({ name: 'state' });
 
-        state.add( new Game() );
         state.add( new Menu() );
-        state.add( new GameOver() );
+        state.add( new Game(1, 0) );
         state.set('menu');
-
+        music();
     } //ready
+    
+    function music() {
+        var music = Luxe.audio.get('music');
+                music.volume = 0.1;
+                music.loop();
+    }
 
     override function update(dt:Float) {
 
