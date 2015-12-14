@@ -82,23 +82,26 @@ class Game extends luxe.State {
         create_player();
         create_player_animation();
         move_keys();
+        //sim.draw = true;
     }
-
-    function load_spikes() {
-
-        var bounds = map.layer('collide').bounds_fitted();
-        for(bound in bounds) {
-            var shape = Polygon.rectangle(
-                bound.x *= map.tile_width * map_scale,
-                bound.y *= map.tile_height * map_scale,
-                bound.w *= map.tile_width * map_scale,
-                bound.h *= map.tile_height * map_scale
-            );
-            shape.tags.set('type', 'collide');
-            sim.trigger_colliders.push(Polygon.rectangle(bound.x, bound.y, bound.w, bound.h, false));
-        }
+    
+    function load_spikes() { // a bit buggy but works oik
+      
+      var bounds = map.layer('collide').bounds_fitted();
+      for(bound in bounds) {
+        trace(bound.x + ' ' + bound.y + '\n');
+        var shape = Polygon.rectangle(
+          bound.x = bound.x * map.tile_width * map_scale + 50,
+          bound.y = bound.y * map.tile_height * map_scale + 50,
+          bound.w *= map.tile_width * map_scale,
+          bound.h *= map.tile_height * map_scale
+        );
+        
+        shape.tags.set('type', 'collide');
+        sim.trigger_colliders.push(shape);
+      }
     }
-
+    
     function on_trigger(collisions:Array<ShapeCollision>){
         for(collision in collisions) {
             var _type = collision.shape2.tags.get('type');
@@ -331,10 +334,15 @@ class Game extends luxe.State {
         map.destroy();
         bgImage.destroy();
         Luxe.camera.focus(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y));
-
+        
         for(bullet in bullets){
             bullet.destroy();
         }
+        
+        sim.obstacle_colliders = []; //hax
+        sim.trigger_colliders = []; // hax
+        
+        //sim.destroy(); <------------------------ (todo)
     }
 
  }
