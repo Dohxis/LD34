@@ -36,8 +36,8 @@ class Menu extends luxe.State {
     bgImage = new Sprite({
       name: 'bgImage',
       texture: bg_image,
-      pos: new Vector(320, 240),
-      size: new Vector(640, 480)
+      pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y),
+      size: new Vector(1280, 720)
     });
 
     logo = new Sprite({
@@ -84,12 +84,6 @@ class Menu extends luxe.State {
     if(start)
       Main.state.set('game');
 
-  }
-
-  override function onkeyup( e:KeyEvent ) {
-      if(e.keycode == Key.escape) {
-          Luxe.shutdown();
-      }
   }
 
   override function onmousedown( e:MouseEvent ){

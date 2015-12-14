@@ -64,8 +64,8 @@ class Game extends luxe.State {
             name: 'bgImage',
             depth: -1,
             texture: bg_image,
-            pos: new Vector(320, 240),
-            size: new Vector(3200, 480)
+            pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y),
+            size: new Vector(1280, 720)
         });
 
         sim = Luxe.physics.add_engine(Simulation);
@@ -330,7 +330,7 @@ class Game extends luxe.State {
         player.destroy();
         map.destroy();
         bgImage.destroy();
-        Luxe.camera.focus(new Vector(320, 240));
+        Luxe.camera.focus(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y));
 
         for(bullet in bullets){
             bullet.destroy();
