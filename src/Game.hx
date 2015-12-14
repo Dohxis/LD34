@@ -92,9 +92,7 @@ class Game extends luxe.State {
         //loads jump pads
         var lay : Bool = false;
         for(laye in map.layers){
-          trace(laye.name);
           if(laye.name == 'jump'){
-            trace("Works");
             lay = true;
           }
         }
@@ -114,7 +112,6 @@ class Game extends luxe.State {
 
       var bounds = map.layer('collide').bounds_fitted();
       for(bound in bounds) {
-        trace(bound.x + ' ' + bound.y + '\n');
         var shape = Polygon.rectangle(
           bound.x = bound.x * map.tile_width * map_scale + 50,
           bound.y = bound.y * map.tile_height * map_scale + 50,
@@ -131,7 +128,6 @@ class Game extends luxe.State {
 
       var bounds = map.layer('jump').bounds_fitted();
       for(bound in bounds) {
-        trace(bound.x + ' ' + bound.y + '\n');
         var shape = Polygon.rectangle(
           bound.x = bound.x * map.tile_width * map_scale + 37.5,
           bound.y = bound.y * map.tile_height * map_scale + 25,
@@ -148,7 +144,6 @@ class Game extends luxe.State {
 
       var bounds = map.layer('exit').bounds_fitted();
       for(bound in bounds) {
-        trace(bound.x + ' ' + bound.y + '\n');
         var shape = Polygon.rectangle(
           bound.x = bound.x * map.tile_width * map_scale + 250,
           bound.y = bound.y * map.tile_height * map_scale + 250,
@@ -164,7 +159,6 @@ class Game extends luxe.State {
     function on_trigger(collisions:Array<ShapeCollision>){
         for(collision in collisions) {
             var _type = collision.shape2.tags.get('type');
-            //trace(_type);
 
             switch(_type) {
                 case 'collide':
@@ -179,11 +173,12 @@ class Game extends luxe.State {
 
                 case 'exit':
                   if(level == 3){
+                    trace("-------------level: " + level);
                     Main.state.add(new Win(score));
                     Main.state.set('win');
                   }
                   else{
-                    trace("----------------------------going to next level!!!");
+                    trace("--------------going to next level!!!");
                     Main.state.add(new Game(level+1, score));
                     Main.state.set('game');
                   }
