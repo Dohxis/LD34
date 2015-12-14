@@ -82,7 +82,18 @@ class Game extends luxe.State {
         create_map();
         create_map_collision();
         load_spikes();
-        load_jumps();
+        
+        //loads jump pads
+        var lay : Bool = false;
+        for(laye in map.layers){
+          if(laye.name == 'jump'){
+            lay = true;
+          }
+        }
+        if(lay){
+          load_jumps();
+        }
+        
         create_player();
         create_player_animation();
         move_keys();
