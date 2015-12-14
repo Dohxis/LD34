@@ -119,16 +119,16 @@ class Game extends luxe.State {
       }
     }
     
-    function load_jumps() { // a bit buggy but works ok
+    function load_jumps() { // works good (but really weird D: )
       
       var bounds = map.layer('jump').bounds_fitted();
       for(bound in bounds) {
         trace(bound.x + ' ' + bound.y + '\n');
         var shape = Polygon.rectangle(
-          bound.x = bound.x * map.tile_width * map_scale + 50,
-          bound.y = bound.y * map.tile_height * map_scale + 50,
-          bound.w = bound.w * 2 * map.tile_width * map_scale - 10,
-          bound.h = bound.h * 2 * map.tile_height * map_scale
+          bound.x = bound.x * map.tile_width * map_scale + 37.5,
+          bound.y = bound.y * map.tile_height * map_scale + 25,
+          bound.w = bound.w * 1.5 * map.tile_width * map_scale,
+          bound.h = bound.h * 1.5 * map.tile_height * map_scale
         );
         
         shape.tags.set('type', 'jump');
