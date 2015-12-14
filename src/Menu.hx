@@ -43,8 +43,8 @@ class Menu extends luxe.State {
     logo = new Sprite({
       name: 'logoImage',
       texture: logo_image,
-      pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y - 150),
-      size: new Vector(290, 50)
+      pos: new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y - 600),
+      size: new Vector(1000, 200)
     });
 
     play = new Sprite({
@@ -63,7 +63,7 @@ class Menu extends luxe.State {
     Actuate.tween(play.pos, 2, { y:250 })
                    .ease( luxe.tween.easing.Bounce.easeOut ).repeat();
 
-                   Actuate.tween(logo.pos, 1, { y:50 })
+                   Actuate.tween(logo.pos, 1, { y:150 })
                                   .ease( luxe.tween.easing.Bounce.easeOut );
 
 
