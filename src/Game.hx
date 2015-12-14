@@ -96,10 +96,12 @@ class Game extends luxe.State {
           load_jumps();
         }
         
+        load_exit();
+        
         create_player();
         create_player_animation();
         move_keys();
-        sim.draw = true;
+        //sim.draw = true;
     }
 
     function load_spikes() { // a bit buggy but works ok
@@ -119,7 +121,7 @@ class Game extends luxe.State {
       }
     }
     
-    function load_jumps() { // works good (but really weird D: )
+    function load_jumps() {
       
       var bounds = map.layer('jump').bounds_fitted();
       for(bound in bounds) {
@@ -132,6 +134,23 @@ class Game extends luxe.State {
         );
         
         shape.tags.set('type', 'jump');
+        sim.trigger_colliders.push(shape);
+      }
+    }
+    
+    function load_exit() {
+      
+      var bounds = map.layer('exit').bounds_fitted();
+      for(bound in bounds) {
+        trace(bound.x + ' ' + bound.y + '\n');
+        var shape = Polygon.rectangle(
+          bound.x = bound.x * map.tile_width * map_scale + 250,
+          bound.y = bound.y * map.tile_height * map_scale + 250,
+          bound.w = bound.w * map.tile_width * map_scale,
+          bound.h = bound.h * map.tile_height * map_scale
+        );
+        
+        shape.tags.set('type', 'exit');
         sim.trigger_colliders.push(shape);
       }
     }
@@ -152,11 +171,15 @@ class Game extends luxe.State {
                   sim.player_velocity.y = -jumpPadVelocity;
 
                 case 'exit':
-                  //nextLevel(); <------------------  (todo)
+                  nextLevel(); // todo
 
           } //switch type
 
       } //each collision
+    }
+    
+    function nextLevel(){
+      trace("A winner is you!");
     }
 
     function create_player(){
