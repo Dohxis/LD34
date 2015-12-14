@@ -45,7 +45,7 @@
  </layer>
  <layer name="collide" width="200" height="15">
   <data encoding="base64" compression="zlib">
-   eJzt1jsKwCAQBUAvY2Jy/wPGxjKC4CeGGXiw3dtq2RAAAAAAAACYIeYcOefqReCDUs6Vc69eBIBf8HPBOz8Xuys3PjbOM7t6zaPV+tlTufGpcZ7Z1WserdbPeA8+ixHt
+   eJzt1zsKwCAQBFAvY2Jy/wNmG1tB8Bd4Dwamm203JQAAAAAAAFbIkSty7z4EDlQiT+TdfQgAAHC0+lfnzr5ya1SfrbXPP9W/unT2lVuj+mytfeb7AODGEU0=
   </data>
  </layer>
  <layer name="noncollide2" width="200" height="15">

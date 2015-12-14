@@ -9,8 +9,8 @@
 -D snow_web
 -D luxe
 -D snow
--cp /home/domas/haxelib/luxe/git/
--cp /home/domas/haxelib/snow/git/
+-cp /home/edve98/haxelib/luxe/git/
+-cp /home/edve98/haxelib/snow/git/
 -cp src/
 -resource version@version
 -resource build@build
@@ -27,4 +27,4 @@
 --macro snow.system.module.Module.set("Assets","snow.core.web.assets.Assets")
 --macro snow.system.module.Module.set("Audio","snow.modules.howlerjs.Audio")
 -cp bin/web.build/haxe
--js bin/web/ld34.js
+-js bin/web/SantaRush.js
