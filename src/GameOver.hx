@@ -13,19 +13,16 @@ class GameOver extends luxe.State {
 
   var bgImage : Sprite;
   var score : Int;
-  var oldScore : Int;
-
   var level : Int;
 
   var text1 : Text;
   var text2 : Text;
   var text3 : Text;
 
-  public function new(lvl : Int, scr : Int, oldScr : Int) {
+  public function new(lvl : Int, scr : Int) {
     super({ name:'game over' });
     level = lvl;
     score = scr;
-    oldScore = oldScr;
   }
 
   override function onenter<T>(_:T) {
@@ -55,7 +52,7 @@ class GameOver extends luxe.State {
     });
 
     text2.geom = Luxe.draw.text({
-      text : "Your score was: " + score,
+      text : "Your time was: " + score + ' s',
       bounds : new Rectangle(0, 150, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
       color : new Color().rgb(0x00003d),
       align : TextAlign.center,
@@ -76,7 +73,7 @@ class GameOver extends luxe.State {
 
   override function onkeyup( e:KeyEvent ) {
     if(e.keycode == Key.space) {
-      Main.state.add(new Game(level, oldScore));
+      Main.state.add(new Game(level, score));
       Main.state.set( 'game' );
     }
   }

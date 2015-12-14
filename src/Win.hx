@@ -17,14 +17,17 @@ class Win extends luxe.State {
   var text1 : Text;
   var text2 : Text;
   var text3 : Text;
+  
+  var level : Int;
 
-  public function new(scr : Int) {
+  public function new(lvl : Int, scr : Int) {
     super({ name:'win' });
     score = scr;
+    level = lvl;
   }
 
   override function onenter<T>(_:T) {
-
+     
     Luxe.camera.focus(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y));
 
     var bg_image = Luxe.resources.texture('assets/bg_image.png');
@@ -50,7 +53,7 @@ class Win extends luxe.State {
     });
 
     text2.geom = Luxe.draw.text({
-      text : "Your score was: " + score,
+      text : "Your time was: " + score + ' s',
       bounds : new Rectangle(0, 150, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
       color : new Color().rgb(0x12004d),
       align : TextAlign.center,
@@ -59,21 +62,25 @@ class Win extends luxe.State {
     });
 
     text3.geom = Luxe.draw.text({
-      text : "Press space to restart",
+      text : "Press space to go to the next level",
       bounds : new Rectangle(0, 200, Luxe.screen.w * 0.99, Luxe.screen.h * 0.98),
       color : new Color().rgb(0x12004d),
       align : TextAlign.center,
       align_vertical : TextAlign.top,
       point_size : 16
     });
-
   }
 
   override function onkeyup( e:KeyEvent ) {
-    if(e.keycode == Key.space) {
-      Main.state.add(new Game(1, 0));
-      Main.state.set('game');
-    }
+      if(e.keycode == Key.space) {
+          if(level != 4){
+              Main.state.add(new Game(level, score));
+              Main.state.set('game');
+              return;
+          } 
+          Main.state.add(new Game(1, 0));
+          Main.state.set('game');
+      }
   }
 
   function destroy_text(){
@@ -85,9 +92,8 @@ class Win extends luxe.State {
     text3.destroy();
   }
 
-  override function onleave<T>(_:T) {
-    destroy_text();
-    bgImage.destroy();
-  }
-
- }
+    override function onleave<T>(_:T) {
+        destroy_text();
+        bgImage.destroy();
+        }
+    }
