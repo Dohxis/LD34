@@ -83,10 +83,9 @@ class Game extends luxe.State {
     }
 
     function assets_loaded(){
-        //create_enemy();
         create_map();
         create_map_collision();
-        //load_spikes();
+        load_spikes();
 
         //loads jump pads
         var lay : Bool = false;
@@ -210,30 +209,6 @@ class Game extends luxe.State {
     function move_keys(){
         Luxe.input.bind_key('left', Key.key_z);
         Luxe.input.bind_key('action', Key.key_x);
-    }
-
-    var enemy = [];
-    var enemyAnim : SpriteAnimation;
-    var enemyCount : Int = 0;
-
-    function create_enemy(){
-        var enemySprite = Luxe.resources.texture('assets/snowman.png');
-        enemy.push(new Sprite({
-            name: "enemy",
-            texture: enemySprite,
-            pos: player.pos,
-            size : new Vector(72,72)
-        }));
-        create_enemy_animation();
-    }
-
-    function create_enemy_animation(){
-        var enemy_object = Luxe.resources.json('assets/snowman.json');
-        enemyAnim = enemy[enemyCount].add( new SpriteAnimation({ name:'anim' }) );
-        enemyAnim.add_from_json_object( enemy_object.asset.json );
-        enemyAnim.animation = 'idle';
-        enemyCount++;
-        enemyAnim.play();
     }
 
     var speedMax : Float = 300;

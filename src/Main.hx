@@ -54,11 +54,11 @@ class Main extends luxe.Game {
         strin = Luxe.audio.get('string');
         jump = Luxe.audio.get('jump');
 
-        strin.volume = 1;
-        jump.volume = 1;
+        strin.volume = 0.5;
+        jump.volume = 0.5;
 
         state.add( new Menu() );
-        state.add( new Game(3, 0) );
+        state.add( new Game(1, 0) );
         state.set('menu');
         //trace(state.current_state);
         music();
@@ -67,7 +67,7 @@ class Main extends luxe.Game {
 
     function music() {
         var music = Luxe.audio.get('music');
-                music.volume = 0.3;
+                music.volume = 0.1;
                 music.loop();
     }
     
